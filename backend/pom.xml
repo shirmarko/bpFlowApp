@@ -33,6 +33,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.github.bthink-bgu</groupId>
+			<artifactId>BPjs</artifactId>
+			<version>[0.8.0, 0.9.9]</version>
+		</dependency>
 	
 	</dependencies>
 
