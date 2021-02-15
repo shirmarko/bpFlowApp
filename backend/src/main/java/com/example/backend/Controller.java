@@ -19,6 +19,7 @@ public class Controller {
     public String run(@RequestBody Graph graph){
         this.myGraph = graph;
         System.out.println("got graph, start process... ");
+        System.out.println(graph.getNodes());
         service.run(graph, serverEmitter);
 
         return "ok";
