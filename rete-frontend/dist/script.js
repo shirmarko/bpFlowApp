@@ -2,7 +2,7 @@
 var eventSource = new EventSource('http://localhost:8080/subscribe');
 
 eventSource.addEventListener('flowEvent', function(event){
-  console.log('got flowEvent event!')
+  console.log(event.data)
 })
 //--------------------------------------------
 
@@ -136,13 +136,38 @@ class AddComponent extends Rete.Component {
 
 
 //---------------------------------------Bsync-------------------------------------------------
+var CustomBSyncNode = {
+    template: `<div v-bind:class="[ node.data.isBasic ? 'node' : 'node1' ]"> 
+    <div class="title">{{node.name}}</div>
+    <!-- Outputs-->
+    <div class="output" v-for="output in outputs()" :key="output.key">
+      <div class="output-title">{{output.name}}</div>
+      <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
+    </div>
+    <!-- Controls-->
+    <div class="control" v-for="control in controls()" v-control="control">
+            <div class="control-title">{{control.key}}:</div>
+    </div>
+    <!-- Inputs-->
+    <div class="input" v-for="input in inputs()" :key="input.key">
+      <Socket v-socket:input="input" type="input" :socket="input.socket"></Socket>
+      <div class="input-title" v-show="!input.showControl()">{{input.name}}</div>
+      <div class="input-control" v-show="input.showControl()" v-control="input.control"></div>
+    </div>
+  </div>`,
+    mixins: [VueRenderPlugin.mixin],
+    components: {
+      Socket: VueRenderPlugin.Socket
+    }
+}
+
 
 var VueTextControl = {
   props: ['readonly', 'emitter', 'ikey', 'getData', 'putData'],
-  template: '<input type="string" :readonly="readonly" :value="value" @input="change($event)" @dblclick.stop="" @pointerdown.stop="" @pointermove.stop=""/>',
+  template: '<input type="text" :readonly="readonly" :value="value" @input="change($event)" @dblclick.stop="" @pointerdown.stop="" @pointermove.stop=""/>',
   data() {
     return {
-      value: "text",
+      value: "",
     }
   },
   methods: {
@@ -174,10 +199,31 @@ class TextControl extends Rete.Control {
   }
 }
 
+class InputControl extends Rete.Control {
+    constructor(key) {
+      super(key);
+      this.render = "js";
+      this.key = key;
+    }
+  
+    handler(el, editor) {
+      var input = document.createElement("input");
+      el.appendChild(input);
+  
+      var text = this.getData(this.key) || "";
+  
+      input.value = text;
+      this.putData(this.key, text);
+      input.addEventListener("change", () => {
+        this.putData(this.key, input.value);
+      });
+    }
+}
+
 class BsyncComponent extends Rete.Component {
   constructor(){
       super("Bsync");
-      this.data.component = CustomNode;
+      this.data.component = CustomBSyncNode;
   }
 
   builder(node) {
@@ -188,21 +234,22 @@ class BsyncComponent extends Rete.Component {
       return node
           .addInput(inp)
           .addOutput(out)
-          .addControl(new TextControl(this.editor, 'preview', true))
-          .addControl(new TextControl(this.editor, 'name'))
-
-
+          .addControl(new InputControl('Name'))
+          .addControl(new InputControl('Request'))
+          .addControl(new InputControl('Wait'))
+          .addControl(new InputControl('Block'))
+          //.addControl(new TextControl(this.editor, 'Block'))
   }
 
   worker(node, inputs, outputs) {
-      var n1 = inputs['num'].length?inputs['num'][0]:node.data.num1;
-      var n2 = inputs['num2'].length?inputs['num2'][0]:node.data.num2;
-      var sum = n1 + n2;
-      var curNode = this.editor.nodes.find(n => n.id == node.id);
-      curNode.controls.get('preview').setValue(sum);
-      curNode.data.isBasic = false;
-      curNode.update();
-      outputs['num'] = sum;
+    //   var n1 = inputs['num'].length?inputs['num'][0]:node.data.num1;
+    //   var n2 = inputs['num2'].length?inputs['num2'][0]:node.data.num2;
+    //   var sum = n1 + n2;
+    //   var curNode = this.editor.nodes.find(n => n.id == node.id);
+    //   curNode.controls.get('preview').setValue(sum);
+    //   curNode.data.isBasic = false;
+    //   curNode.update();
+    //   outputs['num'] = sum;
       //document.getElementById(node.id).className = 'node1'; 
   }
 
@@ -241,6 +288,15 @@ var container = document.querySelector('#rete');
 var components = [new NumComponent(), new AddComponent(), new BsyncComponent()];
 var editor = new Rete.NodeEditor('demo@0.1.0', container);
 
+const JsRenderPlugin = {
+    install(editor, params = {}) {
+      editor.on("rendercontrol", ({ el, control }) => {
+        if (control.render && control.render !== "js") return;
+  
+        control.handler(el, editor);
+      });
+    }
+  };
 
 (async () => {
     editor.use(ConnectionPlugin);
@@ -248,6 +304,7 @@ var editor = new Rete.NodeEditor('demo@0.1.0', container);
     editor.use(ContextMenuPlugin);
     editor.use(AreaPlugin);
     editor.use(CommentPlugin);
+    editor.use(JsRenderPlugin);
     // editor.use(ConnectionPlugin.default);
     // editor.use(VueRenderPlugin.default);    
     // editor.use(ContextMenuPlugin.default);
@@ -263,21 +320,23 @@ var editor = new Rete.NodeEditor('demo@0.1.0', container);
         engine.register(c);
     });
 
-    var n1 = await components[0].createNode({num: 2});
-    var n2 = await components[0].createNode({num: 4});
-    var add = await components[1].createNode();
+    // var n1 = await components[0].createNode({num: 2});
+    // var n2 = await components[0].createNode({num: 4});
+    // var add = await components[1].createNode();
+    var bsync = await components[2].createNode();
 
-    n1.position = [80, 200];
-    n2.position = [80, 400];
-    add.position = [500, 240];
- 
+    // n1.position = [80, 200];
+    // n2.position = [80, 400];
+    // add.position = [500, 240];
+    bsync.position = [80,200];
 
-    editor.addNode(n1);
-    editor.addNode(n2);
-    editor.addNode(add);
+    // editor.addNode(n1);
+    // editor.addNode(n2);
+    // editor.addNode(add);
+    editor.addNode(bsync);
 
-    editor.connect(n1.outputs.get('num'), add.inputs.get('num'));
-    editor.connect(n2.outputs.get('num'), add.inputs.get('num2'));
+    //editor.connect(n1.outputs.get('num'), add.inputs.get('num'));
+    //editor.connect(n2.outputs.get('num'), add.inputs.get('num2'));
 
 
     // editor.on('process nodecreated noderemoved connectioncreated connectionremoved', async () => {
