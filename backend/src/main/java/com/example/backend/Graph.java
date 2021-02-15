@@ -1,16 +1,15 @@
 package com.example.backend;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Map;
 
 public class Graph {
-    private String graphID;
+    private String id;
     private String[] comments;
-    private Map<String, Map<String, Object>> nodes;
+    private Map<String, Node> nodes;
 
-    public Graph(String graphID, String[] comments, Map<String, Map<String, Object>> nodes){
-        this.graphID = graphID;
+    public Graph(String graphID, String[] comments, Map<String, Node> nodes){
+        this.id = graphID;
         this.comments = comments;
         this.nodes = nodes;
     }
@@ -18,36 +17,24 @@ public class Graph {
     @Override
     public String toString() {
         return "{" +
-                "id=" + this.graphID + ",\n" +
-                "comments=" + Arrays.toString(this.comments) + ",\n" +
-                "nodes=" + Objects.toString(this.nodes) + ",\n" +
+                "id:" + this.id + ",\n" +
+                "comments:" + Arrays.toString(this.comments) + ",\n" +
+                "nodes:" + this.nodes + ",\n" +
                 '}';
     }
 
-    // public String mapToString(Map<String, Map> map){
-    //     StringBuilder mapAsString = new StringBuilder("{");
-    //     for( String key : map.keySet()){
-    //         mapAsString.append(key + "=" + map.get(key) + ", ");
-    //     }
-    //     mapAsString.delete(mapAsString.length()-2, mapAsString.length()).append("}");
-    //     return mapAsString.toString();
-    // }
-
-
-    
-
     /**
-     * @return String return the graphID
+     * @return String return the id
      */
-    public String getGraphID() {
-        return graphID;
+    public String getId() {
+        return id;
     }
 
     /**
-     * @param graphID the graphID to set
+     * @param id the id to set
      */
-    public void setGraphID(String graphID) {
-        this.graphID = graphID;
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -65,17 +52,20 @@ public class Graph {
     }
 
     /**
-     * @return Map<String, Map> return the nodes
+     * @return Map<String, Node> return the nodes
      */
-    public Map<String, Map<String, Object>> getNodes() {
+    public Map<String, Node> getNodes() {
         return nodes;
     }
 
     /**
      * @param nodes the nodes to set
      */
-    public void setNodes(Map<String, Map<String, Object>> nodes) {
+    public void setNodes(Map<String, Node> nodes) {
         this.nodes = nodes;
     }
 
+    public Node getNode(int id){
+        return this.nodes.get(String.valueOf(id));
+    }
 }

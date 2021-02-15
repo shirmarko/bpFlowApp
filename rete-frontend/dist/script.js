@@ -220,6 +220,8 @@ class InputControl extends Rete.Control {
     }
 }
 
+var bsyncSocket = new Rete.Socket("BSync")
+
 class BsyncComponent extends Rete.Component {
   constructor(){
       super("Bsync");
@@ -227,33 +229,56 @@ class BsyncComponent extends Rete.Component {
   }
 
   builder(node) {
-      var inp = new Rete.Input('input',"Input", numSocket);
-      var out = new Rete.Output('output', "Output", numSocket);
+      var inp = new Rete.Input('input',"Input", bsyncSocket);
+      var out = new Rete.Output('output', "Output", bsyncSocket);
 
       node.data.isBasic = true;
       return node
           .addInput(inp)
           .addOutput(out)
-          .addControl(new InputControl('Name'))
-          .addControl(new InputControl('Request'))
-          .addControl(new InputControl('Wait'))
-          .addControl(new InputControl('Block'))
+          .addControl(new InputControl('request'))
+          .addControl(new InputControl('wait'))
+          .addControl(new InputControl('block'))
           //.addControl(new TextControl(this.editor, 'Block'))
   }
 
   worker(node, inputs, outputs) {
-    //   var n1 = inputs['num'].length?inputs['num'][0]:node.data.num1;
-    //   var n2 = inputs['num2'].length?inputs['num2'][0]:node.data.num2;
-    //   var sum = n1 + n2;
-    //   var curNode = this.editor.nodes.find(n => n.id == node.id);
-    //   curNode.controls.get('preview').setValue(sum);
-    //   curNode.data.isBasic = false;
-    //   curNode.update();
-    //   outputs['num'] = sum;
-      //document.getElementById(node.id).className = 'node1'; 
-  }
 
+  }
 }
+
+var CustomStartNode = {
+    template: `<div id=triangle-right> 
+    <!-- Outputs-->
+    <div class="output" v-for="output in outputs()" :key="output.key">
+      <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
+    </div>
+  </div>`,
+    mixins: [VueRenderPlugin.mixin],
+    components: {
+      Socket: VueRenderPlugin.Socket
+    }
+}
+
+class StartComponent extends Rete.Component {
+    constructor(){
+        super("Start");
+        this.data.component = CustomStartNode;
+    }
+  
+    builder(node) {
+        var out = new Rete.Output('output', "Output", bsyncSocket);
+  
+        node.data.isBasic = true;
+        return node
+            .addOutput(out)
+    }
+  
+    worker(node, inputs, outputs) {
+  
+    }
+}
+
 
 async function OnClickRun(){
     console.log('click run');
@@ -277,15 +302,13 @@ async function OnClickRun(){
           }
       })
 
-    
-
 }
 
 //-------------------------------------------------------------------------
 
 var engine = new Rete.Engine('demo@0.1.0');
 var container = document.querySelector('#rete');
-var components = [new NumComponent(), new AddComponent(), new BsyncComponent()];
+var components = [new NumComponent(), new AddComponent(), new BsyncComponent(), new StartComponent()];
 var editor = new Rete.NodeEditor('demo@0.1.0', container);
 
 const JsRenderPlugin = {
