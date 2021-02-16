@@ -1,6 +1,10 @@
 package com.example.backend;
 
 import java.io.IOException;
+
+import com.example.backend.Logic.IService;
+import com.example.backend.Logic.ServiceImpl;
+import com.example.backend.Models.GraphModel;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,16 +15,16 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RestController
 @CrossOrigin
 public class Controller {
-    private Graph myGraph = null;
+    private GraphModel myGraphModel = null;
     public SseEmitter serverEmitter = null;
     private IService service = new ServiceImpl();
 
     @PostMapping(value = "/run", consumes = "application/json", produces = "application/json")
-    public String run(@RequestBody Graph graph){
-        this.myGraph = graph;
-        System.out.println("got graph, start process... ");
-        System.out.println(graph.getNodes());
-        service.run(graph, serverEmitter);
+    public String run(@RequestBody GraphModel graphModel){
+        this.myGraphModel = graphModel;
+        System.out.println("got graphModel, start process... ");
+        System.out.println(graphModel.getNodes());
+        service.run(graphModel, serverEmitter);
 
         return "ok";
     }
