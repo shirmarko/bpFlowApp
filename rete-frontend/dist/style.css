@@ -17,11 +17,39 @@ select, input {
   width: 170px;
 }
 
+.runButton{
+    background:    #64caa9;
+    border:        1px solid #000000;
+    border-radius: 11px;
+    padding:       7px 41px;
+    color:         #ffffff;
+    display:       inline-block;
+    font:          normal bold 23px/1 "Open Sans", sans-serif;
+    text-align:    center;
+}
 
+.runButton:hover {
+    background: #76daba;
+}
+
+.debugButton{
+    background:    #f6b26b;
+    border:        1px solid #000000;
+    border-radius: 11px;
+    padding:       7px 33px;
+    color:         #ffffff;
+    display:       inline-block;
+    font:          normal bold 23px/1 "Open Sans", sans-serif;
+    text-align:    center;
+}
+
+.debugButton:hover {
+    background: #ecc69e;
+}
 
 .node {
-  background: rgba(93, 109, 182, 0.8);
-  border: 2px solid #4e58bf;
+  background: rgb(136, 170, 219);
+  border: 2px solid rgb(102, 147, 209);
   border-radius: 10px;
   cursor: pointer;
   min-width: 180px;
@@ -33,7 +61,7 @@ select, input {
 }
 
 .node:hover {
-  background: rgba(130, 153, 255, 0.8);
+  background: rgb(169, 197, 236);
 }
 .node.selected, .node1.selected {
   background: #e3c000;
@@ -105,11 +133,13 @@ select, input {
     background: rgba(86, 226, 121, 0.8);
   }
 
-
-  #triangle-right {
+  .triangle-right {
     width: 0;
     height: 0;
     border-top: 50px solid transparent;
     border-left: 100px solid rgb(136, 170, 219);
     border-bottom: 50px solid transparent;
   }
+
+
+  

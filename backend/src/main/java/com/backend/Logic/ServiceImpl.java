@@ -14,22 +14,7 @@ public class ServiceImpl implements IService {
 
     @Override
     public void run(GraphModel graphModel, SseEmitter emitter) {
-//        String src =
-//                "bp.registerBThread(function(){\n" +
-//                "    bp.sync( {request:bp.Event(\"Hello,\")} );\n" +
-//                "} );\n" +
-//                "\n" +
-//                "bp.registerBThread(function(){\n" +
-//                "    bp.sync( {request:bp.Event(\"World!\")} );\n" +
-//                "} );\n" +
-//                "\n" +
-//                "bp.registerBThread(function(){\n" +
-//                "    bp.sync( {waitFor:bp.Event(\"Hello,\"),\n" +
-//                "                block:bp.Event(\"World!\")} );\n" +
-//                "} );";
-
         Graph graph = Graph.Create(graphModel);
-
 
         String src = graph.parseToCode();
         System.out.println(src);
@@ -53,60 +38,4 @@ public class ServiceImpl implements IService {
         return;
     }
 
-    //parse graphModel to bpjs source code
-    private String parseGraph(GraphModel graphModel){
-        StringBuilder code = new StringBuilder();
-        List<NodeModel> startNodeModels = findStartNodes(graphModel);
-
-        for (NodeModel n: startNodeModels){
-            code.append(generateCodeFromStartNode(graphModel, n)).append('\n');
-        }
-
-        return code.toString();
-    }
-
-    private String generateCodeFromStartNode(GraphModel g, NodeModel n) {
-        StringBuilder body = new StringBuilder();
-        NodeModel cur = n;
-        while ((cur = getNextNode(g, cur)) != null){
-            DataModel data = cur.getData();
-            body.append("bp.sync( {");
-            // TODO: fix comma
-            if(!data.getRequest().equals("")){
-                body.append(String.format("request:bp.Event(\"%s\")", data.getRequest()));
-            }
-            if(!data.getWait().equals("")){
-                body.append(String.format("waitFor:bp.Event(\"%s\"), ", data.getWait()));
-            }
-            if(!data.getBlock().equals("")){
-                body.append(String.format("block:bp.Event(\"%s\")", data.getBlock()));
-            }
-
-            body.append("} );\n");
-        }
-
-        return String.format("bp.registerBThread(function(){\n\t%s } );\n", body.toString());
-    }
-    
-    private NodeModel getNextNode(GraphModel g, NodeModel cur) {
-        Collection<Object> outputs = cur.getOutputs().values();
-        Map<String, ArrayList<Map<String, Object>>> output = (Map<String, ArrayList<Map<String, Object>>>) outputs.toArray()[0];
-        ArrayList<Map<String, Object>> connections = output.get("connections");
-        if(connections.size() == 0) {
-            return null;
-        }
-        Map<String, Object> connection = connections.get(0);
-        int nextNodeID = (int) connection.get("node");
-        return g.getNode(nextNodeID);
-    }
-
-    private List<NodeModel> findStartNodes(GraphModel graphModel) {
-        List<NodeModel> startNodeModels = new LinkedList<>();
-        for (NodeModel n: graphModel.getNodes().values()) {
-            if(n.getName().equals("Start")){
-                startNodeModels.add(n);
-            }
-        }
-        return startNodeModels;
-    }
 }
