@@ -1,10 +1,10 @@
-package com.example.backend.Communication;
+package com.backend.Communication;
 
 import java.io.IOException;
 
-import com.example.backend.Logic.IService;
-import com.example.backend.Logic.ServiceImpl;
-import com.example.backend.Models.GraphModel;
+import com.backend.Logic.IService;
+import com.backend.Logic.ServiceImpl;
+import com.backend.Models.GraphModel;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

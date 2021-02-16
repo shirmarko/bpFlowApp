@@ -1,8 +1,8 @@
-package com.example.backend.Logic;
+package com.backend.Logic;
 
-import com.example.backend.Models.DataModel;
-import com.example.backend.Models.GraphModel;
-import com.example.backend.Models.NodeModel;
+import com.backend.Models.DataModel;
+import com.backend.Models.GraphModel;
+import com.backend.Models.NodeModel;
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
 import il.ac.bgu.cs.bp.bpjs.model.StringBProgram;
@@ -27,7 +27,11 @@ public class ServiceImpl implements IService {
 //                "    bp.sync( {waitFor:bp.Event(\"Hello,\"),\n" +
 //                "                block:bp.Event(\"World!\")} );\n" +
 //                "} );";
-        String src = parseGraph(graphModel);
+
+        Graph graph = Graph.Create(graphModel);
+
+
+        String src = graph.parseToCode();
         System.out.println(src);
         try{
             final BProgram bprog = new StringBProgram(src);
@@ -86,7 +90,6 @@ public class ServiceImpl implements IService {
     
     private NodeModel getNextNode(GraphModel g, NodeModel cur) {
         Collection<Object> outputs = cur.getOutputs().values();
-        //Collection<Map<String, ArrayList<Map<String, Object>>>>
         Map<String, ArrayList<Map<String, Object>>> output = (Map<String, ArrayList<Map<String, Object>>>) outputs.toArray()[0];
         ArrayList<Map<String, Object>> connections = output.get("connections");
         if(connections.size() == 0) {

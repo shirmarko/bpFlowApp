@@ -1,4 +1,4 @@
-package com.example.backend.Communication;
+package com.backend.Communication;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

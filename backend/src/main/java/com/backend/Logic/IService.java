@@ -1,6 +1,6 @@
-package com.example.backend.Logic;
+package com.backend.Logic;
 
-import com.example.backend.Models.GraphModel;
+import com.backend.Models.GraphModel;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface IService {

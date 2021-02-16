@@ -1,4 +1,4 @@
-package com.example.backend.Logic.Nodes;
+package com.backend.Logic.Nodes;
 
 public abstract class Data {
 

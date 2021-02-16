@@ -1,4 +1,4 @@
-package com.example.backend.Models;
+package com.backend.Models;
 
 import java.util.Arrays;
 import java.util.Map;

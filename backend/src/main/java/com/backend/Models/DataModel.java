@@ -1,4 +1,4 @@
-package com.example.backend.Models;
+package com.backend.Models;
 
 
 public class DataModel {
@@ -7,12 +7,14 @@ public class DataModel {
     private String request;
     private String wait;
     private String block;
+    private String name;
 
-    public DataModel(boolean isBasic, String request, String wait, String block) {
+    public DataModel(boolean isBasic, String request, String wait, String block, String name) {
         this.isBasic = isBasic;
         this.request = request;
         this.wait = wait;
         this.block = block;
+        this.name = name;
     }
 
     public boolean isBasic() {
@@ -45,6 +47,15 @@ public class DataModel {
 
     public void setBlock(String block) {
         this.block = block;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

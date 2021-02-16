@@ -1,4 +1,4 @@
-package com.example.backend.Logic;
+package com.backend.Logic;
 
 import java.util.Map;
 
