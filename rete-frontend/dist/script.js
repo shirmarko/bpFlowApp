@@ -1,10 +1,26 @@
-//----------------EventListener---------------
-var eventSource = new EventSource('http://localhost:8080/subscribe');
-
-eventSource.addEventListener('flowEvent', function(event){
-  console.log(event.data)
-})
-//--------------------------------------------
+//----------------Num Node---------------
+var CustomNumNode = {
+    template: `<div v-bind:class="[ node.data.isBasic ? 'node' : 'node1' ]"> 
+    <div class="title">{{node.name}}</div>
+    <!-- Outputs-->
+    <div class="output" v-for="output in outputs()" :key="output.key">
+      <div class="output-title">{{output.name}}</div>
+      <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
+    </div>
+    <!-- Controls-->
+    <div class="control" v-for="control in controls()" v-control="control"></div>
+    <!-- Inputs-->
+    <div class="input" v-for="input in inputs()" :key="input.key">
+      <Socket v-socket:input="input" type="input" :socket="input.socket"></Socket>
+      <div class="input-title" v-show="!input.showControl()">{{input.name}}</div>
+      <div class="input-control" v-show="input.showControl()" v-control="input.control"></div>
+    </div>
+  </div>`,
+    mixins: [VueRenderPlugin.mixin],
+    components: {
+      Socket: VueRenderPlugin.Socket
+    }
+}
 
 var numSocket = new Rete.Socket('Number value');
 
@@ -45,36 +61,11 @@ class NumControl extends Rete.Control {
   }
 }
 
-//class as var
-var CustomNode = {
-    template: `<div v-bind:class="[ node.data.isBasic ? 'node' : 'node1' ]"> 
-    <div class="title">{{node.name}}</div>
-    <!-- Outputs-->
-    <div class="output" v-for="output in outputs()" :key="output.key">
-      <div class="output-title">{{output.name}}</div>
-      <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
-    </div>
-    <!-- Controls-->
-    <div class="control" v-for="control in controls()" v-control="control"></div>
-    <!-- Inputs-->
-    <div class="input" v-for="input in inputs()" :key="input.key">
-      <Socket v-socket:input="input" type="input" :socket="input.socket"></Socket>
-      <div class="input-title" v-show="!input.showControl()">{{input.name}}</div>
-      <div class="input-control" v-show="input.showControl()" v-control="input.control"></div>
-    </div>
-  </div>`,
-    mixins: [VueRenderPlugin.mixin],
-    components: {
-      Socket: VueRenderPlugin.Socket
-    }
-}
-
-
 class NumComponent extends Rete.Component {
 
     constructor(){
         super("Number");
-        this.data.component = CustomNode;
+        this.data.component = CustomNumNode;
     }
 
     builder(node) {
@@ -88,10 +79,13 @@ class NumComponent extends Rete.Component {
     }
 }
 
+
+//----------------Add Node---------------
+
 class AddComponent extends Rete.Component {
     constructor(){
         super("Add");
-        this.data.component = CustomNode;
+        this.data.component = CustomNumNode;
     }
 
     builder(node) {
@@ -118,20 +112,8 @@ class AddComponent extends Rete.Component {
         curNode.data.isBasic = false;
         curNode.update();
         outputs['num'] = sum;
-        //document.getElementById(node.id).className = 'node1'; 
     }
 
-    worker(node, inputs, outputs) {
-        var n1 = inputs['num'].length?inputs['num'][0]:node.data.num1;
-        var n2 = inputs['num2'].length?inputs['num2'][0]:node.data.num2;
-        var sum = n1 + n2;
-        var curNode = this.editor.nodes.find(n => n.id == node.id);
-        curNode.controls.get('preview').setValue(sum);
-        curNode.data.isBasic = false;
-        curNode.update();
-        outputs['num'] = sum;
-        //document.getElementById(node.id).className = 'node1'; 
-    }
 }
 
 
@@ -141,19 +123,22 @@ var CustomBSyncNode = {
     <div class="title">{{node.name}}</div>
     <!-- Outputs-->
     <div class="output" v-for="output in outputs()" :key="output.key">
-      <div class="output-title">{{output.name}}</div>
+    <!-- <div class="output-title">{{output.name}}</div> -->
       <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
     </div>
+
+    <!-- Inputs-->
+    <div class="input" v-for="input in inputs()" :key="input.key">
+      <Socket v-socket:input="input" type="input" :socket="input.socket"></Socket>
+      <!-- <div class="input-title" v-show="!input.showControl()">{{input.name}}</div> -->
+      <div class="input-control" v-show="input.showControl()" v-control="input.control"></div>
+    </div>
+    
     <!-- Controls-->
     <div class="control" v-for="control in controls()" v-control="control">
             <div class="control-title">{{control.key}}:</div>
     </div>
-    <!-- Inputs-->
-    <div class="input" v-for="input in inputs()" :key="input.key">
-      <Socket v-socket:input="input" type="input" :socket="input.socket"></Socket>
-      <div class="input-title" v-show="!input.showControl()">{{input.name}}</div>
-      <div class="input-control" v-show="input.showControl()" v-control="input.control"></div>
-    </div>
+
   </div>`,
     mixins: [VueRenderPlugin.mixin],
     components: {
@@ -161,43 +146,15 @@ var CustomBSyncNode = {
     }
 }
 
-
-var VueTextControl = {
-  props: ['readonly', 'emitter', 'ikey', 'getData', 'putData'],
-  template: '<input type="text" :readonly="readonly" :value="value" @input="change($event)" @dblclick.stop="" @pointerdown.stop="" @pointermove.stop=""/>',
-  data() {
-    return {
-      value: "",
+const JsRenderPlugin = {
+    install(editor, params = {}) {
+      editor.on("rendercontrol", ({ el, control }) => {
+        if (control.render && control.render !== "js") return;
+  
+        control.handler(el, editor);
+      });
     }
-  },
-  methods: {
-    change(e){
-      this.value = +e.target.value;
-      this.update();
-    },
-    update() {
-      if (this.ikey)
-        this.putData(this.ikey, this.value)
-      this.emitter.trigger('process');
-    }
-  },
-  mounted() {
-    this.value = this.getData(this.ikey);
-  }
-}
-
-class TextControl extends Rete.Control {
-
-  constructor(emitter, key, readonly) {
-    super(key);
-    this.component = VueTextControl;
-    this.props = { emitter, ikey: key, readonly };
-  }
-
-  setValue(val) {
-    this.vueContext.value = val;
-  }
-}
+  };
 
 class InputControl extends Rete.Control {
     constructor(key) {
@@ -239,7 +196,6 @@ class BsyncComponent extends Rete.Component {
           .addControl(new InputControl('request'))
           .addControl(new InputControl('wait'))
           .addControl(new InputControl('block'))
-          //.addControl(new TextControl(this.editor, 'Block'))
   }
 
   worker(node, inputs, outputs) {
@@ -247,8 +203,11 @@ class BsyncComponent extends Rete.Component {
   }
 }
 
+
+//----------------Start Node---------------
+
 var CustomStartNode = {
-    template: `<div id=triangle-right> 
+    template: `<div class=triangle-right> 
     <!-- Outputs-->
     <div class="output" v-for="output in outputs()" :key="output.key">
       <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
@@ -279,6 +238,13 @@ class StartComponent extends Rete.Component {
     }
 }
 
+
+//----------------EventListener---------------
+var eventSource = new EventSource('http://localhost:8080/subscribe');
+
+eventSource.addEventListener('flowEvent', function(event){
+  console.log(event.data)
+})
 
 async function OnClickRun(){
     console.log('click run');
@@ -311,15 +277,6 @@ var container = document.querySelector('#rete');
 var components = [new NumComponent(), new AddComponent(), new BsyncComponent(), new StartComponent()];
 var editor = new Rete.NodeEditor('demo@0.1.0', container);
 
-const JsRenderPlugin = {
-    install(editor, params = {}) {
-      editor.on("rendercontrol", ({ el, control }) => {
-        if (control.render && control.render !== "js") return;
-  
-        control.handler(el, editor);
-      });
-    }
-  };
 
 (async () => {
     editor.use(ConnectionPlugin);
@@ -328,51 +285,20 @@ const JsRenderPlugin = {
     editor.use(AreaPlugin);
     editor.use(CommentPlugin);
     editor.use(JsRenderPlugin);
-    // editor.use(ConnectionPlugin.default);
-    // editor.use(VueRenderPlugin.default);    
-    // editor.use(ContextMenuPlugin.default);
-    // editor.use(AreaPlugin);
-    // ditor.use(CommentPlugin.default);
-    //editor.use(HistoryPlugin);
-    //editor.use(ConnectionMasteryPlugin.default);
-
-    //var engine = new Rete.Engine('demo@0.1.0');
     
     components.map(c => {
         editor.register(c);
         engine.register(c);
     });
 
-    // var n1 = await components[0].createNode({num: 2});
-    // var n2 = await components[0].createNode({num: 4});
-    // var add = await components[1].createNode();
-    var bsync = await components[2].createNode();
+    var startNode = await components[3].createNode();
+    var bsyncNode = await components[2].createNode();
 
-    // n1.position = [80, 200];
-    // n2.position = [80, 400];
-    // add.position = [500, 240];
-    bsync.position = [80,200];
+    startNode.position = [100,100];
+    bsyncNode.position = [400,100];
 
-    // editor.addNode(n1);
-    // editor.addNode(n2);
-    // editor.addNode(add);
-    editor.addNode(bsync);
-
-    //editor.connect(n1.outputs.get('num'), add.inputs.get('num'));
-    //editor.connect(n2.outputs.get('num'), add.inputs.get('num2'));
-
-
-    // editor.on('process nodecreated noderemoved connectioncreated connectionremoved', async () => {
-    //   console.log('process');
-    //     await engine.abort();
-    //     await engine.process(editor.toJSON());
-    // });
-
-    // editor.on('process', async () => {
-    //   console.log('process');
-    //     await engine.abort();
-    //     await engine.process(editor.toJSON());
-    // });
+    editor.addNode(startNode);
+    editor.addNode(bsyncNode);
 
     editor.view.resize();
     AreaPlugin.zoomAt(editor);
