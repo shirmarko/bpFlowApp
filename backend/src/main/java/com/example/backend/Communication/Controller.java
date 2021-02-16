@@ -1,4 +1,4 @@
-package com.example.backend;
+package com.example.backend.Communication;
 
 import java.io.IOException;
 
@@ -23,7 +23,6 @@ public class Controller {
     public String run(@RequestBody GraphModel graphModel){
         this.myGraphModel = graphModel;
         System.out.println("got graphModel, start process... ");
-        System.out.println(graphModel.getNodes());
         service.run(graphModel, serverEmitter);
 
         return "ok";

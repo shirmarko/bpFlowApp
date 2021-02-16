@@ -1,18 +1,18 @@
-package com.example.backend;
+package com.example.backend.Models;
 
 import java.util.Arrays;
 import java.util.Map;
 
-public class Node {
+public class NodeModel {
 
     private String id;
-    private Data data;
+    private DataModel data;
     private Map<String, Object> inputs;
     private Map<String, Object> outputs;
     private double[] position;
     private String name;
 
-    public Node(String id, Data data, Map<String, Object> inputs, Map<String, Object> outputs, double[] positions, String name) {
+    public NodeModel(String id, DataModel data, Map<String, Object> inputs, Map<String, Object> outputs, double[] positions, String name) {
         this.id = id;
         this.data = data;
         this.inputs = inputs;
@@ -30,11 +30,11 @@ public class Node {
         this.id = id;
     }
 
-    public Data getData() {
+    public DataModel getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(DataModel data) {
         this.data = data;
     }
 
@@ -72,7 +72,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node{" +
+        return "NodeModel{" +
                 "id:'" + id + '\'' +
                 ", data:" + data +
                 ", inputs:" + inputs +

@@ -1,4 +1,4 @@
-package com.example.backend;
+package com.example.backend.Logic;
 
 import com.example.backend.Models.GraphModel;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

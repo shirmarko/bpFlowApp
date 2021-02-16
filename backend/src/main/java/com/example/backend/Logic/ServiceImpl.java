@@ -1,4 +1,4 @@
-package com.example.backend;
+package com.example.backend.Logic;
 
 import com.example.backend.Models.DataModel;
 import com.example.backend.Models.GraphModel;

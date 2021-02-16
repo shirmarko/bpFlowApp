@@ -1,4 +1,7 @@
-package com.example.backend.Logic;
+package com.example.backend.Logic.Nodes;
+
+import com.example.backend.Logic.Input;
+import com.example.backend.Logic.Output;
 
 import java.util.List;
 

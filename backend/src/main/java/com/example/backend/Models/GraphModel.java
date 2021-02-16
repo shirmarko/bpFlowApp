@@ -1,14 +1,14 @@
-package com.example.backend;
+package com.example.backend.Models;
 
 import java.util.Arrays;
 import java.util.Map;
 
-public class Graph {
+public class GraphModel {
     private String id;
     private String[] comments;
-    private Map<String, Node> nodes;
+    private Map<String, NodeModel> nodes;
 
-    public Graph(String graphID, String[] comments, Map<String, Node> nodes){
+    public GraphModel(String graphID, String[] comments, Map<String, NodeModel> nodes){
         this.id = graphID;
         this.comments = comments;
         this.nodes = nodes;
@@ -52,20 +52,20 @@ public class Graph {
     }
 
     /**
-     * @return Map<String, Node> return the nodes
+     * @return Map<String, NodeModel> return the nodes
      */
-    public Map<String, Node> getNodes() {
+    public Map<String, NodeModel> getNodes() {
         return nodes;
     }
 
     /**
      * @param nodes the nodes to set
      */
-    public void setNodes(Map<String, Node> nodes) {
+    public void setNodes(Map<String, NodeModel> nodes) {
         this.nodes = nodes;
     }
 
-    public Node getNode(int id){
+    public NodeModel getNode(int id){
         return this.nodes.get(String.valueOf(id));
     }
 }

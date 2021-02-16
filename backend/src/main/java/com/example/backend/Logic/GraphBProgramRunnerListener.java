@@ -1,4 +1,4 @@
-package com.example.backend;
+package com.example.backend.Logic;
 
 import il.ac.bgu.cs.bp.bpjs.execution.listeners.BProgramRunnerListenerAdapter;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
