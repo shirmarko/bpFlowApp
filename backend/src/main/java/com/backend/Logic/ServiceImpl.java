@@ -1,9 +1,10 @@
-package com.example.backend;
+package com.backend.Logic;
 
+import com.backend.Models.DataModel;
+import com.backend.Models.GraphModel;
+import com.backend.Models.NodeModel;
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
-import il.ac.bgu.cs.bp.bpjs.execution.listeners.PrintBProgramRunnerListener;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
-import il.ac.bgu.cs.bp.bpjs.model.ResourceBProgram;
 import il.ac.bgu.cs.bp.bpjs.model.StringBProgram;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -12,7 +13,7 @@ import java.util.*;
 public class ServiceImpl implements IService {
 
     @Override
-    public void run(Graph graph, SseEmitter emitter) {
+    public void run(GraphModel graphModel, SseEmitter emitter) {
 //        String src =
 //                "bp.registerBThread(function(){\n" +
 //                "    bp.sync( {request:bp.Event(\"Hello,\")} );\n" +
@@ -26,7 +27,11 @@ public class ServiceImpl implements IService {
 //                "    bp.sync( {waitFor:bp.Event(\"Hello,\"),\n" +
 //                "                block:bp.Event(\"World!\")} );\n" +
 //                "} );";
-        String src = parseGraph(graph);
+
+        Graph graph = Graph.Create(graphModel);
+
+
+        String src = graph.parseToCode();
         System.out.println(src);
         try{
             final BProgram bprog = new StringBProgram(src);
@@ -44,27 +49,27 @@ public class ServiceImpl implements IService {
     }
 
     @Override
-    public void debug(Graph graph, SseEmitter serverEmitter) {
+    public void debug(GraphModel graphModel, SseEmitter serverEmitter) {
         return;
     }
 
-    //parse graph to bpjs source code
-    private String parseGraph(Graph graph){
+    //parse graphModel to bpjs source code
+    private String parseGraph(GraphModel graphModel){
         StringBuilder code = new StringBuilder();
-        List<Node> startNodes = findStartNodes(graph);
+        List<NodeModel> startNodeModels = findStartNodes(graphModel);
 
-        for (Node n: startNodes){
-            code.append(generateCodeFromStartNode(graph, n)).append('\n');
+        for (NodeModel n: startNodeModels){
+            code.append(generateCodeFromStartNode(graphModel, n)).append('\n');
         }
 
         return code.toString();
     }
 
-    private String generateCodeFromStartNode(Graph g, Node n) {
+    private String generateCodeFromStartNode(GraphModel g, NodeModel n) {
         StringBuilder body = new StringBuilder();
-        Node cur = n;
+        NodeModel cur = n;
         while ((cur = getNextNode(g, cur)) != null){
-            Data data = cur.getData();
+            DataModel data = cur.getData();
             body.append("bp.sync( {");
             // TODO: fix comma
             if(!data.getRequest().equals("")){
@@ -80,13 +85,11 @@ public class ServiceImpl implements IService {
             body.append("} );\n");
         }
 
-
         return String.format("bp.registerBThread(function(){\n\t%s } );\n", body.toString());
     }
     
-    private Node getNextNode(Graph g, Node cur) {
+    private NodeModel getNextNode(GraphModel g, NodeModel cur) {
         Collection<Object> outputs = cur.getOutputs().values();
-        //Collection<Map<String, ArrayList<Map<String, Object>>>>
         Map<String, ArrayList<Map<String, Object>>> output = (Map<String, ArrayList<Map<String, Object>>>) outputs.toArray()[0];
         ArrayList<Map<String, Object>> connections = output.get("connections");
         if(connections.size() == 0) {
@@ -97,13 +100,13 @@ public class ServiceImpl implements IService {
         return g.getNode(nextNodeID);
     }
 
-    private List<Node> findStartNodes(Graph graph) {
-        List<Node> startNodes = new LinkedList<>();
-        for (Node n: graph.getNodes().values()) {
+    private List<NodeModel> findStartNodes(GraphModel graphModel) {
+        List<NodeModel> startNodeModels = new LinkedList<>();
+        for (NodeModel n: graphModel.getNodes().values()) {
             if(n.getName().equals("Start")){
-                startNodes.add(n);
+                startNodeModels.add(n);
             }
         }
-        return startNodes;
+        return startNodeModels;
     }
 }

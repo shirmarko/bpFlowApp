@@ -1,18 +1,20 @@
-package com.example.backend;
+package com.backend.Models;
 
 
-public class Data {
+public class DataModel {
 
     private boolean isBasic;
     private String request;
     private String wait;
     private String block;
+    private String name;
 
-    public Data(boolean isBasic, String request, String wait, String block) {
+    public DataModel(boolean isBasic, String request, String wait, String block, String name) {
         this.isBasic = isBasic;
         this.request = request;
         this.wait = wait;
         this.block = block;
+        this.name = name;
     }
 
     public boolean isBasic() {
@@ -47,9 +49,18 @@ public class Data {
         this.block = block;
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
-        return "Data{" +
+        return "DataModel{" +
                 "isBasic:" + isBasic +
                 ", request:'" + request + '\'' +
                 ", wait:'" + wait + '\'' +
