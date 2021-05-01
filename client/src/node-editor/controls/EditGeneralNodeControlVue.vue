@@ -45,6 +45,18 @@
           ></b-form-input>
         </b-form-group>
 
+        <b-form-group
+          v-for="output in Object.fromEntries(outputs)"
+          :key="output.key"
+          :id="output.key"
+          :label="output.key"
+          :label-for="output.key"
+        >
+          <b-form-input
+              :id="output.key"
+              trim
+            >output.key</b-form-input>
+        </b-form-group>
       </form>
     </b-modal>
   </div>
@@ -61,13 +73,14 @@ import {
 } from "bootstrap-vue";
 
 export default {
-  props: ["ikey", "putData", "numOfOutputs", "name"],
+  props: ["ikey", "numOfOutputs", "name", "nodeOutputs", "myNode"],
   data() {
     return {
       titleValue: this.name,
       numberOfOutputsValue: this.numOfOutputs,
       stateTitleVal: this.name.length > 0,
-      stateNumberVal : this.numOfOutputs > 0
+      stateNumberVal: this.numOfOutputs > 0,
+      outputs: this.nodeOutputs,
     };
   },
   computed: {
@@ -99,6 +112,9 @@ export default {
       if (!this.checkFormValidity()) {
         return;
       }
+      this.nodeOutputs.get("output1").name = "tomer";
+
+      this.myNode.update();
       //this.putData(this.ikey, this.code);
       // this.submittedNames.push(this.name)
       // Hide the modal manually

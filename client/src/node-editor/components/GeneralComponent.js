@@ -48,10 +48,13 @@ export class GeneralComponent extends Rete.Component {
         }
         var inp = new Rete.Input('input', "Input", Socket.general);
         node.data.isBasic = true;
-        return node
-            .addInput(inp)
+        const editGeneralNodeControl = new EditGeneralNodeControl('edit', this.numOfOutputs, this.name, node.outputs);
+        node.addInput(inp)
             .addControl(new CodeControl('code'))
-            .addControl(new EditGeneralNodeControl('edit', this.numOfOutputs, this.name));
+            .addControl(editGeneralNodeControl);
+        
+        editGeneralNodeControl.addNodeToProps(node);
+        return node;
     }
 
     worker(node, inputs, outputs) {
