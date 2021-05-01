@@ -5,12 +5,10 @@ import java.util.Map;
 
 public class GraphModel {
     private String id;
-    private String[] comments;
     private Map<String, NodeModel> nodes;
 
-    public GraphModel(String graphID, String[] comments, Map<String, NodeModel> nodes){
+    public GraphModel(String graphID, Map<String, NodeModel> nodes){
         this.id = graphID;
-        this.comments = comments;
         this.nodes = nodes;
     }
 
@@ -18,7 +16,6 @@ public class GraphModel {
     public String toString() {
         return "{" +
                 "id:" + this.id + ",\n" +
-                "comments:" + Arrays.toString(this.comments) + ",\n" +
                 "nodes:" + this.nodes + ",\n" +
                 '}';
     }
@@ -39,20 +36,6 @@ public class GraphModel {
 
     /**
      * @return String[] return the comments
-     */
-    public String[] getComments() {
-        return comments;
-    }
-
-    /**
-     * @param comments the comments to set
-     */
-    public void setComments(String[] comments) {
-        this.comments = comments;
-    }
-
-    /**
-     * @return Map<String, NodeModel> return the nodes
      */
     public Map<String, NodeModel> getNodes() {
         return nodes;

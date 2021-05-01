@@ -8,13 +8,15 @@ public class DataModel {
     private String wait;
     private String block;
     private String name;
+    private String code;
 
-    public DataModel(boolean isBasic, String request, String wait, String block, String name) {
+    public DataModel(boolean isBasic, String request, String wait, String block, String name, String code) {
         this.isBasic = isBasic;
         this.request = request;
         this.wait = wait;
         this.block = block;
         this.name = name;
+        this.code = code;
     }
 
     public boolean isBasic() {
@@ -56,6 +58,14 @@ public class DataModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override

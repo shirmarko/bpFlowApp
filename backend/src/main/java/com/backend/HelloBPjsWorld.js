@@ -13,6 +13,5 @@ bp.registerBThread( "worldBT", function(){
 } );
 
 bp.registerBThread( "arbiter", function(){
-    bp.sync( {waitFor:bp.Event("Hello,"),
-                block:bp.Event("World!")} );
+    bp.sync( {waitFor:bp.Event("Hello,"), block:bp.Event("World!")} );
 } );
