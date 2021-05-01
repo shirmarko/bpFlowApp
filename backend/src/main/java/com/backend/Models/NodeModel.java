@@ -1,5 +1,6 @@
 package com.backend.Models;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -7,20 +8,17 @@ public class NodeModel {
 
     private String id;
     private DataModel data;
-    private Map<String, Object> inputs;
-    private Map<String, Object> outputs;
-    private double[] position;
-    private String name;
+    private ArrayList<String> inputs;
+    private ArrayList<String> outputs;
+    private String type;
 
-    public NodeModel(String id, DataModel data, Map<String, Object> inputs, Map<String, Object> outputs, double[] positions, String name) {
+    public NodeModel(String id, DataModel data, ArrayList<String> inputs, ArrayList<String> outputs, String type) {
         this.id = id;
         this.data = data;
         this.inputs = inputs;
         this.outputs = outputs;
-        this.position = positions;
-        this.name = name;
+        this.type = type;
     }
-
 
     public String getId() {
         return id;
@@ -38,36 +36,28 @@ public class NodeModel {
         this.data = data;
     }
 
-    public Map<String, Object> getInputs() {
+    public ArrayList<String> getInputs() {
         return inputs;
     }
 
-    public void setInputs(Map<String, Object> inputs) {
+    public void setInputs(ArrayList<String> inputs) {
         this.inputs = inputs;
     }
 
-    public Map<String, Object> getOutputs() {
+    public ArrayList<String> getOutputs() {
         return outputs;
     }
 
-    public void setOutputs(Map<String, Object> outputs) {
+    public void setOutputs(ArrayList<String> outputs) {
         this.outputs = outputs;
     }
 
-    public double[] getPosition() {
-        return position;
+    public String getType() {
+        return type;
     }
 
-    public void setPosition(double[] position) {
-        this.position = position;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String name) {
+        this.type = name;
     }
 
     @Override
@@ -77,8 +67,7 @@ public class NodeModel {
                 ", data:" + data +
                 ", inputs:" + inputs +
                 ", outputs:" + outputs +
-                ", position:" + Arrays.toString(position) +
-                ", name:'" + name + '\'' +
+                ", type:'" + type + '\'' +
                 '}';
     }
 }
