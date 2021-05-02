@@ -40,7 +40,7 @@ public class ControllerTest {
     }
 
     private NodeModel generateStartNode(String id, ArrayList<String> outputIDs){
-        DataModel data = new DataModel("", "");
+        DataModel data = new DataModel("", "let outputs = {};\n outputs[\"output\"] = payload;\n return outputs;");
         Map<String, ArrayList<String>> outputs = new HashMap<String, ArrayList<String>>() {{
             put("output", outputIDs); }};
         return new NodeModel(id, data, new ArrayList<>(), outputs, "Start");
@@ -63,13 +63,13 @@ public class ControllerTest {
         Map<String, NodeModel> nodes = new HashMap<>();
 
         NodeModel startNode1 = generateStartNode("1", new ArrayList<String>() {{ add("2"); }});
-        NodeModel helloNode = generateGeneralNode("2", "bp.sync( {request:bp.Event(\"Hello,\")} );", new ArrayList<String>() {{ add("1"); }} , new HashMap<>());
+        NodeModel helloNode = generateGeneralNode("2", "bp.sync( {request:bp.Event(\"Hello,\")} );\n return {};", new ArrayList<String>() {{ add("1"); }} , new HashMap<>());
 
         NodeModel startNode2 = generateStartNode("3", new ArrayList<String>() {{ add("4"); }});
-        NodeModel worldNode = generateGeneralNode("4", "bp.sync( {request:bp.Event(\"World!\")} );", new ArrayList<String>() {{ add("3"); }} ,new HashMap<>());
+        NodeModel worldNode = generateGeneralNode("4", "bp.sync( {request:bp.Event(\"World!\")} );\n return {};", new ArrayList<String>() {{ add("3"); }} ,new HashMap<>());
 
         NodeModel startNode3 = generateStartNode("5", new ArrayList<String>() {{ add("6"); }});
-        NodeModel arbiterNode = generateGeneralNode("6", "bp.sync( {waitFor:bp.Event(\"Hello,\"), block:bp.Event(\"World!\")} );", new ArrayList<String>() {{ add("5"); }} ,new HashMap<>());
+        NodeModel arbiterNode = generateGeneralNode("6", "bp.sync( {waitFor:bp.Event(\"Hello,\"), block:bp.Event(\"World!\")} );\n return {};", new ArrayList<String>() {{ add("5"); }} ,new HashMap<>());
 
         nodes.put("1", startNode1);
         nodes.put("2", helloNode);
@@ -84,7 +84,7 @@ public class ControllerTest {
                 .andDo(MockMvcResultHandlers.log())
                 .andReturn();
 
-        System.out.println(asJsonString(model));
+        //System.out.println(asJsonString(model));
 
         mockMvc.perform(post("/run")
                         .content(asJsonString(model))
@@ -111,24 +111,24 @@ public class ControllerTest {
         Map<String, NodeModel> nodes = new HashMap<>();
 
         NodeModel startNode1 = generateStartNode("1", new ArrayList<String>() {{ add("2"); }});
-        NodeModel hotNode1 = generateGeneralNode("2", "bp.sync( {request:bp.Event(\"Hot\")} );", new ArrayList<String>() {{ add("1"); }} ,
+        NodeModel hotNode1 = generateGeneralNode("2", "bp.sync( {request:bp.Event(\"Hot\")} );\n let outputs = {};\n outputs[\"output1\"] = payload;\n return outputs;", new ArrayList<String>() {{ add("1"); }} ,
                 new HashMap<String, ArrayList<String>>() {{ put("output1", new ArrayList<String>(){{ add("3"); }}); }});
 
-        NodeModel hotNode2 = generateGeneralNode("3", "bp.sync( {request:bp.Event(\"Hot\")} );", new ArrayList<String>() {{ add("2"); }} ,
+        NodeModel hotNode2 = generateGeneralNode("3", "bp.sync( {request:bp.Event(\"Hot\")} );\n let outputs = {};\n outputs[\"output1\"] = payload;\n return outputs;", new ArrayList<String>() {{ add("2"); }} ,
                 new HashMap<String, ArrayList<String>>() {{ put("output1", new ArrayList<String>(){{ add("4"); }}); }});
         NodeModel hotNode3 = generateGeneralNode("4", "bp.sync( {request:bp.Event(\"Hot\")} );", new ArrayList<String>() {{ add("3"); }} ,new HashMap<>());
 
         NodeModel startNode2 = generateStartNode("5", new ArrayList<String>() {{ add("6"); }});
-        NodeModel coldNode1 = generateGeneralNode("6", "bp.sync( {request:bp.Event(\"Cold\")} );", new ArrayList<String>() {{ add("5"); }} ,
+        NodeModel coldNode1 = generateGeneralNode("6", "bp.sync( {request:bp.Event(\"Cold\")} );\n let outputs = {};\n outputs[\"output1\"] = payload;\n return outputs;", new ArrayList<String>() {{ add("5"); }} ,
                 new HashMap<String, ArrayList<String>>() {{ put("output1", new ArrayList<String>(){{ add("7"); }}); }});
-        NodeModel coldNode2 = generateGeneralNode("7", "bp.sync( {request:bp.Event(\"Cold\")} );", new ArrayList<String>() {{ add("6"); }} ,
+        NodeModel coldNode2 = generateGeneralNode("7", "bp.sync( {request:bp.Event(\"Cold\")} );\n let outputs = {};\n outputs[\"output1\"] = payload;\n return outputs;", new ArrayList<String>() {{ add("6"); }} ,
                 new HashMap<String, ArrayList<String>>() {{ put("output1", new ArrayList<String>(){{ add("8"); }}); }});
         NodeModel coldNode3 = generateGeneralNode("8", "bp.sync( {request:bp.Event(\"Cold\")} );", new ArrayList<String>() {{ add("7"); }} ,new HashMap<>());
 
         NodeModel startNode3 = generateStartNode("9", new ArrayList<String>() {{ add("10"); }});
-        NodeModel blockCold = generateGeneralNode("10", "bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );", new ArrayList<String>() {{ add("9"); }} ,
+        NodeModel blockCold = generateGeneralNode("10", "bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );\n let outputs = {};\n outputs[\"output1\"] = payload;\n return outputs;", new ArrayList<String>() {{ add("9"); }} ,
                 new HashMap<String, ArrayList<String>>() {{ put("output1", new ArrayList<String>(){{ add("11"); }}); }});
-        NodeModel blockHot = generateGeneralNode("11", "bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );", new ArrayList<String>() {{ add("10"); }} ,
+        NodeModel blockHot = generateGeneralNode("11", "bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );\n let outputs = {};\n outputs[\"output1\"] = payload;\n return outputs;", new ArrayList<String>() {{ add("10"); }} ,
                 new HashMap<String, ArrayList<String>>() {{ put("output1", new ArrayList<String>(){{ add("10"); }}); }});
 
         nodes.put("1", startNode1);
@@ -157,7 +157,7 @@ public class ControllerTest {
 
 
         String event = emmiter.getResponse().getContentAsString();
-        System.out.println(event);
+        //System.out.println(event);
         String [] events = event.split("data:");
         String[] expectedEvents = new String[]{"init", "Hot", "Cold", "Hot", "Cold", "Hot", "Cold"};
         //first event is init
@@ -187,7 +187,7 @@ public class ControllerTest {
                 .andDo(MockMvcResultHandlers.log())
                 .andReturn();
 
-        System.out.println(asJsonString(model));
+        //System.out.println(asJsonString(model));
 
         mockMvc.perform(post("/run")
                 .content(asJsonString(model))

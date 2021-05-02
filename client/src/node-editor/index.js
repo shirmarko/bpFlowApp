@@ -79,8 +79,15 @@ function parseNodeData(curNode) {
             body.push(`block:bp.Event("${curNode.data["block"]}")`);
             delete curNode.data["block"];
         }
-        curNode.data["code"] = `bp.sync( {${body.join(", ")}} );`
+        code = `bp.sync( {${body.join(", ")}} );`;
+        let returnPayloadCode = ["let outputs = {};","outputs[\"output\"] = payload;","return outputs;"];
+        returnPayloadCode = returnPayloadCode.join("\n");
+        curNode.data["code"] = `${code}\n${returnPayloadCode}`;
         curNode.type = "General";
+    }
+    else if(curNode.type === "Start"){
+        let returnPayloadCode = ["let outputs = {};","outputs[\"output\"] = payload;","return outputs;"];
+        curNode.data["code"] = returnPayloadCode.join("\n");
     }
 }
 
