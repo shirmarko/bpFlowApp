@@ -46,16 +46,12 @@
         </b-form-group>
 
         <b-form-group
-          v-for="output in Object.fromEntries(outputs)"
-          :key="output.key"
-          :id="output.key"
-          :label="output.key"
-          :label-for="output.key"
+          v-for="(output, index) in Object.fromEntries(outputs)"
+          :key="`${componentKey}-${index}`"
+          :id="index"
+          :label="index"
         >
-          <b-form-input
-              :id="output.key"
-              trim
-            >output.key</b-form-input>
+          <b-form-input :id="index" v-model="output.key" trim></b-form-input>
         </b-form-group>
       </form>
     </b-modal>
@@ -75,13 +71,19 @@ import {
 export default {
   props: ["ikey", "numOfOutputs", "name", "nodeOutputs", "myNode"],
   data() {
-    return {
+    let myData = {
       titleValue: this.name,
       numberOfOutputsValue: this.numOfOutputs,
       stateTitleVal: this.name.length > 0,
       stateNumberVal: this.numOfOutputs > 0,
       outputs: this.nodeOutputs,
+      componentKey: 0,
     };
+    for (const [key, value] of this.nodeOutputs.entries()) {
+      myData[key] = value.name;
+    }
+
+    return myData;
   },
   computed: {
     stateTitle() {
@@ -93,7 +95,19 @@ export default {
       return this.stateNumberVal;
     },
   },
+  // mounted: function () {
+  //   console.log("---" + this.nodeOutputs.entries());
+
+  //   for (const [key, value] of this.nodeOutputs.entries()) {
+  //     console.log(key, value);
+  //     Vue.set(this, key, value.name);
+  //   }
+  //   console.log(this.data);
+  // },
   methods: {
+    forceRerender() {
+      this.componentKey += 1;
+    },
     checkFormValidity() {
       return this.stateTitleVal && this.stateNumberVal;
     },
@@ -112,8 +126,17 @@ export default {
       if (!this.checkFormValidity()) {
         return;
       }
-      this.nodeOutputs.get("output1").name = "tomer";
 
+      this.forceRerender();
+
+      // for(var output in this.myOutputs){
+      //   this.nodeOutputs.get(key).name = value;
+      // }
+      for (const [key, output] of this.outputs.entries()) {
+        output.name = output.key;
+      }
+
+      console.log(this.output1);
       this.myNode.update();
       //this.putData(this.ikey, this.code);
       // this.submittedNames.push(this.name)
