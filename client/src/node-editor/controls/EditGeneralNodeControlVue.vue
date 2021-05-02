@@ -36,13 +36,13 @@
           invalid-feedback="Number of outputs should be greater then 0"
           :state="stateNumber"
         >
-          <b-form-input
-            id="numberOfOutputs-id"
+          <b-form-spinbutton
+            id="numberOfOutputs"
             v-model="numberOfOutputsValue"
-            type="number"
-            :state="stateNumber"
-            trim
-          ></b-form-input>
+            min="0"
+            max="10"
+            @change="handleChangeNumOfOutputs"
+          ></b-form-spinbutton>
         </b-form-group>
 
         <b-form-group
@@ -50,6 +50,10 @@
           :key="`${componentKey}-${index}`"
           :id="index"
           :label="index"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
         >
           <b-form-input :id="index" v-model="output.key" trim></b-form-input>
         </b-form-group>
@@ -66,18 +70,23 @@ import {
   BButton,
   BFormGroup,
   BFormInput,
+  BFormSpinbutton,
 } from "bootstrap-vue";
 
+import * as Socket from "../sockets";
+import Rete from "rete";
+
 export default {
-  props: ["ikey", "numOfOutputs", "name", "nodeOutputs", "myNode"],
+  props: ["ikey", "name", "nodeOutputs", "myNode"],
   data() {
     let myData = {
       titleValue: this.name,
-      numberOfOutputsValue: this.numOfOutputs,
+      numberOfOutputsValue: this.nodeOutputs.size,
       stateTitleVal: this.name.length > 0,
-      stateNumberVal: this.numOfOutputs > 0,
+      stateNumberVal: this.numOfOutputs >= 0,
       outputs: this.nodeOutputs,
       componentKey: 0,
+      value: 3,
     };
     for (const [key, value] of this.nodeOutputs.entries()) {
       myData[key] = value.name;
@@ -91,7 +100,7 @@ export default {
       return this.stateTitleVal;
     },
     stateNumber() {
-      this.stateNumberVal = this.numberOfOutputsValue > 0;
+      this.stateNumberVal = this.numberOfOutputsValue >= 0;
       return this.stateNumberVal;
     },
   },
@@ -105,6 +114,22 @@ export default {
   //   console.log(this.data);
   // },
   methods: {
+    handleChangeNumOfOutputs() {
+      if (this.numberOfOutputsValue > this.outputs.size) {
+        this.addOutput(this.outputs.size + 1);
+      } else {
+        this.removeOutput(this.outputs.size);
+      }
+      console.log(this.outputs);
+      this.forceRerender();
+    },
+    addOutput(i) {
+      var out = new Rete.Output(`output${i}`, `Output${i}`, Socket.general);
+      this.outputs.set(`output${i}`, out);
+    },
+    removeOutput(i) {
+      this.outputs.delete(`output${i}`);
+    },
     forceRerender() {
       this.componentKey += 1;
     },
@@ -112,7 +137,6 @@ export default {
       return this.stateTitleVal && this.stateNumberVal;
     },
     resetModal() {
-      //this.code = ''
       this.codeState = null;
     },
     handleOk(bvModalEvt) {
@@ -136,7 +160,6 @@ export default {
         output.name = output.key;
       }
 
-      console.log(this.output1);
       this.myNode.update();
       //this.putData(this.ikey, this.code);
       // this.submittedNames.push(this.name)
@@ -146,7 +169,7 @@ export default {
       });
     },
   },
-  components: { BModal, BButton, BFormGroup, BFormInput },
+  components: { BModal, BButton, BFormGroup, BFormInput, BFormSpinbutton },
   directives: { "b-modal": VBModal },
 };
 </script>
