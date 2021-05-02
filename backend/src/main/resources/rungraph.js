@@ -18,11 +18,16 @@
 function goToFollowers(curNode, payload, ths, bp) {
     const outputs = curNode.outputs;
     if(outputs.size() > 0){
-        //bp.log.info(curNode.id + " goToFollowers, size > 0");
-        runInSameBT(allNodesMap.get(outputs.get(0)), payload, ths, bp);
+        const outputsKeys = outputs.keySet().toArray();
+        for(var i in outputsKeys){
+            if(outputs.get(outputsKeys[i]).size() > 0){
 
-        for (var i = 1; i < outputs.size(); i++) {
-            runInNewBT(allNodesMap.get(outputs.get(i)), payload );
+                runInSameBT(allNodesMap.get(outputs.get(outputsKeys[i]).get(0)), payload, ths, bp);
+
+                for (var j = 1; j < outputs.get(outputsKeys[i]).size(); j++) {
+                    runInNewBT(allNodesMap.get(outputs.get(outputsKeys[i]).get(j)), payload );
+                }
+            }
         }
     }
 }
@@ -54,18 +59,16 @@ function runInSameBT(c, payload, ths, bp) {
 
 const allNodesArr = model.getNodes().values().toArray();
 const allNodesMap = model.getNodes();
-bp.log.info("allNodesArr:" + allNodesArr);
-bp.log.info("allNodesMap:" + allNodesMap);
+//bp.log.info("allNodesArr:" + allNodesArr);
+//bp.log.info("allNodesMap:" + allNodesMap);
 
 var startNodes = [];
 for(var i in allNodesArr){
     bp.log.info("allNodesArr[i]:" + allNodesArr[i]);
     if(allNodesArr[i].type == "Start"){
-        //bp.log.info("start" + allNodesArr[i].id);
         startNodes.push(allNodesArr[i]);
     }
 }
-bp.log.info("startNodes:" + startNodes);
 for(var i in startNodes){
     runInNewBT(startNodes[i], {});
 }

@@ -42,15 +42,17 @@ function parseNodeInputs(curNode) {
 }
 
 function parseNodeOutputs(curNode) {
-    let outputs = [];
+    let outputs = {};
     if (Object.keys(curNode.outputs).length > 0) {
         let oldOutputs = curNode.outputs;
         for (var m in oldOutputs) {
             if (Object.keys(oldOutputs).length > 0) {
                 let connections = oldOutputs[m].connections;
+                let newConnections = [];
                 for (var j in connections) {
-                    outputs.push(connections[j].node);
+                    newConnections.push(connections[j].node);
                 }
+                outputs[m] = newConnections;
             }
         }
     }
@@ -86,7 +88,6 @@ function parseNodeData(curNode) {
 function parseNodes(newData) {
     for (var i in newData.nodes) {
         let curNode = newData.nodes[i];
-        console.log(curNode);
         delete curNode.position;
 
         //change name to type:
@@ -115,7 +116,7 @@ export async function OnClickRun() {
 
     let dataToSend = parseDataToSend(editor.toJSON());
     dataToSend = JSON.stringify(dataToSend);
-    console.log(JSON.stringify(dataToSend));
+    console.log(JSON.stringify(editor.toJSON()));
     console.log(dataToSend);
 
     fetch('http://localhost:8090/run', {

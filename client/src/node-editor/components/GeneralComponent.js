@@ -46,7 +46,7 @@ export class GeneralComponent extends Rete.Component {
         for(let i = 0; i < this.numOfOutputs; i++){
             node.addOutput(new Rete.Output(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
         }
-        var inp = new Rete.Input('input', "Input", Socket.general);
+        var inp = new Rete.Input('input', "Input", Socket.general, true);
         node.data.isBasic = true;
         return node
             .addInput(inp)

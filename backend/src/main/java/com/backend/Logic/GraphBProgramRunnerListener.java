@@ -18,7 +18,6 @@ public class GraphBProgramRunnerListener extends BProgramRunnerListenerAdapter {
     @Override
     public void eventSelected(BProgram bp, BEvent theEvent){
         try {
-            System.out.println("in eventSelected");
             emitter.send(SseEmitter.event().name("flowEvent").data(theEvent.getName()));
         } catch (IOException e) {
             e.printStackTrace();

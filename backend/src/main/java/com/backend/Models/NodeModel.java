@@ -9,10 +9,10 @@ public class NodeModel {
     private String id;
     private DataModel data;
     private ArrayList<String> inputs;
-    private ArrayList<String> outputs;
+    private Map<String, ArrayList<String>> outputs;
     private String type;
 
-    public NodeModel(String id, DataModel data, ArrayList<String> inputs, ArrayList<String> outputs, String type) {
+    public NodeModel(String id, DataModel data, ArrayList<String> inputs, Map<String, ArrayList<String>> outputs, String type) {
         this.id = id;
         this.data = data;
         this.inputs = inputs;
@@ -44,11 +44,11 @@ public class NodeModel {
         this.inputs = inputs;
     }
 
-    public ArrayList<String> getOutputs() {
+    public Map<String, ArrayList<String>> getOutputs() {
         return outputs;
     }
 
-    public void setOutputs(ArrayList<String> outputs) {
+    public void setOutputs(Map<String, ArrayList<String>> outputs) {
         this.outputs = outputs;
     }
 
