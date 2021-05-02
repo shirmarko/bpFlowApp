@@ -40,12 +40,12 @@ public class ControllerTest {
     }
 
     private NodeModel generateStartNode(String id, ArrayList<String> outputIDs){
-        DataModel data = new DataModel(true, "","","", "", "");
+        DataModel data = new DataModel("", "");
         return new NodeModel(id, data, new ArrayList<>(), outputIDs, "Start");
     }
 
     private NodeModel generateGeneralNode(String id,String code, ArrayList<String> inputIDs, ArrayList<String> outputIDs) {
-        DataModel data = new DataModel(true, "","","", "", code);
+        DataModel data = new DataModel("", code);
         return new NodeModel(id, data, inputIDs, outputIDs, "General");
     }
 
@@ -81,6 +81,8 @@ public class ControllerTest {
                 .andExpect(request().asyncStarted())
                 .andDo(MockMvcResultHandlers.log())
                 .andReturn();
+
+        System.out.println(asJsonString(model));
 
         mockMvc.perform(post("/run")
                         .content(asJsonString(model))
@@ -148,6 +150,44 @@ public class ControllerTest {
         System.out.println(event);
         String [] events = event.split("data:");
         String[] expectedEvents = new String[]{"init", "Hot", "Cold", "Hot", "Cold", "Hot", "Cold"};
+        //first event is init
+        for (int i = 1; i < events.length; i++){
+            String eventData = events[i].split("\\n")[0];
+            assertEquals(expectedEvents[i], eventData);
+        }
+    }
+
+    @Test
+    public void runEmptySuccess() throws Exception {
+
+
+        Map<String, NodeModel> nodes = new HashMap<>();
+
+        NodeModel startNode1 = generateStartNode("1", new ArrayList<String>() {{ add("2"); }});
+        NodeModel helloNode = generateGeneralNode("2", "bp.sync( {request:bp.Event(\"Hello,\")} );", new ArrayList<String>() {{ add("1"); }} ,new ArrayList<String>(){});
+
+        nodes.put("1", startNode1);
+        nodes.put("2", helloNode);
+
+        GraphModel model = new GraphModel("a53df309-d483-473b-a3c9-79b027ee4cea@0.1.0", nodes);
+
+        MvcResult emmiter = mockMvc.perform(get("/subscribe"))
+                .andExpect(request().asyncStarted())
+                .andDo(MockMvcResultHandlers.log())
+                .andReturn();
+
+        System.out.println(asJsonString(model));
+
+        mockMvc.perform(post("/run")
+                .content(asJsonString(model))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+
+        String event = emmiter.getResponse().getContentAsString();
+        String [] events = event.split("data:");
+        String[] expectedEvents = new String[]{"init", "Hello,"};
         //first event is init
         for (int i = 1; i < events.length; i++){
             String eventData = events[i].split("\\n")[0];

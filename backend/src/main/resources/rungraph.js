@@ -54,16 +54,18 @@ function runInSameBT(c, payload, ths, bp) {
 
 const allNodesArr = model.getNodes().values().toArray();
 const allNodesMap = model.getNodes();
-
+bp.log.info("allNodesArr:" + allNodesArr);
+bp.log.info("allNodesMap:" + allNodesMap);
 
 var startNodes = [];
 for(var i in allNodesArr){
+    bp.log.info("allNodesArr[i]:" + allNodesArr[i]);
     if(allNodesArr[i].type == "Start"){
         //bp.log.info("start" + allNodesArr[i].id);
         startNodes.push(allNodesArr[i]);
     }
 }
-
+bp.log.info("startNodes:" + startNodes);
 for(var i in startNodes){
     runInNewBT(startNodes[i], {});
 }

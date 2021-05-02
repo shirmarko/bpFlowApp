@@ -51,12 +51,12 @@ public class ServiceImplTest extends TestCase {
     }
 
     private NodeModel generateStartNode(String id, ArrayList<String> outputIDs){
-        DataModel data = new DataModel(true, "","","", "", "");
+        DataModel data = new DataModel("","");
         return new NodeModel(id, data, new ArrayList<>(), outputIDs, "Start");
     }
 
     private NodeModel generateGeneralNode(String id,String code, ArrayList<String> inputIDs, ArrayList<String> outputIDs) {
-        DataModel data = new DataModel(true, "","","", "", code);
+        DataModel data = new DataModel("", code);
         return new NodeModel(id, data, inputIDs, outputIDs, "General");
     }
 
