@@ -35,23 +35,25 @@ var CustomBSyncNode = {
 
 
 export class GeneralComponent extends Rete.Component {
-    constructor(numOfOutputs = 2, outputsTitles = ["output1", "output2"]) {
+    constructor(outputsTitles = ["output1", "output2"]) {
         super("General");
         this.data.component = CustomBSyncNode;
-        this.numOfOutputs = numOfOutputs;
         this.outputsTitles = outputsTitles;
     }
 
     builder(node) {
-        for(let i = 0; i < this.numOfOutputs; i++){
+        for(let i = 0; i < 2; i++){
             node.addOutput(new Rete.Output(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
         }
         var inp = new Rete.Input('input', "Input", Socket.general, true);
         node.data.isBasic = true;
-        return node
-            .addInput(inp)
+        const editGeneralNodeControl = new EditGeneralNodeControl('edit',this.name, node.outputs);
+        node.addInput(inp)
             .addControl(new CodeControl('code'))
-            .addControl(new EditGeneralNodeControl('edit', this.numOfOutputs, this.name));
+            .addControl(editGeneralNodeControl);
+        
+        editGeneralNodeControl.addNodeToProps(node);
+        return node;
     }
 
     worker(node, inputs, outputs) {
