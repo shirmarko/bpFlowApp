@@ -15,37 +15,43 @@
 //}
 
 
-function goToFollowers(curNode, payload, ths, bp) {
+function goToFollowers(curNode, ths, bp, payloads) {
     const outputs = curNode.outputs;
     if(outputs.size() > 0){
-        //bp.log.info(curNode.id + " goToFollowers, size > 0");
-        runInSameBT(allNodesMap.get(outputs.get(0)), payload, ths, bp);
+        const outputsKeys = outputs.keySet().toArray();
+        for(var i in outputsKeys){
+            if(outputs.get(outputsKeys[i]).size() > 0){
+                runInSameBT(allNodesMap.get(outputs.get(outputsKeys[i]).get(0)), payloads[outputsKeys[i]], ths, bp);
 
-        for (var i = 1; i < outputs.size(); i++) {
-            runInNewBT(allNodesMap.get(outputs.get(i)), payload );
+                for (var j = 1; j < outputs.get(outputsKeys[i]).size(); j++) {
+                    runInNewBT(allNodesMap.get(outputs.get(outputsKeys[i]).get(j)), payloads[outputsKeys[i]] );
+                }
+            }
         }
     }
 }
 
 function runInNewBT(curNode, payload) {
-	// Cloning - Is this the right way?
+    bp.log.info(curNode.id + " :" + payload);
 	var context = JSON.parse(JSON.stringify(payload));
 
 	bp.registerBThread(curNode.id, function() {
 		eval("var f=f" + curNode.id);
+        //bp.log.info("curNode.id - " + curNode.id);
+		const payloads = f(context, this, bp);
 
-		f(context, this, bp);
-
-		goToFollowers(curNode, context, this, bp);
+		goToFollowers(curNode, this, bp, payloads);
 	});
 };
 
 function runInSameBT(c, payload, ths, bp) {
+    bp.log.info(c.id + " :" + payload);
+    //need to clone the payload??
 	eval("var f=f" + c.id);
 
-	f(payload, ths, bp);
+	const payloads = f(payload, ths, bp);
 
-	goToFollowers(c, payload, ths, bp);
+	goToFollowers(c, ths, bp, payloads);
 };
 
 //bp.log.info("log test!!!");
@@ -54,16 +60,16 @@ function runInSameBT(c, payload, ths, bp) {
 
 const allNodesArr = model.getNodes().values().toArray();
 const allNodesMap = model.getNodes();
-
+//bp.log.info("allNodesArr:" + allNodesArr);
+//bp.log.info("allNodesMap:" + allNodesMap);
 
 var startNodes = [];
 for(var i in allNodesArr){
+    //bp.log.info("allNodesArr[i]:" + allNodesArr[i]);
     if(allNodesArr[i].type == "Start"){
-        //bp.log.info("start" + allNodesArr[i].id);
         startNodes.push(allNodesArr[i]);
     }
 }
-
 for(var i in startNodes){
     runInNewBT(startNodes[i], {});
 }
