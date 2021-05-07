@@ -48,14 +48,14 @@
         <b-form-group
           v-for="(output, index) in Object.fromEntries(outputs)"
           :key="`${componentKey}-${index}`"
-          :id="index"
+          :id="`editName-${index}`"
           :label="index"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
         >
-          <b-form-input :id="index" v-model="output.key" trim></b-form-input>
+          <b-form-input :id="`inputName-${index}`" v-model="output.key" trim></b-form-input>
         </b-form-group>
       </form>
     </b-modal>
@@ -75,9 +75,10 @@ import {
 
 import * as Socket from "../sockets";
 import Rete from "rete";
+import { OutputWithPayload } from "../components/OutputWithPayload.js"
 
 export default {
-  props: ["ikey", "name", "nodeOutputs", "myNode"],
+  props: ["ikey", "name", "nodeOutputs", "myNode", "globalEditor"],
   data() {
     let myData = {
       titleValue: this.name,
@@ -124,11 +125,24 @@ export default {
       this.forceRerender();
     },
     addOutput(i) {
-      var out = new Rete.Output(`output${i}`, `Output${i}`, Socket.general);
-      this.outputs.set(`output${i}`, out);
+      var out = new OutputWithPayload(`output${i}`, `Output${i}`, Socket.general);
+      this.myNode.addOutput(out);
+      //this.outputs.set(`output${i}`, out);
     },
     removeOutput(i) {
+      let toRemove = this.myNode.outputs.get(`output${i}`);
+      while(toRemove.connections.length > 0){
+          let connection = toRemove.connections[toRemove.connections.length - 1];
+          this.globalEditor.view.removeConnection(connection);
+          connection.remove();
+      }
+    //   toRemove.connections.forEach(connection => this.globalEditor.view.removeConnection(connection)); 
+    //   toRemove.connections.forEach(connection => connection.remove());
+      //toRemove.node = null;
       this.outputs.delete(`output${i}`);
+      
+      //this.myNode.removeOutput(toRemove);
+      //this.outputs.delete(`output${i}`);
     },
     forceRerender() {
       this.componentKey += 1;

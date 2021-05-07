@@ -12,16 +12,30 @@
       @ok="handleOk"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
+        function(payload){
         <b-form-group invalid-feedback="Code is required" :state="codeState">
-
           <b-form-textarea
             id="code-input"
             v-model="code"
-            placeholder="Enter code..."
+            placeholder="Enter function body..."
             rows="10"
             max-rows="20"
           ></b-form-textarea>
+        </b-form-group>
+        }
 
+
+        <b-form-group
+          v-for="(output, index) in Object.fromEntries(outputs)"
+          :key="`${componentKey}-${index}`"
+          :id="`editoutputPayload-${index}`"
+          :label="index"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+        >
+          <b-form-input :id="`outputPayload-${index}`" v-model="output.payload" trim></b-form-input>
         </b-form-group>
       </form>
     </b-modal>
@@ -46,11 +60,13 @@ import {
 
 export default {
   name: "CodeControlVueComp",
-  props: ["ikey", "putData"],
+  props: ["ikey", "putData", "nodeOutputs"],
   data() {
     return {
       code: "",
       codeState: null,
+      outputs: this.nodeOutputs,
+      componentKey: 0,
       //   submittedNames: []
     };
   },
@@ -62,6 +78,7 @@ export default {
     },
     resetModal() {
       //this.code = ''
+      this.componentKey += 1;
       this.codeState = null;
     },
     handleOk(bvModalEvt) {
@@ -75,7 +92,13 @@ export default {
       if (!this.checkFormValidity()) {
         return;
       }
-      this.putData(this.ikey, this.code);
+      let payloadsCode = [`let outputs = {};`];
+      for (const [key, output] of this.outputs.entries()) {
+        payloadsCode.push(`outputs["${output.name}"] = ${output.payload};`)
+      }
+      payloadsCode.push("return outputs;");
+      payloadsCode = payloadsCode.join("\n");
+      this.putData(this.ikey, `${this.code}\n${payloadsCode}`);
       // this.submittedNames.push(this.name)
       // Hide the modal manually
       this.$nextTick(() => {

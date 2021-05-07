@@ -35,14 +35,15 @@ var CustomBSyncNode = {
 
 
   export class BsyncComponent extends Rete.Component {
-    constructor() {
+    constructor(outputName) {
       super("Bsync");
       this.data.component = CustomBSyncNode;
+      this.outputName = outputName;
     }
 
     builder(node) {
       var inp = new Rete.Input('input', "Input", Socket.general, true);
-      var out = new Rete.Output('output', "Output", Socket.general);
+      var out = new Rete.Output('output', this.outputName, Socket.general);
 
       node.data.isBasic = true;
       return node

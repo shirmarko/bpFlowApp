@@ -18,13 +18,14 @@ var CustomStartNode = {
   }
 
   export class StartComponent extends Rete.Component {
-    constructor() {
+    constructor(outputName) {
       super("Start");
       this.data.component = CustomStartNode;
+      this.outputName = outputName;
     }
 
     builder(node) {
-      var out = new Rete.Output('output', "Output", Socket.general);
+      var out = new Rete.Output('output', this.outputName, Socket.general);
 
       node.data.isBasic = true;
       return node

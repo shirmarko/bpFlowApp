@@ -1,5 +1,6 @@
 import VueRenderPlugin from "rete-vue-render-plugin";
 import { CodeControl } from "../controls/CodeControlVue.js"
+import { OutputWithPayload } from "./OutputWithPayload.js"
 import { EditGeneralNodeControl } from "../controls/EditGeneralNodeControl.js"
 import * as Socket from "../sockets";
 import Rete from "rete";
@@ -40,16 +41,16 @@ export class GeneralComponent extends Rete.Component {
         this.data.component = CustomBSyncNode;
         this.outputsTitles = outputsTitles;
     }
-
+    
     builder(node) {
         for(let i = 0; i < 2; i++){
-            node.addOutput(new Rete.Output(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
+            node.addOutput(new OutputWithPayload(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
         }
         var inp = new Rete.Input('input', "Input", Socket.general, true);
         node.data.isBasic = true;
-        const editGeneralNodeControl = new EditGeneralNodeControl('edit',this.name, node.outputs);
+        const editGeneralNodeControl = new EditGeneralNodeControl('edit',this.name, node.outputs, this.editor);
         node.addInput(inp)
-            .addControl(new CodeControl('code'))
+            .addControl(new CodeControl('code', node.outputs))
             .addControl(editGeneralNodeControl);
         
         editGeneralNodeControl.addNodeToProps(node);
