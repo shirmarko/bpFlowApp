@@ -1,80 +1,32 @@
 <template>
   <div id="rete" v-show="visible" ref="rete">
     <button class="runButton" v-on:click="OnClickRun">Run</button>
-    <button class="debugButton" v-on:click="OnClickRun">Debug</button>
-
-    <!-- <b-button v-b-modal.modal-1>Launch demo modal</b-button>
-
-  <b-modal id="modal-1" title="BootstrapVue">
-    <p class="my-4">Hello from modal!</p>
-  </b-modal> -->
+    <button class="debugButton" v-on:click="OnClickDebug">Debug</button>
   </div>
 </template>
 
 <script>
-// import init from "../node-editor";
 import { init } from "../node-editor/index";
-import { OnClickRun } from "../node-editor/index";
-//import Modal from './Modal.vue';
-// import { BModal, VBModal } from 'bootstrap-vue'
+import { OnClickRun, OnClickDebug } from "../node-editor/index";
+
 
 export default {
   data() {
     return {
       visible: true,
-      //   isModalVisible: false,
-      //   name: '',
-      //   nameState: null,
-      //   submittedNames: []
     };
   },
   methods: {
-    // showModal() {
-    //     this.isModalVisible = true;
-    // },
-    // closeModal() {
-    //     this.isModalVisible = false;
-    // },
     OnClickRun: function () {
-      // console.log("innn");
       OnClickRun();
     },
-    // checkFormValidity() {
-    //     const valid = this.$refs.form.checkValidity()
-    //     this.nameState = valid
-    //     return valid
-    // },
-    // resetModal() {
-    //     this.name = ''
-    //     this.nameState = null
-    // },
-    // handleOk(bvModalEvt) {
-    //     // Prevent modal from closing
-    //     bvModalEvt.preventDefault()
-    //     // Trigger submit handler
-    //     this.handleSubmit()
-    // },
-    // handleSubmit() {
-    //     // Exit when the form isn't valid
-    //     if (!this.checkFormValidity()) {
-    //       return
-    //     }
-    //     // Push the name to submitted names
-    //     this.submittedNames.push(this.name)
-    //     // Hide the modal manually
-    //     this.$nextTick(() => {
-    //       this.$bvModal.hide('modal-prevent-closing')
-    //     })
-    // }
+    OnClickDebug: function () {
+      OnClickDebug();
+    }
   },
   mounted() {
     init(this.$refs.rete);
   },
-  //   components: {
-  //         // Modal,
-  //         BModal,
-  //     },
-  //   directives: { 'b-modal': VBModal },
 };
 </script>
 

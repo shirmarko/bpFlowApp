@@ -1,19 +1,10 @@
 /* global bp */
 
-//function SubmissionAddedAll() {
-//	return bp.EventSet( "SubmissionAddedAll", function(ev){
-//		  var e = JSON.parse(ev.name);
-//		  return e.name == "SubmissionAdded";
-//		});
-//}
-//
-//function SubmissionAdded(id) {
-//	return bp.EventSet( "SubmissionAddedAll", function(ev){
-//		  var e = JSON.parse(ev.name);
-//		  return e.name == "SubmissionAdded" && e.courseId == id;
-//		});
-//}
-
+bp.registerBThread("any", function(){
+    while(true){
+        nodesLists["selectedEvent"] =  bp.sync({waitFor:bp.all});
+    }
+});
 
 function goToFollowers(curNode, ths, bp, payloads) {
     const outputs = curNode.outputs;
