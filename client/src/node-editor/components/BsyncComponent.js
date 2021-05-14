@@ -1,6 +1,6 @@
 import VueRenderPlugin from "rete-vue-render-plugin";
-import { InputControl } from "../controls/InputControl"
 import { InputTextControl } from "../controls/InputTextControlVue.js"
+import { PayloadControl } from "../controls/PayloadControlVue"
 import * as Socket from "../sockets";
 import Rete from "rete";
 export const statusColor = { BLUE: "node", GREEN: "selectedNode", RED: "blockedNode", GRAY: "activeNode" };
@@ -51,7 +51,7 @@ var CustomBSyncNode = {
     builder(node) {
       var inp = new Rete.Input('input', "Input", Socket.general, true);
       var out = new Rete.Output('output', this.outputName, Socket.general);
-
+      node.data.payloadView = {};
       node.data.color = "BLUE";
       return node
         .addInput(inp)
@@ -59,6 +59,7 @@ var CustomBSyncNode = {
         .addControl(new InputTextControl('request'))
         .addControl(new InputTextControl('wait'))
         .addControl(new InputTextControl('block'))
+        .addControl(new PayloadControl('payload', node.data, node.id))
     }
 
     worker(node, inputs, outputs) {

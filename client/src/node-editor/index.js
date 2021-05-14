@@ -56,6 +56,7 @@ function parseNodeOutputs(curNode) {
 function parseNodeData(curNode) {
     //data:
     delete curNode.data.color;
+    delete curNode.data.payloadView;
     // bp.sync( {waitFor:bp.Event("Hello,"), block:bp.Event("World!")} );
     //parse bsync:
     if (curNode.type === "Bsync") {
@@ -86,6 +87,17 @@ function parseNodeData(curNode) {
     else if (curNode.type === "Start") {
         let returnPayloadCode = [`let outputs = {};`, `outputs["${defaultOutputName}"] = payload;`, `return outputs;`];
         curNode.data["code"] = returnPayloadCode.join("\n");
+    }
+
+    if(!curNode.data.hasOwnProperty("code")){ //in case code of general node wasn't edited
+        const node = editor.nodes.find(n => n.id == curNode.id);
+        let payloadsCode = [`let outputs = {};`];
+        for (const [key, output] of node.outputs.entries()) {
+            payloadsCode.push(`outputs["${output.name}"] = ${output.payload};`);
+        }
+        payloadsCode.push("return outputs;");
+        payloadsCode = payloadsCode.join("\n");
+        curNode.data["code"] = payloadsCode;
     }
 }
 
@@ -163,13 +175,28 @@ export async function OnClickDebug() {
             alert("There is a problem, try later.");
         }
     })
-
 }
 
 export async function OnClickStop() {
     editor.nodes.forEach(node => {
         node.data.color = "BLUE";
+        node.data.payloadView = {};
         node.update();
+    });
+    nodeNamesToIds = {};
+    let dataToSend = editor.toJSON().id;
+    fetch('http://localhost:8090/stop', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: dataToSend
+    }).then(async (res) => {
+        console.log("HTTPStatus: " + res.status);
+        if (res.status == 200) {
+            console.log("HTTP OK");
+        }
+        else { //internal error
+            alert("There is a problem, try later.");
+        }
     });
 }
 
@@ -203,6 +230,15 @@ export async function OnClickStep() {
     })
 }
 
+function endDebug(){
+    editor.nodes.forEach(node => {
+        node.data.color = "BLUE";
+        node.data.payloadView = {};
+        node.update();
+    });
+    nodeNamesToIds = {};
+}
+
 export function init(container) {
     // //----------------EventListener---------------
     console.log('-----init editor--------');
@@ -213,15 +249,15 @@ export function init(container) {
 
     let prevSelectedNodeId;
     eventSource.addEventListener('step', function (event) {
-        if(prevSelectedNodeId != undefined){
+        if (prevSelectedNodeId != undefined) {
             const node = editor.nodes.find(n => n.id == prevSelectedNodeId);
             node.data.color = "BLUE";
             node.update();
         }
-        
+
         if (status.isDone) {
-            endDebug();//TODO
-            //nodeNamesToIds.clear TODOOOO
+            endDebug();
+            return;
         }
         console.log(event.data);
         let data = JSON.parse(event.data);
@@ -235,17 +271,23 @@ export function init(container) {
             node.update();
         }
 
-        data.blocked.forEach(num => {
-            const node = editor.nodes.find(n => n.id == num);
+        data.blocked.forEach(nodeId => {
+            const node = editor.nodes.find(n => n.id == nodeId);
             node.data.color = "RED";
             node.update();
         });
 
-        data.active.forEach(num => {
-            const node = editor.nodes.find(n => n.id == num);
+        data.active.forEach(nodeId => {
+            const node = editor.nodes.find(n => n.id == nodeId);
             node.data.color = "GRAY";
             node.update();
         });
+        
+        for(let nodeId in data.payloads){
+            const node = editor.nodes.find(n => n.id == nodeId);
+            node.data.payloadView = data.payloads[nodeId];
+            node.update();
+        }
     });
 
 

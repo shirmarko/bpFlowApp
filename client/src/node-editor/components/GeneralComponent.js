@@ -46,12 +46,13 @@ export class GeneralComponent extends Rete.Component {
         for(let i = 0; i < 2; i++){
             node.addOutput(new OutputWithPayload(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
         }
+        node.data.payloadView = {};
         var inp = new Rete.Input('input', "Input", Socket.general, true);
         const editGeneralNodeControl = new EditGeneralNodeControl('edit',this.name, node.outputs, this.editor);
         node.addInput(inp)
             .addControl(new CodeControl('code', node.outputs))
             .addControl(editGeneralNodeControl)
-            .addControl(new PayloadControl('payload', 'here is curr payload'))
+            .addControl(new PayloadControl('payload', node.data, node.id))
         
         editGeneralNodeControl.addNodeToProps(node);
 

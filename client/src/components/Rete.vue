@@ -119,8 +119,7 @@
     >
       <div class="px-3 py-2">
         <div v-for="(row, index) in logContent" :key="index">
-          <h>{{ row }}</h
-          ><br />
+          {{ row }}<br />
         </div>
       </div>
     </b-sidebar>

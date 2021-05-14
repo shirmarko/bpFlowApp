@@ -1,9 +1,9 @@
 <template>
   <div>
-  <span id="disabled-wrapper" class="d-inline-block" tabindex="0">
+  <span :id="`disabled-wrapper${curNodeId}`" class="d-inline-block" tabindex="0">
     <b-button size="sm" pill v-b-modal.code-modal-prevent-closing disabled>my payload</b-button>
   </span>
-  <b-tooltip target="disabled-wrapper">{{payload}}</b-tooltip>
+  <b-tooltip :target="`disabled-wrapper${curNodeId}`" :title="`${JSON.stringify(myNodeData.payloadView)}`"></b-tooltip>
 </div>
 </template>
 
@@ -18,11 +18,11 @@ import {
 
 export default {
   name: "CodeControlVueComp",
-  props: ["ikey", "payload"],
+  props: ["ikey", "nodeData", "nodeId"],
   data() {
     return {
-      payload: this.payload,
-      componentKey: 0
+      myNodeData: this.nodeData,
+      curNodeId: this.nodeId
     };
   },
   methods: {
