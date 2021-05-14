@@ -5,9 +5,9 @@ import { EditGeneralNodeControl } from "../controls/EditGeneralNodeControl.js"
 import * as Socket from "../sockets";
 import Rete from "rete";
 
-//---------------------------------------Bsync-------------------------------------------------
-var CustomBSyncNode = {
-    template: `<div v-bind:class="[ node.data.isBasic ? 'node' : 'node1' ]"> 
+
+var CustomGeneralNode = {
+    template: `<div class="node"> 
     <div class="title">{{node.name}}</div>
     <!-- Outputs-->
     <div class="outputGeneral" v-for="output in outputs()" :key="output.key">
@@ -38,7 +38,7 @@ var CustomBSyncNode = {
 export class GeneralComponent extends Rete.Component {
     constructor(outputsTitles = ["output1", "output2"]) {
         super("General");
-        this.data.component = CustomBSyncNode;
+        this.data.component = CustomGeneralNode;
         this.outputsTitles = outputsTitles;
     }
     
@@ -47,7 +47,9 @@ export class GeneralComponent extends Rete.Component {
             node.addOutput(new OutputWithPayload(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
         }
         var inp = new Rete.Input('input', "Input", Socket.general, true);
-        node.data.isBasic = true;
+        // node.data.isBasic = true;
+        
+
         const editGeneralNodeControl = new EditGeneralNodeControl('edit',this.name, node.outputs, this.editor);
         node.addInput(inp)
             .addControl(new CodeControl('code', node.outputs))

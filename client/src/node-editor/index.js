@@ -5,7 +5,7 @@ import AreaPlugin from "rete-area-plugin";
 import ContextMenuPlugin from "rete-context-menu-plugin";
 // import DockPlugin from "rete-dock-plugin";
 import CommentPlugin from "rete-comment-plugin";
-import { BsyncComponent } from "./components/BsyncComponent";
+import { BsyncComponent, statusColor } from "./components/BsyncComponent";
 import { StartComponent } from "./components/StartComponent";
 import { GeneralComponent } from "./components/GeneralComponent";
 
@@ -63,7 +63,8 @@ function parseNodeOutputs(curNode) {
 
 function parseNodeData(curNode) {
     //data:
-    delete curNode.data.isBasic;
+    // delete curNode.data.isBasic;
+    delete curNode.data.color;
     // bp.sync( {waitFor:bp.Event("Hello,"), block:bp.Event("World!")} );
     //parse bsync:
     if (curNode.type === "Bsync") {
@@ -143,6 +144,90 @@ export async function OnClickRun() {
             alert("There is a problem, try later.");
         }
     })
+}
+
+export async function OnClickDebug() {
+    console.log('--------click Debug--------');
+    console.log(editor.toJSON());
+    await engine.abort();
+    await engine.process(editor.toJSON());
+
+    let dataToSend = parseDataToSend(editor.toJSON());
+    dataToSend = JSON.stringify(dataToSend);
+    //console.log(JSON.stringify(editor.toJSON()));
+    console.log(dataToSend);
+
+    fetch('http://localhost:8090/debug', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: dataToSend
+    }).then(async (res) => {
+        console.log("HTTPStatus: " + res.status);
+        if (res.status == 200) {
+            console.log("HTTP OK");
+        }
+        else { //internal error
+            alert("There is a problem, try later.");
+        }
+    })
+
+}
+
+export async function OnClickStep() {
+    console.log('--------click step--------');
+    console.log(editor.toJSON());
+    await engine.abort();
+    await engine.process(editor.toJSON());
+    let dataToSend = editor.toJSON().id;
+
+    fetch('http://localhost:8090/step', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: dataToSend
+    }).then(async (res) => {
+        console.log("HTTPStatus: " + res.status);
+        if (res.status == 200) {
+            console.log("HTTP OK");
+            ///************************************* */
+            const status = {
+                selectedNodes: [1,3],
+                blockedNodes: [4],
+                activeNodes: [5],
+                isDone: false
+            }
+
+            if(status.isDone){
+                endDebug();//TODO
+            }
+        
+            status.selectedNodes.forEach(num => {
+                const node = editor.nodes.find(n => n.id == num);
+                node.data.color = "GREEN";
+                node.update();
+            });
+        
+            status.blockedNodes.forEach(num => {
+                const node = editor.nodes.find(n => n.id == num);
+                node.data.color = "RED";
+                node.update();
+            });
+        
+            status.activeNodes.forEach(num => {
+                const node = editor.nodes.find(n => n.id == num);
+                node.data.color = "GRAY";
+                node.update();
+            });
+        }
+        else { //internal error
+            alert("There is a problem, try later.");
+        }
+    })
+
+    
+
+
+    // 
+
 }
 
 export function init(container) {
