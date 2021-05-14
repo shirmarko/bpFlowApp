@@ -48,14 +48,14 @@
         <b-form-group
           v-for="(output, index) in Object.fromEntries(outputs)"
           :key="`${componentKey}-${index}`"
-          :id="index"
+          :id="`editName-${index}`"
           :label="index"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
         >
-          <b-form-input :id="index" v-model="output.key" trim></b-form-input>
+          <b-form-input :id="`inputName-${index}`" v-model="output.key" trim></b-form-input>
         </b-form-group>
       </form>
     </b-modal>
@@ -74,10 +74,10 @@ import {
 } from "bootstrap-vue";
 
 import * as Socket from "../sockets";
-import Rete from "rete";
+import { OutputWithPayload } from "../components/OutputWithPayload.js"
 
 export default {
-  props: ["ikey", "name", "nodeOutputs", "myNode"],
+  props: ["ikey", "name", "nodeOutputs", "myNode", "globalEditor"],
   data() {
     let myData = {
       titleValue: this.name,
@@ -85,12 +85,11 @@ export default {
       stateTitleVal: this.name.length > 0,
       stateNumberVal: this.numOfOutputs >= 0,
       outputs: this.nodeOutputs,
-      componentKey: 0,
-      value: 3,
+      componentKey: 0
     };
-    for (const [key, value] of this.nodeOutputs.entries()) {
-      myData[key] = value.name;
-    }
+    // for (const [key, value] of this.nodeOutputs.entries()) {
+    //   myData[key] = value.name;
+    // }
 
     return myData;
   },
@@ -104,15 +103,6 @@ export default {
       return this.stateNumberVal;
     },
   },
-  // mounted: function () {
-  //   console.log("---" + this.nodeOutputs.entries());
-
-  //   for (const [key, value] of this.nodeOutputs.entries()) {
-  //     console.log(key, value);
-  //     Vue.set(this, key, value.name);
-  //   }
-  //   console.log(this.data);
-  // },
   methods: {
     handleChangeNumOfOutputs() {
       if (this.numberOfOutputsValue > this.outputs.size) {
@@ -124,10 +114,16 @@ export default {
       this.forceRerender();
     },
     addOutput(i) {
-      var out = new Rete.Output(`output${i}`, `Output${i}`, Socket.general);
-      this.outputs.set(`output${i}`, out);
+      var out = new OutputWithPayload(`output${i}`, `Output${i}`, Socket.general);
+      this.myNode.addOutput(out);
     },
     removeOutput(i) {
+      let toRemove = this.myNode.outputs.get(`output${i}`);
+      while(toRemove.connections.length > 0){
+          let connection = toRemove.connections[toRemove.connections.length - 1];
+          this.globalEditor.view.removeConnection(connection);
+          connection.remove();
+      }
       this.outputs.delete(`output${i}`);
     },
     forceRerender() {
@@ -153,9 +149,6 @@ export default {
 
       this.forceRerender();
 
-      // for(var output in this.myOutputs){
-      //   this.nodeOutputs.get(key).name = value;
-      // }
       for (const [key, output] of this.outputs.entries()) {
         output.name = output.key;
       }
@@ -163,6 +156,7 @@ export default {
       this.myNode.update();
       //this.putData(this.ikey, this.code);
       // this.submittedNames.push(this.name)
+      
       // Hide the modal manually
       this.$nextTick(() => {
         this.$refs["editNode-modal"].hide("editNode-modal-prevent-closing");

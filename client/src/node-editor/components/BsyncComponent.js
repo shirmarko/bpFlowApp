@@ -1,12 +1,14 @@
 import VueRenderPlugin from "rete-vue-render-plugin";
-import { InputControl } from "../controls/InputControl"
 import { InputTextControl } from "../controls/InputTextControlVue.js"
+import { PayloadControl } from "../controls/PayloadControlVue"
 import * as Socket from "../sockets";
 import Rete from "rete";
+export const statusColor = { BLUE: "node", GREEN: "selectedNode", RED: "blockedNode", GRAY: "activeNode" };
 
+// node.data.color === 1 ? 'node' : 'selectedNode'
 //---------------------------------------Bsync-------------------------------------------------
 var CustomBSyncNode = {
-    template: `<div v-bind:class="[ node.data.isBasic ? 'node' : 'node1' ]"> 
+    template: `<div v-bind:class="[ chooseColor(node) ]"> 
     <div class="title">{{node.name}}</div>
     <!-- Outputs-->
     <div class="output" v-for="output in outputs()" :key="output.key">
@@ -30,27 +32,34 @@ var CustomBSyncNode = {
     mixins: [VueRenderPlugin.mixin],
     components: {
       Socket: VueRenderPlugin.Socket
+    },
+    methods:{
+      chooseColor: function (node) {
+        return statusColor[node.data.color];
+      },
     }
   }
 
 
   export class BsyncComponent extends Rete.Component {
-    constructor() {
+    constructor(outputName) {
       super("Bsync");
       this.data.component = CustomBSyncNode;
+      this.outputName = outputName;
     }
 
     builder(node) {
       var inp = new Rete.Input('input', "Input", Socket.general, true);
-      var out = new Rete.Output('output', "Output", Socket.general);
-
-      node.data.isBasic = true;
+      var out = new Rete.Output('output', this.outputName, Socket.general);
+      node.data.payloadView = {};
+      node.data.color = "BLUE";
       return node
         .addInput(inp)
         .addOutput(out)
         .addControl(new InputTextControl('request'))
         .addControl(new InputTextControl('wait'))
         .addControl(new InputTextControl('block'))
+        .addControl(new PayloadControl('payload', node.data, node.id))
     }
 
     worker(node, inputs, outputs) {

@@ -2,8 +2,6 @@ import VueRenderPlugin from "rete-vue-render-plugin";
 import * as Socket from "../sockets";
 import Rete from "rete";
 
-//----------------Start Node---------------
-
 var CustomStartNode = {
     template: `<div class=triangle-right> 
     <!-- Outputs-->
@@ -18,15 +16,14 @@ var CustomStartNode = {
   }
 
   export class StartComponent extends Rete.Component {
-    constructor() {
+    constructor(outputName) {
       super("Start");
       this.data.component = CustomStartNode;
+      this.outputName = outputName;
     }
 
     builder(node) {
-      var out = new Rete.Output('output', "Output", Socket.general);
-
-      node.data.isBasic = true;
+      var out = new Rete.Output('output', this.outputName, Socket.general);
       return node
         .addOutput(out)
     }

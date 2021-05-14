@@ -28,6 +28,28 @@ public class Controller {
         return "ok";
     }
 
+    @PostMapping(value = "/debug", consumes = "application/json", produces = "application/json")
+    public String debug(@RequestBody GraphModel graphModel){
+        this.myGraphModel = graphModel;
+        System.out.println("got graphModel with id = " + graphModel.getId());
+        service.debug(graphModel, serverEmitter);
+
+        return "ok";
+    }
+
+    @PostMapping(value = "/step", consumes = "application/json", produces = "application/json")
+    public String step(@RequestBody String graphID){
+        service.step(graphID);
+
+        return "ok";
+    }
+
+    @PostMapping(value = "/stop", consumes = "application/json", produces = "application/json")
+    public String stop(@RequestBody String graphID){
+        service.stop(graphID);
+
+        return "ok";
+    }
 
     //client subscription
     @RequestMapping( value = "/subscribe")

@@ -1,19 +1,11 @@
 /* global bp */
 
-//function SubmissionAddedAll() {
-//	return bp.EventSet( "SubmissionAddedAll", function(ev){
-//		  var e = JSON.parse(ev.name);
-//		  return e.name == "SubmissionAdded";
-//		});
-//}
-//
-//function SubmissionAdded(id) {
-//	return bp.EventSet( "SubmissionAddedAll", function(ev){
-//		  var e = JSON.parse(ev.name);
-//		  return e.name == "SubmissionAdded" && e.courseId == id;
-//		});
-//}
-
+bp.registerBThread("any", function(){
+    while(true){
+        nodesLists["selectedEvent"] =  bp.sync({waitFor:bp.all});
+        nodesLists["payloads"] = {};
+    }
+});
 
 function goToFollowers(curNode, ths, bp, payloads) {
     const outputs = curNode.outputs;
@@ -66,6 +58,8 @@ function runInNewBT(curNode, payload) {
     bp.log.info("in runInNewBT@@@@@@@@ - " + curNode.id + " :" + payload);
 	var context = JSON.parse(JSON.stringify(payload));
 
+
+    nodesLists["payloads"][curNode.id] = payload;
 	bp.registerBThread(curNode.id, function() {
 		eval("var f=f" + curNode.id);
         //bp.log.info("curNode.id - " + curNode.id);
@@ -74,14 +68,13 @@ function runInNewBT(curNode, payload) {
 	});
 };
 
-function runInSameBT(c, payload, ths, bp) {
-    bp.log.info("in runInSameBT!!!! - " + c.id + " :" + payload);
+function runInSameBT(curNode, payload, ths, bp) {
+    bp.log.info("in runInSameBT!!!! - " + curNode.id + " :" + payload);
     //need to clone the payload??
-	eval("var f=f" + c.id);
-
+	eval("var f=f" + curNode.id);
+    nodesLists["payloads"][curNode.id] = payload;
 	const payloads = f(payload, ths, bp, nodesLists);
-
-	goToFollowers(c, ths, bp, payloads);
+	goToFollowers(curNode, ths, bp, payloads);
 };
 
 //bp.log.info("log test!!!");
@@ -99,6 +92,7 @@ nodesLists["reqnotblocked"] = [];
 nodesLists["blocked"] = [];
 nodesLists["selectedEvent"] = undefined;
 nodesLists["isDone"] = false;
+nodesLists["payloads"] = {};
 
 var startNodes = [];
 for(var i in allNodesArr){
