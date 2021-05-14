@@ -173,14 +173,12 @@ export default {
       OnClickRun();
     },
     OnClickDebug: function () {
-      console.log("------DEBUG--------");
       this.isStepDisabled = false;
       this.isStopDisabled = false;
       this.isDebugDisabled = true;
       OnClickDebug();
     },
     OnClickStop: function () {
-      console.log("------STOP--------");
       this.isStepDisabled = true;
       this.isStopDisabled = true;
       this.isDebugDisabled = false;

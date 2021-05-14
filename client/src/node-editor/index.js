@@ -8,12 +8,15 @@ import CommentPlugin from "rete-comment-plugin";
 import { BsyncComponent, statusColor } from "./components/BsyncComponent";
 import { StartComponent } from "./components/StartComponent";
 import { GeneralComponent } from "./components/GeneralComponent";
+import * as Consts from "./helpers/Consts";
+import * as ButtonsHandlers from "./helpers/ButtonsHandlers" 
+import * as EventHandlers from "./EventHandlers/EventHandlers.js"
 
 const eventSource = new EventSource('http://localhost:8090/subscribe');
-let editor;
+export let nodeNamesToIds = {};
+export let editor;
 let engine;
-const defaultOutputName = " Output";
-let nodeNamesToIds = {};
+
 
 
 function createUUID() {
@@ -23,279 +26,36 @@ function createUUID() {
     }) + "@0.1.0";
 }
 
-function parseNodeInputs(curNode) {
-    let inputs = [];
-    if (Object.keys(curNode.inputs).length > 0) {
-        let connections = curNode.inputs.input.connections;
-        for (var j in connections) {
-            inputs.push(connections[j].node);
-        }
-    }
-    curNode.inputs = inputs;
-}
-
-function parseNodeOutputs(curNode) {
-    let outputs = {};
-    // if (Object.keys(curNode.outputs).length > 0) {
-    let oldOutputs = curNode.outputs;
-    for (var m in oldOutputs) {
-        // if (Object.keys(oldOutputs).length > 0) {
-        let connections = oldOutputs[m].connections;
-        let newConnections = [];
-        for (var j in connections) {
-            newConnections.push(connections[j].node);
-        }
-        let outputKey = editor.nodes.find(n => n.id == curNode.id).outputs.get(m).name;
-        outputs[outputKey] = newConnections;
-        //}
-        //}
-    }
-    curNode.outputs = outputs;
-}
-
-function parseNodeData(curNode) {
-    //data:
-    delete curNode.data.color;
-    delete curNode.data.payloadView;
-    // bp.sync( {waitFor:bp.Event("Hello,"), block:bp.Event("World!")} );
-    //parse bsync:
-    if (curNode.type === "Bsync") {
-        let code = "";
-        let body = [];
-        let curId = parseInt(curNode.id, 10);
-        if (curNode.data.hasOwnProperty("request")) {
-            nodeNamesToIds[curNode.data["request"]] = curId;
-            body.push(`request:bp.Event("${curNode.data["request"]}")`);
-            delete curNode.data["request"];
-        }
-        if (curNode.data.hasOwnProperty("wait")) {
-            body.push(`waitFor:bp.Event("${curNode.data["wait"]}")`);
-            delete curNode.data["wait"];
-        }
-        if (curNode.data.hasOwnProperty("block")) {
-            body.push(`block:bp.Event("${curNode.data["block"]}")`);
-            delete curNode.data["block"];
-        }
-        code = `nodesLists["active"].push(${curId});\n
-                bp.sync( {${body.join(", ")}} );\n
-                nodesLists["active"].splice(nodesLists["active"].indexOf(${curId}), 1);\n`;
-        let returnPayloadCode = [`let outputs = {};`, `outputs["${defaultOutputName}"] = payload;`, `return outputs;`];
-        returnPayloadCode = returnPayloadCode.join("\n");
-        curNode.data["code"] = `${code}\n${returnPayloadCode}`;
-        curNode.type = "General";
-    }
-    else if (curNode.type === "Start") {
-        let returnPayloadCode = [`let outputs = {};`, `outputs["${defaultOutputName}"] = payload;`, `return outputs;`];
-        curNode.data["code"] = returnPayloadCode.join("\n");
-    }
-
-    if(!curNode.data.hasOwnProperty("code")){ //in case code of general node wasn't edited
-        const node = editor.nodes.find(n => n.id == curNode.id);
-        let payloadsCode = [`let outputs = {};`];
-        for (const [key, output] of node.outputs.entries()) {
-            payloadsCode.push(`outputs["${output.name}"] = ${output.payload};`);
-        }
-        payloadsCode.push("return outputs;");
-        payloadsCode = payloadsCode.join("\n");
-        curNode.data["code"] = payloadsCode;
-    }
-}
-
-
-function parseNodes(newData) {
-    for (var i in newData.nodes) {
-        let curNode = newData.nodes[i];
-        delete curNode.position;
-
-        //change name to type:
-        curNode.type = curNode.name;
-        delete curNode.name;
-
-        parseNodeInputs(curNode);
-        parseNodeOutputs(curNode);
-        parseNodeData(curNode);
-    }
-}
-
-
-export function parseDataToSend(data) {
-    let newData = JSON.parse(JSON.stringify(data));
-    delete newData.comments;
-    parseNodes(newData);
-    return newData;
-}
-
 export async function OnClickRun() {
-    console.log('--------click run--------');
-    console.log(editor.toJSON());
-    console.log(JSON.stringify(editor.toJSON()));
-    await engine.abort();
-    await engine.process(editor.toJSON());
-
-    let dataToSend = parseDataToSend(editor.toJSON());
-    dataToSend = JSON.stringify(dataToSend);
-    //console.log(JSON.stringify(editor.toJSON()));
-    console.log(dataToSend);
-
-    fetch('http://localhost:8090/run', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: dataToSend
-    }).then(async (res) => {
-        console.log("HTTPStatus: " + res.status);
-        if (res.status == 200) {
-            console.log("HTTP OK");
-        }
-        else { //internal error
-            alert("There is a problem, try later.");
-        }
-    })
-
+    ButtonsHandlers.SendGraphToServer(editor, engine, nodeNamesToIds, "run");
 }
 
 export async function OnClickDebug() {
-    console.log('--------click Debug--------');
-    console.log(editor.toJSON());
-    await engine.abort();
-    await engine.process(editor.toJSON());
-
-    let dataToSend = parseDataToSend(editor.toJSON());
-    dataToSend = JSON.stringify(dataToSend);
-    console.log(dataToSend);
-    fetch('http://localhost:8090/debug', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: dataToSend
-    }).then(async (res) => {
-        console.log("HTTPStatus: " + res.status);
-        if (res.status == 200) {
-            console.log("HTTP OK");
-        }
-        else { //internal error
-            alert("There is a problem, try later.");
-        }
-    })
+    ButtonsHandlers.SendGraphToServer(editor, engine, nodeNamesToIds, "debug");
 }
 
 export async function OnClickStop() {
-    editor.nodes.forEach(node => {
-        node.data.color = "BLUE";
-        node.data.payloadView = {};
-        node.update();
-    });
-    nodeNamesToIds = {};
-    let dataToSend = editor.toJSON().id;
-    fetch('http://localhost:8090/stop', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: dataToSend
-    }).then(async (res) => {
-        console.log("HTTPStatus: " + res.status);
-        if (res.status == 200) {
-            console.log("HTTP OK");
-        }
-        else { //internal error
-            alert("There is a problem, try later.");
-        }
-    });
+    ButtonsHandlers.OnClickStop(editor, nodeNamesToIds);
 }
 
 export async function OnClickStep() {
-    console.log('--------click step--------');
-    console.log(editor.toJSON());
-    await engine.abort();
-    await engine.process(editor.toJSON());
-    let dataToSend = editor.toJSON().id;
-
-    fetch('http://localhost:8090/step', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: dataToSend
-    }).then(async (res) => {
-        console.log("HTTPStatus: " + res.status);
-        if (res.status == 200) {
-            console.log("HTTP OK");
-            ///************************************* */
-            // const status = {
-            //     selectedNodes: [1,3],
-            //     blockedNodes: [4],
-            //     activeNodes: [5],
-            //     isDone: false
-            // }
-
-        }
-        else { //internal error
-            alert("There is a problem, try later.");
-        }
-    })
+    ButtonsHandlers.OnClickStep(editor, engine);
 }
 
-function endDebug(){
-    editor.nodes.forEach(node => {
-        node.data.color = "BLUE";
-        node.data.payloadView = {};
-        node.update();
-    });
-    nodeNamesToIds = {};
-}
 
 export function init(container) {
     // //----------------EventListener---------------
     console.log('-----init editor--------');
 
-    eventSource.addEventListener('flowEvent', function (event) {
-        console.log(event.data)
-    });
-
-    let prevSelectedNodeId;
-    eventSource.addEventListener('step', function (event) {
-        if (prevSelectedNodeId != undefined) {
-            const node = editor.nodes.find(n => n.id == prevSelectedNodeId);
-            node.data.color = "BLUE";
-            node.update();
-        }
-
-        if (status.isDone) {
-            endDebug();
-            return;
-        }
-        console.log(event.data);
-        let data = JSON.parse(event.data);
-        console.log(data);
-        console.log("payloads: ");
-        console.log(data.payloads);
-        if (data.selectedEvent != null) {
-            prevSelectedNodeId = nodeNamesToIds[data.selectedEvent.name];
-            const node = editor.nodes.find(n => n.id == nodeNamesToIds[data.selectedEvent.name]);
-            node.data.color = "GREEN";
-            node.update();
-        }
-
-        data.blocked.forEach(nodeId => {
-            const node = editor.nodes.find(n => n.id == nodeId);
-            node.data.color = "RED";
-            node.update();
-        });
-
-        data.active.forEach(nodeId => {
-            const node = editor.nodes.find(n => n.id == nodeId);
-            node.data.color = "GRAY";
-            node.update();
-        });
-        
-        for(let nodeId in data.payloads){
-            const node = editor.nodes.find(n => n.id == nodeId);
-            node.data.payloadView = data.payloads[nodeId];
-            node.update();
-        }
-    });
+    eventSource.addEventListener('flowEvent', EventHandlers.flowEventHandler);
+    eventSource.addEventListener('step', EventHandlers.stepEventHandler);
 
 
     const id = createUUID();
     engine = new Rete.Engine(id);
     // var container = document.querySelector('#rete');
     editor = new Rete.NodeEditor(id, container);
-    const components = [new BsyncComponent(defaultOutputName), new StartComponent(defaultOutputName), new GeneralComponent()];
+    const components = [new BsyncComponent(Consts.defaultOutputName), new StartComponent(Consts.defaultOutputName), new GeneralComponent()];
 
     (async () => {
         editor.use(ConnectionPlugin);
@@ -304,7 +64,6 @@ export function init(container) {
         // editor.use(DockPlugin);
         editor.use(AreaPlugin);
         editor.use(CommentPlugin);
-        //editor.use(JsRenderPlugin);
 
         components.map(c => {
             editor.register(c);

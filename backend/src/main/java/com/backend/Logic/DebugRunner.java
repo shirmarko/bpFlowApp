@@ -221,9 +221,8 @@ public class DebugRunner{
     }
 
     public void stop() {
-        if(halted){
-            listeners.forEach(l->l.halted(bprog));
-            execSvc.shutdown();
-        }
+        halted = true;
+        listeners.forEach(l->l.halted(bprog));
+        execSvc.shutdown();
     }
 }
