@@ -9,6 +9,7 @@
         <b-collapse id="nav-collapse" is-nav>
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
+            <b-nav-item v-b-toggle.sidebar-variant>console</b-nav-item>
             <b-nav-item id="run-button" v-on:click="OnClickRun">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -109,27 +110,31 @@
       </b-navbar>
     </div>
 
-    <!-- <div class="bd-sidebar border-bottom-0 col-md-3 col-xl-2 col-12">
-      <b-card
-        title="CONSOLE"
-        style="max-width: 20rem"
-        bg-variant="Light"
-        text-variant="black"
-      >
-        <b-card-text>
-          <div v-for="(row, index) in logContent" :key="index">
-            <h>{{ row }}</h
-            ><br />
-          </div>
-        </b-card-text>
-      </b-card>
-    </div> -->
+    <b-sidebar
+      id="sidebar-variant"
+      title="CONSOLE"
+      bg-variant="dark"
+      text-variant="light"
+      shadow
+    >
+      <div class="px-3 py-2">
+        <div v-for="(row, index) in logContent" :key="index">
+          <h>{{ row }}</h
+          ><br />
+        </div>
+      </div>
+    </b-sidebar>
   </div>
 </template>
 
 <script>
 import { init } from "../node-editor/index";
-import { OnClickRun, OnClickStep, OnClickStop, OnClickDebug } from "../node-editor/index";
+import {
+  OnClickRun,
+  OnClickStep,
+  OnClickStop,
+  OnClickDebug,
+} from "../node-editor/index";
 import {
   BModal,
   VBModal,
@@ -191,14 +196,14 @@ export default {
     FillConsoleWindow: function () {},
 
     makeToast(variant = null) {
-        this.$bvToast.toast(`${this.isStepDisabled? "OFF":"ON"}`, {
-          title: `Debug Mode Status`,
-          variant: variant,
-          toaster: 'b-toaster-bottom-right',
-          appendToast: true,
-          solid: true
-        })
-      },
+      this.$bvToast.toast(`${this.isStepDisabled ? "OFF" : "ON"}`, {
+        title: `Debug Mode Status`,
+        variant: variant,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true,
+        solid: true,
+      });
+    },
     // checkFormValidity() {
     //     const valid = this.$refs.form.checkValidity()
     //     this.nameState = valid
@@ -254,7 +259,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 
 .node .control input,
 .node .input-control input,
@@ -345,7 +349,7 @@ input {
 .node .input,
 .selectedNode .input,
 .activeNode .input,
-.blockedNode .input{
+.blockedNode .input {
   text-align: left;
   height: 0px;
 }
