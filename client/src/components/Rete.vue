@@ -42,7 +42,6 @@
 </template>
 
 <script>
-// import init from "../node-editor";
 import { init } from "../node-editor/index";
 import { OnClickRun, OnClickStep } from "../node-editor/index";
 import {
@@ -66,19 +65,9 @@ export default {
   data() {
     return {
       visible: true,
-      //   isModalVisible: false,
-      //   name: '',
-      //   nameState: null,
-      //   submittedNames: []
     };
   },
   methods: {
-    // showModal() {
-    //     this.isModalVisible = true;
-    // },
-    // closeModal() {
-    //     this.isModalVisible = false;
-    // },
     OnClickRun: function () {
       OnClickRun();
     },
@@ -136,11 +125,6 @@ export default {
   mounted() {
     init(this.$refs.rete);
   },
-  //   components: {
-  //         // Modal,
-  //         BModal,
-  //     },
-  //   directives: { 'b-modal': VBModal },
 };
 </script>
 

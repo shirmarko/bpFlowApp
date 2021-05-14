@@ -82,7 +82,9 @@ function parseNodeData(curNode) {
             body.push(`block:bp.Event("${curNode.data["block"]}")`);
             delete curNode.data["block"];
         }
-        code = `bp.sync( {${body.join(", ")}} );`;
+        code = `nodesLists["active"].push(${curNode.id});\n
+                bp.sync( {${body.join(", ")}} );\n
+                nodesLists["active"].splice(nodesLists["active"].indexOf(${curNode.id}), 1);\n`;
         let returnPayloadCode = [`let outputs = {};`,`outputs["${defaultOutputName}"] = payload;`,`return outputs;`];
         returnPayloadCode = returnPayloadCode.join("\n");
         curNode.data["code"] = `${code}\n${returnPayloadCode}`;
@@ -142,7 +144,6 @@ export async function OnClickRun() {
             alert("There is a problem, try later.");
         }
     })
-
 }
 
 export async function OnClickDebug() {
