@@ -24,22 +24,21 @@ public class GraphBProgramRunnerListener extends BProgramRunnerListenerAdapter {
         }
     }
 
-//    @Override
-//    public void started(BProgram bp){
-//        try {
-//            emitter.send(SseEmitter.event().name("flowEvent").data("bpflow started.."));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Override
-//    public void ended(BProgram bp){
-//        try {
-//            emitter.send(SseEmitter.event().name("flowEvent").data("bpflow ended.."));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Override
+    public void ended(BProgram bp){
+        try {
+            emitter.send(SseEmitter.event().name("flowEvent").data("Program execution ended.."));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Override
+    public void halted(BProgram bp){
+        try {
+            emitter.send(SseEmitter.event().name("flowEvent").data("Program execution halted.."));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

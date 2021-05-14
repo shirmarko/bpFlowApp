@@ -75,10 +75,18 @@ public class ServiceImpl implements IService {
     @Override
     public void step(String graphID) {
         try {
-            debugRunnerMap.get(graphID).step();
+            boolean isProgDone = debugRunnerMap.get(graphID).step();
+            if(isProgDone){
+                debugRunnerMap.remove(graphID);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public void stop(String graphID) {
+        debugRunnerMap.get(graphID).stop();
+        debugRunnerMap.remove(graphID);
+    }
 }

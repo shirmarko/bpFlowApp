@@ -9,4 +9,6 @@ public interface IService {
     void debug(GraphModel graphModel, SseEmitter serverEmitter);
 
     void step(String graphID);
+
+    void stop(String graphID);
 }

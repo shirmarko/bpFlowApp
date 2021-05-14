@@ -74,7 +74,6 @@ import {
 } from "bootstrap-vue";
 
 import * as Socket from "../sockets";
-import Rete from "rete";
 import { OutputWithPayload } from "../components/OutputWithPayload.js"
 
 export default {

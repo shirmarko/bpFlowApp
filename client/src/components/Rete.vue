@@ -178,7 +178,7 @@ export default {
       this.isStepDisabled = false;
       this.isStopDisabled = false;
       this.isDebugDisabled = true;
-      // OnClickDebug();
+      OnClickDebug();
     },
     OnClickStop: function () {
       console.log("------STOP--------");
@@ -248,6 +248,7 @@ export default {
     BSidebar,
     BCard,
   },
+  directives: { "b-modal": VBModal },
   mounted() {
     init(this.$refs.rete);
   },

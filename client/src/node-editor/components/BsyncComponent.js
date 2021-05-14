@@ -5,6 +5,7 @@ import * as Socket from "../sockets";
 import Rete from "rete";
 export const statusColor = { BLUE: "node", GREEN: "selectedNode", RED: "blockedNode", GRAY: "activeNode" };
 
+// node.data.color === 1 ? 'node' : 'selectedNode'
 //---------------------------------------Bsync-------------------------------------------------
 var CustomBSyncNode = {
     template: `<div v-bind:class="[ chooseColor(node) ]"> 
