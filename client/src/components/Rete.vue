@@ -43,7 +43,7 @@
 
 <script>
 import { init } from "../node-editor/index";
-import { OnClickRun, OnClickStep } from "../node-editor/index";
+import { OnClickRun, OnClickDebug, OnClickStep } from "../node-editor/index";
 import {
   BModal,
   VBModal,
@@ -72,7 +72,7 @@ export default {
       OnClickRun();
     },
     OnClickDebug: function () {
-      console.log("------DEBUG IS NOT IMPLEMENTED YET--------");
+      OnClickDebug();
     },
     OnClickStep: function () {
       OnClickStep();

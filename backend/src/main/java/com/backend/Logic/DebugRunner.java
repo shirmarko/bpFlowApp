@@ -75,7 +75,8 @@ public class DebugRunner{
         }
     }
 
-    public void step() throws IOException {
+    //return if the program is ended
+    public boolean step() throws IOException {
         try {
             // while snapshot not empty, select an event and get the next snapshot.
             if ( (!curSnapshot.noBThreadsLeft()) && go.get() ) {
@@ -134,30 +135,36 @@ public class DebugRunner{
                         go.set(false);
                     }
                 }
+                return false;
             }
             else if(halted){
                 listeners.forEach(l->l.halted(bprog));
                 execSvc.shutdown();
                 emitter.send(SseEmitter.event().name("step").data(doneData));
+                return true;
             }
             else{
                 listeners.forEach(l->l.ended(bprog));
                 execSvc.shutdown();
                 emitter.send(SseEmitter.event().name("step").data(doneData));
+                return true;
             }
 
         } catch ( BPjsRuntimeException bre ) {
             listeners.forEach( l -> l.error(bprog, bre));
             execSvc.shutdown();
             emitter.send(SseEmitter.event().name("step").data(doneData));
+            return true;
         } catch (InterruptedException itr) {
             System.err.println("BProgramRunner interrupted: " + itr.getMessage() );
             execSvc.shutdown();
             emitter.send(SseEmitter.event().name("step").data(doneData));
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
             emitter.send(SseEmitter.event().name("step").data(doneData));
             execSvc.shutdown();
+            return true;
         }
     }
 
@@ -213,4 +220,10 @@ public class DebugRunner{
         listeners.remove(aListener);
     }
 
+    public void stop() {
+        if(halted){
+            listeners.forEach(l->l.halted(bprog));
+            execSvc.shutdown();
+        }
+    }
 }
