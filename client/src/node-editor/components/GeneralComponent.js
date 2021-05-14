@@ -1,13 +1,13 @@
 import VueRenderPlugin from "rete-vue-render-plugin";
 import { CodeControl } from "../controls/CodeControlVue.js"
+import { PayloadControl } from "../controls/PayloadControlVue"
 import { OutputWithPayload } from "./OutputWithPayload.js"
 import { EditGeneralNodeControl } from "../controls/EditGeneralNodeControl.js"
 import * as Socket from "../sockets";
 import Rete from "rete";
 
-
 var CustomGeneralNode = {
-    template: `<div class="node"> 
+    template: `<div class="node">
     <div class="title">{{node.name}}</div>
     <!-- Outputs-->
     <div class="outputGeneral" v-for="output in outputs()" :key="output.key">
@@ -47,15 +47,14 @@ export class GeneralComponent extends Rete.Component {
             node.addOutput(new OutputWithPayload(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
         }
         var inp = new Rete.Input('input', "Input", Socket.general, true);
-        // node.data.isBasic = true;
-        
-
         const editGeneralNodeControl = new EditGeneralNodeControl('edit',this.name, node.outputs, this.editor);
         node.addInput(inp)
             .addControl(new CodeControl('code', node.outputs))
-            .addControl(editGeneralNodeControl);
+            .addControl(editGeneralNodeControl)
+            .addControl(new PayloadControl('payload', 'here is curr payload'))
         
         editGeneralNodeControl.addNodeToProps(node);
+
         return node;
     }
 

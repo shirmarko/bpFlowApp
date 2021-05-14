@@ -55,7 +55,6 @@ function parseNodeOutputs(curNode) {
 
 function parseNodeData(curNode) {
     //data:
-    // delete curNode.data.isBasic;
     delete curNode.data.color;
     // bp.sync( {waitFor:bp.Event("Hello,"), block:bp.Event("World!")} );
     //parse bsync:
@@ -107,7 +106,7 @@ function parseNodes(newData) {
 }
 
 
-function parseDataToSend(data) {
+export function parseDataToSend(data) {
     let newData = JSON.parse(JSON.stringify(data));
     delete newData.comments;
     parseNodes(newData);
@@ -117,6 +116,7 @@ function parseDataToSend(data) {
 export async function OnClickRun() {
     console.log('--------click run--------');
     console.log(editor.toJSON());
+    console.log(JSON.stringify(editor.toJSON()));
     await engine.abort();
     await engine.process(editor.toJSON());
 
@@ -138,6 +138,7 @@ export async function OnClickRun() {
             alert("There is a problem, try later.");
         }
     })
+
 }
 
 export async function OnClickDebug() {
@@ -162,6 +163,14 @@ export async function OnClickDebug() {
             alert("There is a problem, try later.");
         }
     })
+
+}
+
+export async function OnClickStop() {
+    editor.nodes.forEach(node => {
+        node.data.color = "BLUE";
+        node.update();
+    });
 }
 
 export async function OnClickStep() {

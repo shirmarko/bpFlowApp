@@ -24,7 +24,6 @@ var CustomStartNode = {
 
     builder(node) {
       var out = new Rete.Output('output', this.outputName, Socket.general);
-
       return node
         .addOutput(out)
     }

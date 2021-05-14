@@ -103,7 +103,6 @@ export default {
       return this.stateNumberVal;
     },
   },
-
   methods: {
     handleChangeNumOfOutputs() {
       if (this.numberOfOutputsValue > this.outputs.size) {
@@ -125,7 +124,6 @@ export default {
           this.globalEditor.view.removeConnection(connection);
           connection.remove();
       }
-
       this.outputs.delete(`output${i}`);
     },
     forceRerender() {
@@ -158,7 +156,7 @@ export default {
       this.myNode.update();
       //this.putData(this.ikey, this.code);
       // this.submittedNames.push(this.name)
-
+      
       // Hide the modal manually
       this.$nextTick(() => {
         this.$refs["editNode-modal"].hide("editNode-modal-prevent-closing");
