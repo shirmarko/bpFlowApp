@@ -9,8 +9,8 @@
         <b-collapse id="nav-collapse" is-nav>
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <b-nav-item v-b-toggle.sidebar-variant>console</b-nav-item>
-            <b-nav-item id="run-button" v-on:click="OnClickRun">
+            <b-nav-item v-b-toggle.sidebar-variant>Console</b-nav-item>
+            <b-nav-item id="run-button" v-on:click="OnClickRun" :disabled="buttonsVisibility.isRunDisabled">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -29,7 +29,7 @@
               v-on:click="OnClickDebug"
               @click="makeToast('success')"
               class="mb-2"
-              :disabled="isDebugDisabled"
+              :disabled="buttonsVisibility.isDebugDisabled"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +52,7 @@
               v-on:click="OnClickStop"
               class="mb-2"
               @click="makeToast('danger')"
-              :disabled="isStopDisabled"
+              :disabled="buttonsVisibility.isStopDisabled"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +89,7 @@
             <b-nav-item
               id="step-forward-button"
               v-on:click="OnClickStep"
-              :disabled="isStepDisabled"
+              :disabled="buttonsVisibility.isStepDisabled"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -117,6 +117,7 @@
       text-variant="light"
       shadow
     >
+      <b-button size="sm" block @click="ClearConsole">Clear</b-button>
       <div class="px-3 py-2">
         <div v-for="(row, index) in logContent" :key="index">
           {{ row }}<br />
@@ -158,14 +159,11 @@ export default {
   data() {
     return {
       visible: true,
-      logContent: ["aa", "bb", "cc", "dd", "ee", "ff", "gg", "hh"],
-      isStepDisabled: true,
-      isStopDisabled: true,
-      isDebugDisabled: false,
-      //   isModalVisible: false,
-      //   name: '',
-      //   nameState: null,
-      //   submittedNames: []
+      logContent: [],
+      buttonsVisibility:{isStepDisabled: true,
+                         isStopDisabled: true,
+                         isDebugDisabled: false,
+                         isRunDisabled: false}
     };
   },
   methods: {
@@ -173,15 +171,17 @@ export default {
       OnClickRun();
     },
     OnClickDebug: function () {
-      this.isStepDisabled = false;
-      this.isStopDisabled = false;
-      this.isDebugDisabled = true;
+      this.buttonsVisibility.isStepDisabled = false;
+      this.buttonsVisibility.isStopDisabled = false;
+      this.buttonsVisibility.isDebugDisabled = true;
+      this.buttonsVisibility.isRunDisabled = true;
       OnClickDebug();
     },
     OnClickStop: function () {
-      this.isStepDisabled = true;
-      this.isStopDisabled = true;
-      this.isDebugDisabled = false;
+      this.buttonsVisibility.isStepDisabled = true;
+      this.buttonsVisibility.isStopDisabled = true;
+      this.buttonsVisibility.isDebugDisabled = false;
+      this.buttonsVisibility.isRunDisabled = false;
       OnClickStop();
     },
     OnClickStep: function () {
@@ -193,41 +193,18 @@ export default {
     FillConsoleWindow: function () {},
 
     makeToast(variant = null) {
-      this.$bvToast.toast(`${this.isStepDisabled ? "OFF" : "ON"}`, {
+      this.$bvToast.toast(`${this.buttonsVisibility.isDebugDisabled ? "ON" : "OFF"}`, {
         title: `Debug Mode Status`,
         variant: variant,
         toaster: "b-toaster-bottom-right",
         appendToast: true,
+        autoHideDelay: 2500,
         solid: true,
       });
     },
-    // checkFormValidity() {
-    //     const valid = this.$refs.form.checkValidity()
-    //     this.nameState = valid
-    //     return valid
-    // },
-    // resetModal() {
-    //     this.name = ''
-    //     this.nameState = null
-    // },
-    // handleOk(bvModalEvt) {
-    //     // Prevent modal from closing
-    //     bvModalEvt.preventDefault()
-    //     // Trigger submit handler
-    //     this.handleSubmit()
-    // },
-    // handleSubmit() {
-    //     // Exit when the form isn't valid
-    //     if (!this.checkFormValidity()) {
-    //       return
-    //     }
-    //     // Push the name to submitted names
-    //     this.submittedNames.push(this.name)
-    //     // Hide the modal manually
-    //     this.$nextTick(() => {
-    //       this.$bvModal.hide('modal-prevent-closing')
-    //     })
-    // }
+    ClearConsole() {
+      this.logContent.splice(0, this.logContent.length);
+    },
   },
   components: {
     BModal,
@@ -247,7 +224,7 @@ export default {
   },
   directives: { "b-modal": VBModal },
   mounted() {
-    init(this.$refs.rete);
+    init(this.$refs.rete, this.logContent, this.buttonsVisibility);
   },
 };
 </script>

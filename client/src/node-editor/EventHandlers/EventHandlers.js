@@ -1,4 +1,4 @@
-import { editor, nodeNamesToIds } from "../index"
+import * as Index from "../index"
 
 let prevSelectedNodeId;
 let prevActiveNodes = [];
@@ -16,7 +16,7 @@ export function stepEventHandler(event) {
     prevActiveNodes.forEach(nodeId => changeNodeColor(nodeId, "BLUE"));
     let data = JSON.parse(event.data);
     console.log(data);
-    console.log(nodeNamesToIds);
+    console.log(Index.nodeNamesToIds);
     if (prevSelectedNodeId != undefined) {
         changeNodeColor(prevSelectedNodeId, "BLUE");
     }
@@ -38,7 +38,7 @@ export function stepEventHandler(event) {
 
     //payloads update
     for(let nodeId in data.payloads){
-        const node = editor.nodes.find(n => n.id == nodeId);
+        const node = Index.editor.nodes.find(n => n.id == nodeId);
         node.data.payloadView = data.payloads[nodeId];
         node.update();
     }
@@ -47,23 +47,28 @@ export function stepEventHandler(event) {
 };
 
 function changeNodeColor(nodeId, color){
-    const node = editor.nodes.find(n => n.id == nodeId);
+    const node = Index.editor.nodes.find(n => n.id == nodeId);
     node.data.color = color;
     node.update();
 }
 
 export function flowEventHandler(event) {
     console.log(event.data);
+    Index.addLogLine(event.data);
 };
 
 
 function endDebug(){
     prevSelectedNodeId = undefined;
     prevActiveNodes = [];
-    editor.nodes.forEach(node => {
+    Index.editor.nodes.forEach(node => {
         node.data.color = "BLUE";
         node.data.payloadView = {};
         node.update();
     });
-    for (var entry in nodeNamesToIds) delete nodeNamesToIds[entry];
+    Index.enableRunButton();
+    Index.enableDebugButton();
+    Index.disableStepButton();
+    Index.disableStopButton();
+    //for (var entry in nodeNamesToIds) delete nodeNamesToIds[entry];
 }

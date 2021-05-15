@@ -3,6 +3,7 @@ import VueRenderPlugin from "rete-vue-render-plugin";
 import ConnectionPlugin from "rete-connection-plugin";
 import AreaPlugin from "rete-area-plugin";
 import ContextMenuPlugin from "rete-context-menu-plugin";
+import ConnectionReroutePlugin from 'rete-connection-reroute-plugin';
 // import DockPlugin from "rete-dock-plugin";
 import CommentPlugin from "rete-comment-plugin";
 import { BsyncComponent, statusColor } from "./components/BsyncComponent";
@@ -16,8 +17,8 @@ const eventSource = new EventSource('http://localhost:8090/subscribe');
 export let nodeNamesToIds = {};
 export let editor;
 let engine;
-
-
+let logConsoleContent;
+let nevBarbuttonsVisibility;
 
 function createUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -42,11 +43,47 @@ export async function OnClickStep() {
     ButtonsHandlers.OnClickStep(editor, engine);
 }
 
+export function addLogLine(line){
+    logConsoleContent.push(line);
+}
 
-export function init(container) {
+export function enableStepButton(){
+    nevBarbuttonsVisibility.isStepDisabled = false;
+}
+
+export function disableStepButton(){
+    nevBarbuttonsVisibility.isStepDisabled = true;
+}
+
+export function enableStopButton(){
+    nevBarbuttonsVisibility.isStopDisabled = false;
+}
+
+export function disableStopButton(){
+    nevBarbuttonsVisibility.isStopDisabled = true;
+}
+
+export function enableDebugButton(){
+    nevBarbuttonsVisibility.isDebugDisabled = false;
+}
+
+export function disableDebugButton(){
+    nevBarbuttonsVisibility.isDebugDisabled = true;
+}
+
+export function enableRunButton(){
+    nevBarbuttonsVisibility.isRunDisabled = false;
+}
+
+export function disableRunButton(){
+    nevBarbuttonsVisibility.isRunDisabled = true;
+}
+
+export function init(container, logContent, buttonsVisibility) {
     // //----------------EventListener---------------
     console.log('-----init editor--------');
-
+    logConsoleContent = logContent;
+    nevBarbuttonsVisibility = buttonsVisibility;
     eventSource.addEventListener('flowEvent', EventHandlers.flowEventHandler);
     eventSource.addEventListener('step', EventHandlers.stepEventHandler);
 
@@ -61,6 +98,7 @@ export function init(container) {
         editor.use(ConnectionPlugin);
         editor.use(VueRenderPlugin);
         editor.use(ContextMenuPlugin);
+        editor.use(ConnectionReroutePlugin);
         // editor.use(DockPlugin);
         editor.use(AreaPlugin);
         //editor.use(CommentPlugin);
