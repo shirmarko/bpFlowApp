@@ -29,7 +29,7 @@
           v-for="(output, index) in Object.fromEntries(outputs)"
           :key="`${componentKey}-${index}`"
           :id="`editoutputPayload-${index}`"
-          :label="index"
+          :label="`${output.name}:`"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -94,7 +94,7 @@ export default {
       }
       let payloadsCode = [`let outputs = {};`];
       for (const [key, output] of this.outputs.entries()) {
-        payloadsCode.push(`outputs["${output.name}"] = ${output.payload};`)
+        payloadsCode.push(`outputs["${output.key}"] = ${output.payload};`);
       }
       payloadsCode.push("return outputs;");
       payloadsCode = payloadsCode.join("\n");

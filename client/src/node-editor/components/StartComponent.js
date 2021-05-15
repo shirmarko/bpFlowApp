@@ -28,7 +28,7 @@ var CustomStartNode = {
     }
 
     builder(node) {
-      var out = new OutputWithPayload('output', this.outputName, Socket.general);
+      var out = new OutputWithPayload(this.outputName, this.outputName, Socket.general);
       return node
         .addOutput(out)
         .addControl(new CodeControl('code', node.outputs))

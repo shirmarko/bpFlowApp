@@ -50,7 +50,7 @@ var CustomBSyncNode = {
 
     builder(node) {
       var inp = new Rete.Input('input', "Input", Socket.general, true);
-      var out = new Rete.Output('output', this.outputName, Socket.general);
+      var out = new Rete.Output(this.outputName, this.outputName, Socket.general);
       node.data.payloadView = {};
       node.data.color = "BLUE";
       return node

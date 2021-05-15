@@ -55,7 +55,7 @@
           content-cols-sm
           content-cols-lg="7"
         >
-          <b-form-input :id="`inputName-${index}`" v-model="output.key" trim></b-form-input>
+          <b-form-input :id="`inputName-${index}`" v-model="output.name" trim></b-form-input>
         </b-form-group>
       </form>
     </b-modal>
@@ -149,9 +149,9 @@ export default {
 
       this.forceRerender();
 
-      for (const [key, output] of this.outputs.entries()) {
-        output.name = output.key;
-      }
+    //   for (const [key, output] of this.outputs.entries()) {
+    //     output.name = output.key;
+    //   }
 
       this.myNode.update();
       //this.putData(this.ikey, this.code);

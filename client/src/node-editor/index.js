@@ -63,7 +63,7 @@ export function init(container) {
         editor.use(ContextMenuPlugin);
         // editor.use(DockPlugin);
         editor.use(AreaPlugin);
-        editor.use(CommentPlugin);
+        //editor.use(CommentPlugin);
 
         components.map(c => {
             editor.register(c);
