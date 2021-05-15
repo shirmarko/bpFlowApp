@@ -36,14 +36,15 @@ var CustomGeneralNode = {
 
 
 export class GeneralComponent extends Rete.Component {
-    constructor(outputsTitles = ["output1", "output2"]) {
-        super("General");
+    constructor(name, numOfOutputs, outputsTitles) {
+        super(name);
         this.data.component = CustomGeneralNode;
         this.outputsTitles = outputsTitles;
+        this.numOfOutputs = numOfOutputs;
     }
     
     builder(node) {
-        for(let i = 0; i < 2; i++){
+        for(let i = 0; i < this.numOfOutputs; i++){
             node.addOutput(new OutputWithPayload(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
         }
         node.data.payloadView = {};

@@ -52,13 +52,13 @@ function generateBsyncCode(curNode, nodeNamesToIds){
     curNode.type = "General";
 }
 
-function generateStartCode(curNode){
-    let returnPayloadCode = [`let outputs = {};`, `outputs["${Consts.defaultOutputName}"] = payload;`, `return outputs;`];
-    curNode.data["code"] = returnPayloadCode.join("\n");
-}
+// function generateStartCode(curNode){
+//     let returnPayloadCode = [`let outputs = {};`, `outputs["${Consts.defaultOutputName}"] = payload;`, `return outputs;`];
+//     curNode.data["code"] = returnPayloadCode.join("\n");
+// }
 
 //generate outputs if the code is empty
-function generateCodeGeneral(curNode, editor){
+function generateCode(curNode, editor){
     const node = editor.nodes.find(n => n.id == curNode.id);
     let payloadsCode = [`let outputs = {};`];
     for (const [key, output] of node.outputs.entries()) {
@@ -78,12 +78,12 @@ function parseNodeData(editor, curNode, nodeNamesToIds) {
     if (curNode.type === "Bsync") {
         generateBsyncCode(curNode, nodeNamesToIds);
     }
-    else if (curNode.type === "Start") {
-        generateStartCode(curNode);
-    }
+    // else if (curNode.type === "Start") {
+    //     generateStartCode(curNode);
+    // }
 
-    if(!curNode.data.hasOwnProperty("code")){ //in case code of general node wasn't edited
-        generateCodeGeneral(curNode, editor);
+    if(!curNode.data.hasOwnProperty("code")){ //in case code of general\start node wasn't edited
+        generateCode(curNode, editor);
     }
 }
 

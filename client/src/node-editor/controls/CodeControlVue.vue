@@ -99,7 +99,6 @@ export default {
       payloadsCode.push("return outputs;");
       payloadsCode = payloadsCode.join("\n");
       this.putData(this.ikey, `${this.code}\n${payloadsCode}`);
-      // this.submittedNames.push(this.name)
       // Hide the modal manually
       this.$nextTick(() => {
         this.$refs["code-modal"].hide("code-modal-prevent-closing");
