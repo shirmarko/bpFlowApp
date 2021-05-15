@@ -1,5 +1,7 @@
 import { parseDataToSend } from "./Parser";
 import { post } from "../Comunication/Controller"
+import { clearPrevSelectedNodeId, clearPrevActiveNodes } from "../EventHandlers/EventHandlers"
+
 
 export async function SendGraphToServer(editor, engine, nodeNamesToIds, route) {
     console.log('--------click run--------');
@@ -15,6 +17,8 @@ export async function SendGraphToServer(editor, engine, nodeNamesToIds, route) {
 }
 
 export async function OnClickStop(editor, nodeNamesToIds) {
+    clearPrevSelectedNodeId();
+    clearPrevActiveNodes();
     editor.nodes.forEach(node => {
         node.data.color = "BLUE";
         node.data.payloadView = {};
@@ -26,7 +30,6 @@ export async function OnClickStop(editor, nodeNamesToIds) {
 }
 
 export async function OnClickStep(editor, engine) {
-    console.log("STEATETGGERG!#@$!5%$@^^$#^$^");
     console.log(editor.toJSON());
     await engine.abort();
     await engine.process(editor.toJSON());

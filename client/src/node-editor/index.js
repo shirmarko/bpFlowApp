@@ -55,7 +55,7 @@ export function init(container) {
     engine = new Rete.Engine(id);
     // var container = document.querySelector('#rete');
     editor = new Rete.NodeEditor(id, container);
-    const components = [new BsyncComponent(Consts.defaultOutputName), new StartComponent(Consts.defaultOutputName), new GeneralComponent()];
+    const components = [new BsyncComponent(Consts.defaultOutputName), new StartComponent(Consts.defaultOutputName), new GeneralComponent("General", 2, ["output1", "output2"])];
 
     (async () => {
         editor.use(ConnectionPlugin);
@@ -63,7 +63,7 @@ export function init(container) {
         editor.use(ContextMenuPlugin);
         // editor.use(DockPlugin);
         editor.use(AreaPlugin);
-        editor.use(CommentPlugin);
+        //editor.use(CommentPlugin);
 
         components.map(c => {
             editor.register(c);

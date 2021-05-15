@@ -1,10 +1,22 @@
 import { editor, nodeNamesToIds } from "../index"
 
-
 let prevSelectedNodeId;
+let prevActiveNodes = [];
+
+
+export function clearPrevSelectedNodeId(){
+    prevSelectedNodeId = undefined;
+}
+
+export function clearPrevActiveNodes(){
+    prevActiveNodes = [];
+}
 
 export function stepEventHandler(event) {
+    prevActiveNodes.forEach(nodeId => changeNodeColor(nodeId, "BLUE"));
     let data = JSON.parse(event.data);
+    console.log(data);
+    console.log(nodeNamesToIds);
     if (prevSelectedNodeId != undefined) {
         changeNodeColor(prevSelectedNodeId, "BLUE");
     }
@@ -13,13 +25,16 @@ export function stepEventHandler(event) {
         endDebug();
         return;
     }
-    if (data.selectedEvent != null) {
-        changeNodeColor(nodeNamesToIds[data.selectedEvent.name], "GREEN");
-        prevSelectedNodeId = nodeNamesToIds[data.selectedEvent.name];
-    }
 
     data.blocked.forEach(nodeId => changeNodeColor(nodeId, "RED"));
     data.active.forEach(nodeId => changeNodeColor(nodeId, "GRAY"));
+
+    if (data.selectedEvent != null) {
+        //let nodeId = nodeNamesToIds[data.selectedEvent.name] == undefined ? nodeNamesToIds[`"${data.selectedEvent.name}"`] : nodeNamesToIds[data.selectedEvent.name];
+        let nodeId = data.selectedEvent;
+        changeNodeColor(nodeId, "GREEN");
+        prevSelectedNodeId = nodeId;
+    }
 
     //payloads update
     for(let nodeId in data.payloads){
@@ -27,6 +42,8 @@ export function stepEventHandler(event) {
         node.data.payloadView = data.payloads[nodeId];
         node.update();
     }
+
+    prevActiveNodes = data.active;
 };
 
 function changeNodeColor(nodeId, color){
@@ -41,6 +58,8 @@ export function flowEventHandler(event) {
 
 
 function endDebug(){
+    prevSelectedNodeId = undefined;
+    prevActiveNodes = [];
     editor.nodes.forEach(node => {
         node.data.color = "BLUE";
         node.data.payloadView = {};
