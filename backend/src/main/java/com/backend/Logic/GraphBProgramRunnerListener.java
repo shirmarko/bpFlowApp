@@ -27,7 +27,7 @@ public class GraphBProgramRunnerListener extends BProgramRunnerListenerAdapter {
     @Override
     public void ended(BProgram bp){
         try {
-            emitter.send(SseEmitter.event().name("flowEvent").data("Program execution ended.."));
+            emitter.send(SseEmitter.event().name("flowEvent").data("Program execution ended."));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,7 +36,7 @@ public class GraphBProgramRunnerListener extends BProgramRunnerListenerAdapter {
     @Override
     public void halted(BProgram bp){
         try {
-            emitter.send(SseEmitter.event().name("flowEvent").data("Program execution halted.."));
+            emitter.send(SseEmitter.event().name("flowEvent").data("Program execution halted."));
         } catch (IOException e) {
             e.printStackTrace();
         }
