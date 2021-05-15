@@ -3,6 +3,7 @@ import VueRenderPlugin from "rete-vue-render-plugin";
 import ConnectionPlugin from "rete-connection-plugin";
 import AreaPlugin from "rete-area-plugin";
 import ContextMenuPlugin from "rete-context-menu-plugin";
+import ConnectionReroutePlugin from 'rete-connection-reroute-plugin';
 // import DockPlugin from "rete-dock-plugin";
 import CommentPlugin from "rete-comment-plugin";
 import { BsyncComponent, statusColor } from "./components/BsyncComponent";
@@ -61,6 +62,7 @@ export function init(container) {
         editor.use(ConnectionPlugin);
         editor.use(VueRenderPlugin);
         editor.use(ContextMenuPlugin);
+        editor.use(ConnectionReroutePlugin);
         // editor.use(DockPlugin);
         editor.use(AreaPlugin);
         //editor.use(CommentPlugin);
