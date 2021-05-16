@@ -10,7 +10,7 @@ export async function SendGraphToServer(editor, engine, nodeNamesToIds, route) {
     await engine.abort();
     await engine.process(editor.toJSON());
 
-    let dataToSend = parseDataToSend(editor, nodeNamesToIds);
+    let dataToSend = parseDataToSend(editor, editor.toJSON(), nodeNamesToIds);
     dataToSend = JSON.stringify(dataToSend);
     console.log(dataToSend);
     post(route, dataToSend);
