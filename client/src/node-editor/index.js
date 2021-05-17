@@ -79,6 +79,10 @@ export function disableRunButton(){
     nevBarbuttonsVisibility.isRunDisabled = true;
 }
 
+export function cleanBoard(){
+    editor.clear();
+}
+
 export function init(container, logContent, buttonsVisibility) {
     // //----------------EventListener---------------
     console.log('-----init editor--------');
