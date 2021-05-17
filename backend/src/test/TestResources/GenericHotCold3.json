@@ -1,0 +1,125 @@
+{
+  "id": "12636264-5251-4d2d-8844-f21e9ca389a9@0.1.0",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {
+        "code": "\nlet outputs = {};\noutputs[\" Output\"] = {i:3};\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          3,
+          4
+        ]
+      },
+      "type": "Start"
+    },
+    "2": {
+      "id": 2,
+      "data": {
+        "code": "nodesLists[\"active\"].push(2);\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(2), 1);\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        3
+      ],
+      "outputs": {
+        " Output": [
+          3
+        ]
+      },
+      "type": "General"
+    },
+    "3": {
+      "id": 3,
+      "data": {
+        "code": "if(payload[\"i\"] > 0){\n  payload[\"i\"]--;\n}\nelse{\n  return -1;\n}\nlet outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        1,
+        2
+      ],
+      "outputs": {
+        "output1": [
+          2
+        ]
+      },
+      "type": "General"
+    },
+    "4": {
+      "id": 4,
+      "data": {
+        "code": "if(payload[\"i\"] > 0){\n  payload[\"i\"]--;\n}\nelse{\n  return -1;\n}\nlet outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        1,
+        5
+      ],
+      "outputs": {
+        "output1": [
+          5
+        ]
+      },
+      "type": "General"
+    },
+    "5": {
+      "id": 5,
+      "data": {
+        "code": "nodesLists[\"active\"].push(5);\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(5), 1);\nnodesLists[\"selectedEvent\"] = 5;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        4
+      ],
+      "outputs": {
+        " Output": [
+          4
+        ]
+      },
+      "type": "General"
+    },
+    "6": {
+      "id": 6,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          7
+        ]
+      },
+      "type": "Start"
+    },
+    "7": {
+      "id": 7,
+      "data": {
+        "code": "nodesLists[\"active\"].push(7);\n\n                bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(7), 1);\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        6,
+        8
+      ],
+      "outputs": {
+        " Output": [
+          8
+        ]
+      },
+      "type": "General"
+    },
+    "8": {
+      "id": 8,
+      "data": {
+        "code": "nodesLists[\"active\"].push(8);\n\n                bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(8), 1);\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        7
+      ],
+      "outputs": {
+        " Output": [
+          7
+        ]
+      },
+      "type": "General"
+    }
+  }
+}

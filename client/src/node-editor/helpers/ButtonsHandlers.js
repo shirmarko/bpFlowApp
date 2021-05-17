@@ -5,6 +5,12 @@ import { clearPrevSelectedNodeId, clearPrevActiveNodes } from "../EventHandlers/
 
 export async function SendGraphToServer(editor, engine, nodeNamesToIds, route) {
     console.log('--------click run--------');
+
+    if(route === "debug"){
+        clearPrevSelectedNodeId();
+        clearPrevActiveNodes();
+    }
+    
     console.log(editor.toJSON());
     console.log(JSON.stringify(editor.toJSON()));
     await engine.abort();

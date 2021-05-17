@@ -22,7 +22,6 @@ public class Controller {
     @PostMapping(value = "/run", consumes = "application/json", produces = "application/json")
     public String run(@RequestBody GraphModel graphModel){
         this.myGraphModel = graphModel;
-        System.out.println("got graphModel, start process...");
         service.run(graphModel, serverEmitter);
 
         return "ok";
@@ -31,7 +30,6 @@ public class Controller {
     @PostMapping(value = "/debug", consumes = "application/json", produces = "application/json")
     public String debug(@RequestBody GraphModel graphModel){
         this.myGraphModel = graphModel;
-        System.out.println("got graphModel with id = " + graphModel.getId());
         service.debug(graphModel, serverEmitter);
 
         return "ok";
