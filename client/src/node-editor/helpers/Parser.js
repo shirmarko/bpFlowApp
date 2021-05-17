@@ -106,8 +106,8 @@ function parseNodes(editor, newData, nodeNamesToIds) {
     }
 }
 
-export function parseDataToSend(editor, nodeNamesToIds) {
-    let newData = JSON.parse(JSON.stringify(editor.toJSON()));
+export function parseDataToSend(editor, data, nodeNamesToIds) {
+    let newData = JSON.parse(JSON.stringify(data));
     delete newData.comments;
     parseNodes(editor, newData, nodeNamesToIds);
     return newData;

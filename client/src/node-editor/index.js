@@ -108,9 +108,9 @@ export function init(container, logContent, buttonsVisibility) {
             engine.register(c);
         });
 
-        var bsyncNode = await components[1].createNode();
         var startNode = await components[0].createNode();
-
+        var bsyncNode = await components[1].createNode();
+        
         startNode.position = [100, 100];
         bsyncNode.position = [400, 100];
 
