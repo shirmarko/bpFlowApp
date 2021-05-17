@@ -92,7 +92,7 @@ export function init(container, logContent, buttonsVisibility) {
     engine = new Rete.Engine(id);
     // var container = document.querySelector('#rete');
     editor = new Rete.NodeEditor(id, container);
-    const components = [new BsyncComponent(Consts.defaultOutputName), new StartComponent(Consts.defaultOutputName), new GeneralComponent("General", 2, ["output1", "output2"])];
+    const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName), new GeneralComponent("General", 2, ["output1", "output2"])];
 
     (async () => {
         editor.use(ConnectionPlugin);
@@ -108,8 +108,8 @@ export function init(container, logContent, buttonsVisibility) {
             engine.register(c);
         });
 
-        var startNode = await components[1].createNode();
-        var bsyncNode = await components[0].createNode();
+        var bsyncNode = await components[1].createNode();
+        var startNode = await components[0].createNode();
 
         startNode.position = [100, 100];
         bsyncNode.position = [400, 100];

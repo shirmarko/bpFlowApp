@@ -23,8 +23,11 @@ var CustomGeneralNode = {
     </div>
     
     <!-- Controls-->
-    <div class="control" v-for="control in controls()" v-control="control">
-            <div class="control-title">{{control.key}}:</div>
+    <div id="wrapper">
+        <div class="btn-group">
+            <div v-for="control in controls()" v-control="control">
+            </div>
+        </div>
     </div>
 
   </div>`,
@@ -42,19 +45,20 @@ export class GeneralComponent extends Rete.Component {
         this.outputsTitles = outputsTitles;
         this.numOfOutputs = numOfOutputs;
     }
-    
+
     builder(node) {
-        for(let i = 0; i < this.numOfOutputs; i++){
+        for (let i = 0; i < this.numOfOutputs; i++) {
             node.addOutput(new OutputWithPayload(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
         }
         node.data.payloadView = {};
         var inp = new Rete.Input('input', "Input", Socket.general, true);
-        const editGeneralNodeControl = new EditGeneralNodeControl('edit',this.name, node.outputs, this.editor);
+        const editGeneralNodeControl = new EditGeneralNodeControl('edit', this.name, node.outputs, this.editor, node.id);
         node.addInput(inp)
-            .addControl(new CodeControl('code', node.outputs))
-            .addControl(editGeneralNodeControl)
+            .addControl(new CodeControl('code', node.outputs, node.id))
             .addControl(new PayloadControl('payload', node.data, node.id))
-        
+            .addControl(editGeneralNodeControl)
+
+
         editGeneralNodeControl.addNodeToProps(node);
 
         return node;

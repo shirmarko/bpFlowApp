@@ -1,20 +1,20 @@
 <template>
   <div>
-  <span :id="`disabled-wrapper${curNodeId}`" class="d-inline-block" tabindex="0">
-    <b-button size="sm" pill v-b-modal.code-modal-prevent-closing disabled>my payload</b-button>
-  </span>
-  <b-tooltip :target="`disabled-wrapper${curNodeId}`" :title="`${JSON.stringify(myNodeData.payloadView)}`"></b-tooltip>
-</div>
+    <span
+      :id="`payload-control-${curNodeId}`"
+      class="d-inline-block"
+      tabindex="0"
+    >
+      <b-button size="sm" variant="dark" v-b-tooltip.bottom="`${JSON.stringify(myNodeData.payloadView)}`">
+        payload
+      </b-button>
+    </span>
+  </div>
 </template>
 
 <script>
 //import Modal from './Modal.vue';
-import {
-  BButton,
-  VBModal,
-  BTooltip
-
-} from "bootstrap-vue";
+import { BButton, VBModal, BTooltip, VBTooltip} from "bootstrap-vue";
 
 export default {
   name: "CodeControlVueComp",
@@ -22,13 +22,12 @@ export default {
   data() {
     return {
       myNodeData: this.nodeData,
-      curNodeId: this.nodeId
+      curNodeId: this.nodeId,
     };
   },
-  methods: {
-  },
-  components: { BButton, BTooltip},
-  directives: { "b-modal": VBModal },
+  methods: {},
+  components: { BButton, BTooltip },
+  directives: { "b-modal": VBModal, 'b-tooltip': VBTooltip},
 };
 </script>
 

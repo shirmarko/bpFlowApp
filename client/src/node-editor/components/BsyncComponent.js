@@ -25,7 +25,7 @@ var CustomBSyncNode = {
     
     <!-- Controls-->
     <div class="control" v-for="control in controls()" v-control="control">
-            <div class="control-title">{{control.key}}:</div>
+            <div v-if="control.key!=='payload'" class="control-title">{{control.key}}:</div>
     </div>
 
   </div>`,

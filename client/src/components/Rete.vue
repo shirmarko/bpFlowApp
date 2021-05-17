@@ -282,8 +282,8 @@ input {
   background: #ecc69e;
 }
 .node {
-  background: rgb(136, 170, 219);
-  border: 2px solid rgb(102, 147, 209);
+  background: rgba(158, 161, 159, 0.8);
+  border: 2px solid rgb(65, 67, 68);
   border-radius: 10px;
   cursor: pointer;
   min-width: 180px;
@@ -294,7 +294,7 @@ input {
   user-select: none;
 }
 .node:hover {
-  background: rgb(169, 197, 236);
+  background: rgb(157, 157, 158);
 }
 .node.selected,
 .selectedNode.selected {
@@ -393,7 +393,7 @@ input {
   background: rgba(86, 226, 121, 0.8);
 }
 .activeNode {
-  background: rgba(158, 161, 159, 0.8);
+  background: rgba(57, 58, 57, 0.8);
   border: 2px solid #4d504e;
   border-radius: 10px;
   cursor: pointer;
@@ -405,7 +405,7 @@ input {
   user-select: none;
 }
 .activeNode:hover {
-  background: rgba(213, 219, 216, 0.8);
+  background: rgba(139, 138, 139, 0.8);
 }
 .blockedNode {
   background: rgba(206, 69, 45, 0.8);
@@ -426,7 +426,41 @@ input {
   width: 0;
   height: 0;
   border-top: 50px solid transparent;
-  border-left: 100px solid rgb(136, 170, 219);
+  border-left: 100px solid rgba(158, 161, 159, 0.8);
   border-bottom: 50px solid transparent;
+}
+.btn-group button {
+  background-color: #343A40; /* Green background */
+  border: 1px solid rgb(77, 80, 77); /* Green border */
+  color: white; /* White text */
+  padding: 5px 10px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+  margin-left: 2px;
+
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #363c42;
+}
+
+#wrapper {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
