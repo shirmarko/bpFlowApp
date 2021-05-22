@@ -2,7 +2,7 @@
   <div id="rete" v-show="visible" ref="rete">
     <div>
       <b-navbar toggleable="sm" type="dark" variant="dark">
-        <b-navbar-brand>bpFlow</b-navbar-brand>
+        <b-navbar-brand>BPFlow</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -10,7 +10,11 @@
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
             <b-nav-item v-b-toggle.sidebar-variant>Console</b-nav-item>
-            <b-nav-item id="run-button" v-on:click="OnClickRun" :disabled="buttonsVisibility.isRunDisabled">
+            <b-nav-item
+              id="run-button"
+              v-on:click="OnClickRun"
+              :disabled="buttonsVisibility.isRunDisabled"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -105,6 +109,20 @@
                 />
               </svg>
             </b-nav-item>
+            <b-nav-item id="clean-board-button" v-on:click="OnClickCleanBoard" v-b-tooltip.bottom="'Clean Board'">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-trash-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                />
+              </svg>
+            </b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
@@ -134,6 +152,7 @@ import {
   OnClickStep,
   OnClickStop,
   OnClickDebug,
+  cleanBoard
 } from "../node-editor/index";
 import {
   BModal,
@@ -151,6 +170,8 @@ import {
   BNav,
   BSidebar,
   BCard,
+  BTooltip,
+  VBTooltip
 } from "bootstrap-vue";
 //import Modal from './Modal.vue';
 // import { BModal, VBModal } from 'bootstrap-vue'
@@ -160,10 +181,12 @@ export default {
     return {
       visible: true,
       logContent: [],
-      buttonsVisibility:{isStepDisabled: true,
-                         isStopDisabled: true,
-                         isDebugDisabled: false,
-                         isRunDisabled: false}
+      buttonsVisibility: {
+        isStepDisabled: true,
+        isStopDisabled: true,
+        isDebugDisabled: false,
+        isRunDisabled: false,
+      },
     };
   },
   methods: {
@@ -190,17 +213,23 @@ export default {
     OnClickStepBack: function () {
       console.log("------STEP BACK IS NOT IMPLEMENTED YET--------");
     },
-    FillConsoleWindow: function () {},
+    OnClickCleanBoard: function () {
+      console.log("------CLEAN BOARD IS NOT IMPLEMENTED YET--------");
+      cleanBoard();
+    },
 
     makeToast(variant = null) {
-      this.$bvToast.toast(`${this.buttonsVisibility.isDebugDisabled ? "ON" : "OFF"}`, {
-        title: `Debug Mode Status`,
-        variant: variant,
-        toaster: "b-toaster-bottom-right",
-        appendToast: true,
-        autoHideDelay: 2500,
-        solid: true,
-      });
+      this.$bvToast.toast(
+        `${this.buttonsVisibility.isDebugDisabled ? "ON" : "OFF"}`,
+        {
+          title: `Debug Mode Status`,
+          variant: variant,
+          toaster: "b-toaster-bottom-right",
+          appendToast: true,
+          autoHideDelay: 2500,
+          solid: true,
+        }
+      );
     },
     ClearConsole() {
       this.logContent.splice(0, this.logContent.length);
@@ -221,8 +250,9 @@ export default {
     BNav,
     BSidebar,
     BCard,
+    BTooltip
   },
-  directives: { "b-modal": VBModal },
+  directives: { "b-modal": VBModal, 'b-tooltip': VBTooltip },
   mounted() {
     init(this.$refs.rete, this.logContent, this.buttonsVisibility);
   },
@@ -430,14 +460,13 @@ input {
   border-bottom: 50px solid transparent;
 }
 .btn-group button {
-  background-color: #343A40; /* Green background */
+  background-color: #343a40; /* Green background */
   border: 1px solid rgb(77, 80, 77); /* Green border */
   color: white; /* White text */
   padding: 5px 10px; /* Some padding */
   cursor: pointer; /* Pointer/hand icon */
   float: left; /* Float the buttons side by side */
   margin-left: 2px;
-
 }
 
 .btn-group button:not(:last-child) {
