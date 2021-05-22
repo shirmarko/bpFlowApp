@@ -152,7 +152,8 @@ import {
   OnClickStep,
   OnClickStop,
   OnClickDebug,
-  cleanBoard
+  cleanBoard,
+  ChangeGraphReadOnly
 } from "../node-editor/index";
 import {
   BModal,
@@ -193,18 +194,20 @@ export default {
     OnClickRun: function () {
       OnClickRun();
     },
-    OnClickDebug: function () {
+    OnClickDebug: async function () {
       this.buttonsVisibility.isStepDisabled = false;
       this.buttonsVisibility.isStopDisabled = false;
       this.buttonsVisibility.isDebugDisabled = true;
       this.buttonsVisibility.isRunDisabled = true;
+      await ChangeGraphReadOnly();
       OnClickDebug();
     },
-    OnClickStop: function () {
+    OnClickStop: async function () {
       this.buttonsVisibility.isStepDisabled = true;
       this.buttonsVisibility.isStopDisabled = true;
       this.buttonsVisibility.isDebugDisabled = false;
       this.buttonsVisibility.isRunDisabled = false;
+      await ChangeGraphReadOnly();
       OnClickStop();
     },
     OnClickStep: function () {
@@ -214,7 +217,6 @@ export default {
       console.log("------STEP BACK IS NOT IMPLEMENTED YET--------");
     },
     OnClickCleanBoard: function () {
-      console.log("------CLEAN BOARD IS NOT IMPLEMENTED YET--------");
       cleanBoard();
     },
 
