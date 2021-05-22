@@ -26,7 +26,7 @@ export async function OnClickStop(editor, nodeNamesToIds) {
     clearPrevSelectedNodeId();
     clearPrevActiveNodes();
     editor.nodes.forEach(node => {
-        node.data.color = "BLUE";
+        node.data.color = "BRIGHTGRAY";
         node.data.payloadView = {};
         node.update();
     });

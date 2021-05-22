@@ -84,6 +84,7 @@ public class DebugRunner{
                 if(dataToSend.isPresent()){
                     emitter.send(SseEmitter.event().name("step").data(dataToSend.get()));
                 }
+
                 else{
                     go.set(false); //????
                 }

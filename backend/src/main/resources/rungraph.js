@@ -98,9 +98,9 @@ const allNodesMap = model.getNodes();
 //bp.log.info("allNodesMap:" + allNodesMap);
 
 let nodesLists = {};
-nodesLists["active"] = [];
-nodesLists["reqnotblocked"] = [];
-nodesLists["blocked"] = [];
+nodesLists["active"] = {};
+nodesLists["reqnotblocked"] = {};
+nodesLists["blocked"] = {};
 nodesLists["selectedEvent"] = undefined;
 nodesLists["isDone"] = false;
 

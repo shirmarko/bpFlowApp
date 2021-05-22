@@ -58,8 +58,9 @@ function goToFollowers(curNode, ths, bp, payloads) {
 function runInNewBT(curNode, payload) {
     bp.log.info("in runInNewBT@@@@@@@@ - " + curNode.id + " :" + JSON.stringify(payload));
 	var context = JSON.parse(JSON.stringify(payload));
-    nodesLists["payloads"][curNode.id] = payload;
+
 	bp.registerBThread(curNode.id, function() {
+	    nodesLists["payloads"][curNode.id] = payload;
 		eval("var f=f" + curNode.id);
         //bp.log.info("curNode.id - " + curNode.id);
 		const payloads = f(context, this, bp, nodesLists);
@@ -92,9 +93,9 @@ const allNodesMap = model.getNodes();
 //bp.log.info("allNodesMap:" + allNodesMap);
 
 let nodesLists = {};
-nodesLists["active"] = [];
-nodesLists["reqnotblocked"] = [];
-nodesLists["blocked"] = [];
+nodesLists["active"] = {};
+nodesLists["reqnotblocked"] = {};
+nodesLists["blocked"] = {};
 nodesLists["selectedEvent"] = undefined;
 nodesLists["isDone"] = false;
 nodesLists["payloads"] = {};

@@ -3,7 +3,7 @@ import { InputTextControl } from "../controls/InputTextControlVue.js"
 import { PayloadControl } from "../controls/PayloadControlVue"
 import * as Socket from "../sockets";
 import Rete from "rete";
-export const statusColor = { BLUE: "node", GREEN: "selectedNode", RED: "blockedNode", GRAY: "activeNode" };
+export const statusColor = { BRIGHTGRAY: "node", GREEN: "selectedNode", RED: "blockedNode", DARKGRAY: "activeNode" };
 
 // node.data.color === 1 ? 'node' : 'selectedNode'
 //---------------------------------------Bsync-------------------------------------------------
@@ -52,7 +52,7 @@ var CustomBSyncNode = {
       var inp = new Rete.Input('input', "Input", Socket.general, true);
       var out = new Rete.Output(this.outputName, this.outputName, Socket.general);
       node.data.payloadView = {};
-      node.data.color = "BLUE";
+      node.data.color = "BRIGHTGRAY";
       return node
         .addInput(inp)
         .addOutput(out)

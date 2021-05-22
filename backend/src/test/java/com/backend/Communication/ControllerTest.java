@@ -2,7 +2,9 @@ package com.backend.Communication;
 
 import com.backend.Logic.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import il.ac.bgu.cs.bp.bpjs.internal.Pair;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +19,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -124,42 +127,87 @@ public class ControllerTest {
 //
 //    }
 
+    private final String[] helloWorldBpEventsExpectedResult = new String[]{"Hello", "World", "Program execution ended."};
+    private final String[] hotCold0BpEventsExpectedResult = new String[]{"Program execution ended."};
+    private final String[] hotCold3BpEventsExpectedResult = new String[]{"Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Program execution ended."};
+    private final String[] hotCold5BpEventsExpectedResult = new String[]{"Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Program execution ended."};
+
+
     @Test
     public void runHotCold() throws Exception {
-        runTest("HotCold.json", new String[]{"Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Program execution ended."});
+        runTest("HotCold/HotColdInputTest.json", hotCold3BpEventsExpectedResult);
     }
 
     @Test
     public void runHelloWorld() throws Exception {
-        runTest("HelloWorld.json", new String[]{"Hello", "World", "Program execution ended."});
+        runTest("HelloWorld/HelloWorldInputTest.json", helloWorldBpEventsExpectedResult);
     }
 
     @Test
     public void runGenericHotCold3() throws Exception {
-        runTest("GenericHotCold3.json", new String[]{ "Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Program execution ended."});
+        runTest("GenericHotCold3.json", hotCold3BpEventsExpectedResult);
     }
 
     @Test
     public void runGenericHotCold5() throws Exception {
-        runTest("GenericHotCold5.json", new String[]{"Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Program execution ended."});
+        runTest("GenericHotCold5.json", hotCold5BpEventsExpectedResult);
     }
 
     @Test
     public void runGenericHotCold0() throws Exception {
-        runTest("GenericHotCold0.json", new String[]{"Program execution ended."});
+        runTest("GenericHotCold0.json", hotCold0BpEventsExpectedResult);
     }
 
     @Test
     public void debugHelloWorld() throws Exception {
-        MvcResult emmiter = debugTest("HelloWorld.json");
-        stepTest("HelloWorld", new String []{}, emmiter);
-        stepTest("HelloWorld", new String []{}, emmiter);
-        stepTest("HelloWorld", new String []{}, emmiter);
-        stepTest("HelloWorld", new String []{}, emmiter);
+        MvcResult emmiter = debugTest("HelloWorld/HelloWorldInputTest.json");
+        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("HelloWorld", emmiter);
+
+
+        ArrayList<String> bpEvents = events.getLeft();
+        Assert.assertArrayEquals(helloWorldBpEventsExpectedResult, bpEvents.toArray());
+
+
+        ArrayList<String> stepEvents = events.getRight();
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HelloWorld\\HelloWorldDebugStep1.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HelloWorld\\HelloWorldDebugStep2.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HelloWorld\\HelloWorldDebugStep3.json"))));
+        //Assert.assertArrayEquals(expectedStepEventsData.toArray(), stepEvents.toArray());
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
 
     }
 
+    @Test
+    public void debugHotCold() throws Exception {
+        MvcResult emmiter = debugTest("HotCold/HotColdInputTest.json");
+        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("HotCold", emmiter);
 
+
+        ArrayList<String> bpEvents = events.getLeft();
+        Assert.assertArrayEquals(hotCold3BpEventsExpectedResult, bpEvents.toArray());
+
+
+        ArrayList<String> stepEvents = events.getRight();
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HotCold\\HotColdDebugStep1.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HotCold\\HotColdDebugStep2.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HotCold\\HotColdDebugStep3.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HotCold\\HotColdDebugStep4.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HotCold\\HotColdDebugStep5.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HotCold\\HotColdDebugStep6.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\HotCold\\HotColdDebugStep7.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
+
+    }
     private MvcResult debugTest(String jsonFileName) throws Exception {
         String model = new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\" + jsonFileName)));
         MvcResult emmiter = mockMvc.perform(get("/subscribe"))
@@ -173,32 +221,41 @@ public class ControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-
-        String event = emmiter.getResponse().getContentAsString();
-        //first event is init
-        System.out.println("debug event: " + event);
         return emmiter;
     }
 
-    private void stepTest(String graphId, String[] expectedEvents, MvcResult emmiter) throws Exception {
+    private Pair<ArrayList<String>, ArrayList<String>> stepTest(String graphId, MvcResult emmiter) throws Exception {
 
-        mockMvc.perform(post("/step")
-                .content(graphId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        String events;
+        do{
+            mockMvc.perform(post("/step")
+                    .content(graphId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
 
+            events = emmiter.getResponse().getContentAsString();
+        }
+        while(!events.contains("{\"isDone\":true}"));
 
-        String event = emmiter.getResponse().getContentAsString();
-        String [] events = event.split("data:");
-        //first event is init
-        System.out.println(event);
-//        System.out.println(Arrays.toString(events));
-//        assertTrue(events.length > 1);
-//        for (int i = 1; i < events.length; i++){
-//            String eventData = events[i].split("\\n")[0];
-//            assertEquals(expectedEvents[i-1], eventData);
-//        }
+        System.out.println(events);
+        ArrayList<String> bpEvents = getEventsData(events, "flowEvent");
+        ArrayList<String> stepEvents = getEventsData(events, "step");
+        return new Pair<>(bpEvents, stepEvents);
+    }
+
+    private ArrayList<String> getEventsData(String events, String eventType) {
+        ArrayList<String> eventsData = new ArrayList<>();
+        String[] eventsSplitted = events.split(eventType);
+        final String data = "data:";
+        for(int i = 1; i < eventsSplitted.length; i++){
+            if(eventsSplitted[i].contains("event:")){
+                String curDataEvent = eventsSplitted[i].substring(eventsSplitted[i].indexOf(data) + data.length(), eventsSplitted[i].indexOf("event:"));
+                curDataEvent = curDataEvent.substring(0, curDataEvent.length() - 2);
+                eventsData.add(curDataEvent);
+            }
+        }
+        return eventsData;
     }
 
     private void runTest(String jsonFileName, String[] expectedEvents) throws Exception {
@@ -218,8 +275,6 @@ public class ControllerTest {
         String event = emmiter.getResponse().getContentAsString();
         String [] events = event.split("data:");
         //first event is init
-        System.out.println(event);
-        System.out.println(Arrays.toString(events));
         assertTrue(events.length > 1);
         for (int i = 1; i < events.length; i++){
             String eventData = events[i].split("\\n")[0];

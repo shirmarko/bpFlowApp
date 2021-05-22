@@ -1,0 +1,19 @@
+{
+  "active": {
+    "2": false,
+    "3": false,
+    "4": true,
+    "6": false,
+    "7": true,
+    "10": false,
+    "11": true
+  },
+  "reqnotblocked": {},
+  "blocked": {},
+  "selectedEvent": 3.0,
+  "isDone": false,
+  "payloads": {
+    "4": {},
+    "11": {}
+  }
+}

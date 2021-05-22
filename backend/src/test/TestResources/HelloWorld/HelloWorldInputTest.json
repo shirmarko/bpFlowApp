@@ -17,7 +17,7 @@
     "2": {
       "id": 2,
       "data": {
-        "code": "nodesLists[\"active\"].push(2);\n\n                bp.sync( {request:bp.Event(\"Hello\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(2), 1);\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"Hello\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         1
@@ -43,7 +43,7 @@
     "4": {
       "id": 4,
       "data": {
-        "code": "nodesLists[\"active\"].push(4);\n\n                bp.sync( {request:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(4), 1);\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         3
@@ -69,7 +69,7 @@
     "6": {
       "id": 6,
       "data": {
-        "code": "nodesLists[\"active\"].push(6);\n\n                bp.sync( {waitFor:bp.Event(\"Hello\"), block:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(6), 1);\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][6] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Hello\"), block:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"][6] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         5

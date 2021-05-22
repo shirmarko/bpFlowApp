@@ -1,7 +1,7 @@
 import * as Index from "../index"
 
 let prevSelectedNodeId;
-let prevActiveNodes = [];
+let prevActiveNodes = {};
 
 
 export function clearPrevSelectedNodeId(){
@@ -9,16 +9,22 @@ export function clearPrevSelectedNodeId(){
 }
 
 export function clearPrevActiveNodes(){
-    prevActiveNodes = [];
+    prevActiveNodes = {};
 }
 
 export function stepEventHandler(event) {
-    prevActiveNodes.forEach(nodeId => changeNodeColor(nodeId, "BLUE"));
+    //prevActiveNodes.forEach(nodeId => changeNodeColor(nodeId, "BRIGHTGRAY"));
+    for(let nodeId in prevActiveNodes){
+        if(prevActiveNodes[nodeId]){
+            changeNodeColor(nodeId, "BRIGHTGRAY");
+        }
+    }
+
     let data = JSON.parse(event.data);
     console.log(data);
     console.log(Index.nodeNamesToIds);
     if (prevSelectedNodeId != undefined) {
-        changeNodeColor(prevSelectedNodeId, "BLUE");
+        changeNodeColor(prevSelectedNodeId, "BRIGHTGRAY");
     }
 
     if (data.isDone) {
@@ -26,8 +32,19 @@ export function stepEventHandler(event) {
         return;
     }
 
-    data.blocked.forEach(nodeId => changeNodeColor(nodeId, "RED"));
-    data.active.forEach(nodeId => changeNodeColor(nodeId, "GRAY"));
+    for(let nodeId in data.blocked){
+        if(data.blocked[nodeId]){
+            changeNodeColor(nodeId, "RED");
+        }
+    }
+    //data.blocked.forEach(nodeId => changeNodeColor(nodeId, "RED"));
+    for(let nodeId in data.active){
+        if(data.active[nodeId]){
+            changeNodeColor(nodeId, "DARKGRAY");
+        }
+    }
+
+    //data.active.forEach(nodeId => changeNodeColor(nodeId, "DARKGRAY"));
 
     if (data.selectedEvent != null) {
         //let nodeId = nodeNamesToIds[data.selectedEvent.name] == undefined ? nodeNamesToIds[`"${data.selectedEvent.name}"`] : nodeNamesToIds[data.selectedEvent.name];
@@ -60,9 +77,9 @@ export function flowEventHandler(event) {
 
 function endDebug(){
     prevSelectedNodeId = undefined;
-    prevActiveNodes = [];
+    prevActiveNodes = {};
     Index.editor.nodes.forEach(node => {
-        node.data.color = "BLUE";
+        node.data.color = "BRIGHTGRAY";
         node.data.payloadView = {};
         node.update();
     });

@@ -1,5 +1,5 @@
 {
-  "id": "12636264-5251-4d2d-8844-f21e9ca389a9@0.1.0",
+  "id": "857263a2-289f-4c1b-ab75-78b5dc0dfcfd@0.1.0",
   "nodes": {
     "1": {
       "id": 1,
@@ -18,7 +18,7 @@
     "2": {
       "id": 2,
       "data": {
-        "code": "nodesLists[\"active\"].push(2);\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(2), 1);\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         3
@@ -65,7 +65,7 @@
     "5": {
       "id": 5,
       "data": {
-        "code": "nodesLists[\"active\"].push(5);\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(5), 1);\nnodesLists[\"selectedEvent\"] = 5;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][5] = true;\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][5] = false;\nnodesLists[\"selectedEvent\"] = 5;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         4
@@ -93,7 +93,7 @@
     "7": {
       "id": 7,
       "data": {
-        "code": "nodesLists[\"active\"].push(7);\n\n                bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(7), 1);\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][7] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][7] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         6,
@@ -109,7 +109,7 @@
     "8": {
       "id": 8,
       "data": {
-        "code": "nodesLists[\"active\"].push(8);\n\n                bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(8), 1);\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][8] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][8] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         7

@@ -1,6 +1,6 @@
 export let HotColdBeforeParse = 
 {
-    "id": "544936e9-89ca-4a02-a27c-358d670856be@0.1.0",
+    "id": "dd57dee9-61b5-4dd7-bc4b-590b075d8130@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
@@ -20,8 +20,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          -23,
-          -25
+          100,
+          100
         ],
         "name": "Start"
       },
@@ -29,7 +29,7 @@ export let HotColdBeforeParse =
         "id": 2,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
+          "color": "BRIGHTGRAY",
           "request": "\"Hot\""
         },
         "inputs": {
@@ -59,8 +59,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          216,
-          -51.371742293227925
+          400,
+          100
         ],
         "name": "Bsync"
       },
@@ -68,7 +68,7 @@ export let HotColdBeforeParse =
         "id": 3,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
+          "color": "BRIGHTGRAY",
           "request": "\"Hot\""
         },
         "inputs": {
@@ -98,8 +98,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          566.9629603313596,
-          -41.51851063835187
+          801.3781645103803,
+          104.58479988488654
         ],
         "name": "Bsync"
       },
@@ -107,7 +107,7 @@ export let HotColdBeforeParse =
         "id": 4,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
+          "color": "BRIGHTGRAY",
           "request": "\"Hot\""
         },
         "inputs": {
@@ -129,8 +129,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          901.5308515921905,
-          -35.34567076617034
+          1172.9955368701922,
+          104.58457010599261
         ],
         "name": "Bsync"
       },
@@ -152,8 +152,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          -15.753098476080254,
-          265.8888828607253
+          85.5781585334285,
+          432.55567700704364
         ],
         "name": "Start"
       },
@@ -161,7 +161,7 @@ export let HotColdBeforeParse =
         "id": 6,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
+          "color": "BRIGHTGRAY",
           "request": "\"Cold\""
         },
         "inputs": {
@@ -191,8 +191,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          227.45678181871867,
-          267.1234586311467
+          391.6875689027225,
+          432.2631395578423
         ],
         "name": "Bsync"
       },
@@ -200,7 +200,7 @@ export let HotColdBeforeParse =
         "id": 7,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
+          "color": "BRIGHTGRAY",
           "request": "\"Cold\""
         },
         "inputs": {
@@ -230,8 +230,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          539.6652839948707,
-          273.2962996013543
+          802.9176930811612,
+          438.12890534395905
         ],
         "name": "Bsync"
       },
@@ -239,7 +239,7 @@ export let HotColdBeforeParse =
         "id": 8,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
+          "color": "BRIGHTGRAY",
           "request": "\"Cold\""
         },
         "inputs": {
@@ -261,8 +261,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          863.2592509545211,
-          283.17284372625255
+          1187.8214079096085,
+          422.3023275345822
         ],
         "name": "Bsync"
       },
@@ -284,8 +284,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          10.447255508223009,
-          606.3552960067266
+          86.57891537628655,
+          816.427936565041
         ],
         "name": "Start"
       },
@@ -293,22 +293,22 @@ export let HotColdBeforeParse =
         "id": 10,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
-          "block": "\"Cold\"",
-          "wait": "\"Hot\""
+          "color": "BRIGHTGRAY",
+          "wait": "\"Hot\"",
+          "block": "\"Cold\""
         },
         "inputs": {
           "input": {
             "connections": [
               {
-                "node": 9,
+                "node": 11,
                 "output": " Output",
                 "data": {
                   "pins": []
                 }
               },
               {
-                "node": 11,
+                "node": 9,
                 "output": " Output",
                 "data": {
                   "pins": []
@@ -331,8 +331,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          257.3607931595622,
-          587.1508817150823
+          428.3596949803878,
+          793.3346735044274
         ],
         "name": "Bsync"
       },
@@ -340,9 +340,9 @@ export let HotColdBeforeParse =
         "id": 11,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
-          "wait": "\"Cold\"",
-          "block": "\"Hot\""
+          "color": "BRIGHTGRAY",
+          "block": "\"Hot\"",
+          "wait": "\"Cold\""
         },
         "inputs": {
           "input": {
@@ -371,8 +371,8 @@ export let HotColdBeforeParse =
           }
         },
         "position": [
-          736.0988209619945,
-          562.4595157376078
+          851.7368861755268,
+          804.1114172165744
         ],
         "name": "Bsync"
       }
@@ -381,7 +381,7 @@ export let HotColdBeforeParse =
 
 export let HotColdExpectedParse =
 {
-  "id": "544936e9-89ca-4a02-a27c-358d670856be@0.1.0",
+  "id": "dd57dee9-61b5-4dd7-bc4b-590b075d8130@0.1.0",
   "nodes": {
     "1": {
       "id": 1,
@@ -399,7 +399,7 @@ export let HotColdExpectedParse =
     "2": {
       "id": 2,
       "data": {
-        "code": "nodesLists[\"active\"].push(2);\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(2), 1);\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         1
@@ -414,7 +414,7 @@ export let HotColdExpectedParse =
     "3": {
       "id": 3,
       "data": {
-        "code": "nodesLists[\"active\"].push(3);\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(3), 1);\nnodesLists[\"selectedEvent\"] = 3;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][3] = true;\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][3] = false;\nnodesLists[\"selectedEvent\"] = 3;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         2
@@ -429,7 +429,7 @@ export let HotColdExpectedParse =
     "4": {
       "id": 4,
       "data": {
-        "code": "nodesLists[\"active\"].push(4);\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(4), 1);\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         3
@@ -455,7 +455,7 @@ export let HotColdExpectedParse =
     "6": {
       "id": 6,
       "data": {
-        "code": "nodesLists[\"active\"].push(6);\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(6), 1);\nnodesLists[\"selectedEvent\"] = 6;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][6] = true;\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][6] = false;\nnodesLists[\"selectedEvent\"] = 6;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         5
@@ -470,7 +470,7 @@ export let HotColdExpectedParse =
     "7": {
       "id": 7,
       "data": {
-        "code": "nodesLists[\"active\"].push(7);\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(7), 1);\nnodesLists[\"selectedEvent\"] = 7;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][7] = true;\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][7] = false;\nnodesLists[\"selectedEvent\"] = 7;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         6
@@ -485,7 +485,7 @@ export let HotColdExpectedParse =
     "8": {
       "id": 8,
       "data": {
-        "code": "nodesLists[\"active\"].push(8);\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(8), 1);\nnodesLists[\"selectedEvent\"] = 8;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][8] = true;\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][8] = false;\nnodesLists[\"selectedEvent\"] = 8;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         7
@@ -511,11 +511,11 @@ export let HotColdExpectedParse =
     "10": {
       "id": 10,
       "data": {
-        "code": "nodesLists[\"active\"].push(10);\n\n                bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(10), 1);\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][10] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][10] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
-        9,
-        11
+        11,
+        9
       ],
       "outputs": {
         " Output": [
@@ -527,7 +527,7 @@ export let HotColdExpectedParse =
     "11": {
       "id": 11,
       "data": {
-        "code": "nodesLists[\"active\"].push(11);\n\n                bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(11), 1);\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"][11] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][11] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         10
