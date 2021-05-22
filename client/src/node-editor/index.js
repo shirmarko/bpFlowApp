@@ -13,6 +13,11 @@ import * as Consts from "./helpers/Consts";
 import * as ButtonsHandlers from "./helpers/ButtonsHandlers" 
 import * as EventHandlers from "./EventHandlers/EventHandlers.js"
 
+import { HelloWorldBeforeParse } from "../../test/ParserTests/JsonFiles/HelloWorldTest";
+import data from "./data.json";
+
+
+
 const eventSource = new EventSource('http://localhost:8090/subscribe');
 export let nodeNamesToIds = {};
 export let editor;
@@ -91,7 +96,7 @@ export async function ChangeGraphReadOnly(){
 }
 
 
-export function init(container, logContent, buttonsVisibility) {
+export function init(container, logContent, buttonsVisibility, isGraphFromJson = false) {
     // //----------------EventListener---------------
     console.log('-----init editor--------');
     logConsoleContent = logContent;
@@ -121,14 +126,18 @@ export function init(container, logContent, buttonsVisibility) {
             engine.register(c);
         });
 
-        var startNode = await components[0].createNode();
-        var bsyncNode = await components[1].createNode();
+        // var startNode = await components[0].createNode();
+        // var bsyncNode = await components[1].createNode();
         
-        startNode.position = [100, 100];
-        bsyncNode.position = [400, 100];
+        // startNode.position = [100, 100];
+        // bsyncNode.position = [400, 100];
 
-        editor.addNode(startNode);
-        editor.addNode(bsyncNode);
+        // editor.addNode(startNode);
+        // editor.addNode(bsyncNode);
+
+        // if (isGraphFromJson)
+        HelloWorldBeforeParse.id = id;
+        await editor.fromJSON(HelloWorldBeforeParse);
 
         editor.view.resize();
         AreaPlugin.zoomAt(editor);

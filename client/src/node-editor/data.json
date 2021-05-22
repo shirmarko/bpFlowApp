@@ -1,0 +1,42 @@
+{
+  "id": "a8739578-9096-4ce9-9918-f60ddc4f2f19@0.1.0",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {},
+      "inputs": {},
+      "outputs": {
+        " Output": {
+          "connections": []
+        }
+      },
+      "position": [
+        100,
+        100
+      ],
+      "name": "Start"
+    },
+    "2": {
+      "id": 2,
+      "data": {
+        "payloadView": {},
+        "color": "BLUE"
+      },
+      "inputs": {
+        "input": {
+          "connections": []
+        }
+      },
+      "outputs": {
+        " Output": {
+          "connections": []
+        }
+      },
+      "position": [
+        400,
+        100
+      ],
+      "name": "Bsync"
+    }
+  }
+}
