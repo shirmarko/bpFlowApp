@@ -75,18 +75,9 @@
 </template>
 
 <script>
-//import Modal from './Modal.vue';
 import { codemirror } from "vue-codemirror";
-
-require("codemirror/mode/javascript/javascript.js");
-require("codemirror/addon/fold/foldcode.js");
-require("codemirror/addon/fold/foldgutter.js");
-require("codemirror/addon/fold/brace-fold.js");
-require("codemirror/addon/fold/xml-fold.js");
-require("codemirror/addon/fold/indent-fold.js");
-require("codemirror/addon/fold/markdown-fold.js");
-require("codemirror/addon/fold/comment-fold.js");
-import 'codemirror/theme/base16-dark.css';
+import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/theme/base16-dark.css'
 
 
 import {
@@ -125,7 +116,10 @@ export default {
         lineWiseCopyCut: true,
         showCursorWhenSelecting: false,
         matchBrackets: true,
-        autocapitalize: true
+        autocapitalize: true,
+        autocorrect: true,
+        spellcheck:  true,
+        
       },
     };
   },
