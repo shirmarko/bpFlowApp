@@ -73,6 +73,19 @@ public class DebugRunner{
             listeners.forEach( l->l.assertionFailed(bprog, failedAssertion));
             go.set(false);
         }
+
+        if ( (!curSnapshot.noBThreadsLeft()) && go.get() ) {
+            Optional<Map> dataToSend = bprog.getFromGlobalScope("nodesLists", Map.class);
+            if (dataToSend.isPresent()) {
+                try {
+                    emitter.send(SseEmitter.event().name("step").data(dataToSend.get()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                go.set(false);
+            }
+        }
     }
 
     //return if the program is ended
@@ -80,14 +93,6 @@ public class DebugRunner{
         try {
             // while snapshot not empty, select an event and get the next snapshot.
             if ( (!curSnapshot.noBThreadsLeft()) && go.get() ) {
-                Optional<Map> dataToSend = bprog.getFromGlobalScope("nodesLists", Map.class);
-                if(dataToSend.isPresent()){
-                    emitter.send(SseEmitter.event().name("step").data(dataToSend.get()));
-                }
-
-                else{
-                    go.set(false); //????
-                }
 
                 // see which events are selectable
                 Set<BEvent> possibleEvents = bprog.getEventSelectionStrategy().selectableEvents(curSnapshot);
@@ -105,8 +110,10 @@ public class DebugRunner{
 
                     } else {
                         // Ending the program - no selectable event.
-                        listeners.forEach(l->l.superstepDone(bprog));
+                        listeners.forEach(l->l.ended(bprog));
                         go.set(false);
+                        emitter.send(SseEmitter.event().name("step").data(doneData));
+                        return true;
                     }
 
                 } else {
@@ -136,6 +143,15 @@ public class DebugRunner{
                         go.set(false);
                     }
                 }
+
+                Optional<Map> dataToSend = bprog.getFromGlobalScope("nodesLists", Map.class);
+                if(dataToSend.isPresent()){
+                    emitter.send(SseEmitter.event().name("step").data(dataToSend.get()));
+                }
+                else{
+                    go.set(false);
+                }
+
                 return false;
             }
             else if(halted){

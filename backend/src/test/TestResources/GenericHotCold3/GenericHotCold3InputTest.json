@@ -1,10 +1,10 @@
 {
-  "id": "857263a2-289f-4c1b-ab75-78b5dc0dfcfd@0.1.0",
+  "id": "GenericHotCold3",
   "nodes": {
     "1": {
       "id": 1,
       "data": {
-        "code": "\nlet outputs = {};\noutputs[\" Output\"] = {i:0};\nreturn outputs;"
+        "code": "\nlet outputs = {};\noutputs[\" Output\"] = {i:3};\nreturn outputs;"
       },
       "inputs": [],
       "outputs": {

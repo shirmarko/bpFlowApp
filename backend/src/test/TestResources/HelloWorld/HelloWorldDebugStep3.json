@@ -8,5 +8,12 @@
   "blocked": {},
   "selectedEvent": 4.0,
   "isDone": false,
-  "payloads": {}
+  "payloads": {
+    "1": {},
+    "2": {},
+    "3": {},
+    "4": {},
+    "5": {},
+    "6": {}
+  }
 }
