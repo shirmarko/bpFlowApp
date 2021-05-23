@@ -1,7 +1,7 @@
 
 export let HelloWorldBeforeParse = 
 {
-    "id": "d4f3e12f-3b21-4dea-bf29-3185724cd1ce@0.1.0",
+    "id": "d67a444a-bf5c-42d0-838e-0e5a275158b4@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
@@ -21,8 +21,8 @@ export let HelloWorldBeforeParse =
           }
         },
         "position": [
-          114.35802469135803,
-          -143.4691358024691
+          100,
+          100
         ],
         "name": "Start"
       },
@@ -30,7 +30,7 @@ export let HelloWorldBeforeParse =
         "id": 2,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
+          "color": "BRIGHTGRAY",
           "request": "\"Hello\""
         },
         "inputs": {
@@ -52,8 +52,8 @@ export let HelloWorldBeforeParse =
           }
         },
         "position": [
-          387.65432190267603,
-          -122.22220575183114
+          400,
+          100
         ],
         "name": "Bsync"
       },
@@ -75,8 +75,8 @@ export let HelloWorldBeforeParse =
           }
         },
         "position": [
-          101.67899426118825,
-          174.52332531353963
+          111.55558268229167,
+          381.3333299424913
         ],
         "name": "Start"
       },
@@ -84,7 +84,7 @@ export let HelloWorldBeforeParse =
         "id": 4,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
+          "color": "BRIGHTGRAY",
           "request": "\"World\""
         },
         "inputs": {
@@ -106,8 +106,8 @@ export let HelloWorldBeforeParse =
           }
         },
         "position": [
-          390.5678808625228,
-          189.47532377186008
+          420.4444589713291,
+          387.9999863563376
         ],
         "name": "Bsync"
       },
@@ -129,8 +129,8 @@ export let HelloWorldBeforeParse =
           }
         },
         "position": [
-          83.16047574266975,
-          461.0802544487847
+          140.85599587941527,
+          676.2441627282664
         ],
         "name": "Start"
       },
@@ -138,9 +138,9 @@ export let HelloWorldBeforeParse =
         "id": 6,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
-          "block": "\"World\"",
-          "wait": "\"Hello\""
+          "color": "BRIGHTGRAY",
+          "wait": "\"Hello\"",
+          "block": "\"World\""
         },
         "inputs": {
           "input": {
@@ -161,8 +161,8 @@ export let HelloWorldBeforeParse =
           }
         },
         "position": [
-          354.76541209272904,
-          453.672853812538
+          408.3457002222787,
+          680.3593758713249
         ],
         "name": "Bsync"
       }
@@ -171,7 +171,7 @@ export let HelloWorldBeforeParse =
 
 export let HelloWorldExpectedParse =
 {
-    "id": "d4f3e12f-3b21-4dea-bf29-3185724cd1ce@0.1.0",
+    "id": "d67a444a-bf5c-42d0-838e-0e5a275158b4@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
@@ -189,7 +189,7 @@ export let HelloWorldExpectedParse =
       "2": {
         "id": 2,
         "data": {
-          "code": "nodesLists[\"active\"].push(2);\n\n                bp.sync( {request:bp.Event(\"Hello\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(2), 1);\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"Hello\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           1
@@ -215,7 +215,7 @@ export let HelloWorldExpectedParse =
       "4": {
         "id": 4,
         "data": {
-          "code": "nodesLists[\"active\"].push(4);\n\n                bp.sync( {request:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(4), 1);\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           3
@@ -241,7 +241,7 @@ export let HelloWorldExpectedParse =
       "6": {
         "id": 6,
         "data": {
-          "code": "nodesLists[\"active\"].push(6);\n\n                bp.sync( {waitFor:bp.Event(\"Hello\"), block:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(6), 1);\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"][6] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Hello\"), block:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"][6] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           5

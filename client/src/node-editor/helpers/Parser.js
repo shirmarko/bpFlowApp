@@ -28,16 +28,16 @@ function parseNodeOutputs(editor, curNode) {
 
 function generateBPSyncCode(curNode, curId){
     let body = [];
-    if (curNode.data.hasOwnProperty("request")) {
+    if (curNode.data.hasOwnProperty("request") && curNode.data["request"] != "") {
         //nodeNamesToIds[curNode.data["request"]] = curId;
         body.push(`request:bp.Event(${curNode.data["request"]})`);
         delete curNode.data["request"];
     }
-    if (curNode.data.hasOwnProperty("wait")) {
+    if (curNode.data.hasOwnProperty("wait") && curNode.data["wait"] != "") {
         body.push(`waitFor:bp.Event(${curNode.data["wait"]})`);
         delete curNode.data["wait"];
     }
-    if (curNode.data.hasOwnProperty("block")) {
+    if (curNode.data.hasOwnProperty("block") && curNode.data["block"] != "") {
         body.push(`block:bp.Event(${curNode.data["block"]})`);
         delete curNode.data["block"];
     }
@@ -46,13 +46,13 @@ function generateBPSyncCode(curNode, curId){
 
 function generateBsyncCode(curNode, nodeNamesToIds){
     
-    let hasRequest = curNode.data.hasOwnProperty("request");
+    let hasRequest = curNode.data.hasOwnProperty("request") && curNode.data["request"] != "";
     let curId = parseInt(curNode.id, 10);
     let body = generateBPSyncCode(curNode, curId);
     
-    let code = `nodesLists["active"].push(${curId});\n
+    let code = `nodesLists["active"][${curId}] = true;\n
                 bp.sync( {${body.join(", ")}} );\n
-                nodesLists["active"].splice(nodesLists["active"].indexOf(${curId}), 1);\n`;
+                nodesLists["active"][${curId}] = false;\n`;
     if (hasRequest) {
         code += `nodesLists["selectedEvent"] = ${curId};\n`;
     }

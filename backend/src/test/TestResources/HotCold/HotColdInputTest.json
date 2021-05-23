@@ -1,0 +1,161 @@
+{
+  "id": "HotCold",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          2
+        ]
+      },
+      "type": "Start"
+    },
+    "2": {
+      "id": 2,
+      "data": {
+        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        1
+      ],
+      "outputs": {
+        " Output": [
+          3
+        ]
+      },
+      "type": "General"
+    },
+    "3": {
+      "id": 3,
+      "data": {
+        "code": "nodesLists[\"active\"][3] = true;\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][3] = false;\nnodesLists[\"selectedEvent\"] = 3;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        2
+      ],
+      "outputs": {
+        " Output": [
+          4
+        ]
+      },
+      "type": "General"
+    },
+    "4": {
+      "id": 4,
+      "data": {
+        "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        3
+      ],
+      "outputs": {
+        " Output": []
+      },
+      "type": "General"
+    },
+    "5": {
+      "id": 5,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          6
+        ]
+      },
+      "type": "Start"
+    },
+    "6": {
+      "id": 6,
+      "data": {
+        "code": "nodesLists[\"active\"][6] = true;\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][6] = false;\nnodesLists[\"selectedEvent\"] = 6;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        5
+      ],
+      "outputs": {
+        " Output": [
+          7
+        ]
+      },
+      "type": "General"
+    },
+    "7": {
+      "id": 7,
+      "data": {
+        "code": "nodesLists[\"active\"][7] = true;\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][7] = false;\nnodesLists[\"selectedEvent\"] = 7;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        6
+      ],
+      "outputs": {
+        " Output": [
+          8
+        ]
+      },
+      "type": "General"
+    },
+    "8": {
+      "id": 8,
+      "data": {
+        "code": "nodesLists[\"active\"][8] = true;\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][8] = false;\nnodesLists[\"selectedEvent\"] = 8;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        7
+      ],
+      "outputs": {
+        " Output": []
+      },
+      "type": "General"
+    },
+    "9": {
+      "id": 9,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          10
+        ]
+      },
+      "type": "Start"
+    },
+    "10": {
+      "id": 10,
+      "data": {
+        "code": "nodesLists[\"active\"][10] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][10] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        11,
+        9
+      ],
+      "outputs": {
+        " Output": [
+          11
+        ]
+      },
+      "type": "General"
+    },
+    "11": {
+      "id": 11,
+      "data": {
+        "code": "nodesLists[\"active\"][11] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][11] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        10
+      ],
+      "outputs": {
+        " Output": [
+          10
+        ]
+      },
+      "type": "General"
+    }
+  }
+}

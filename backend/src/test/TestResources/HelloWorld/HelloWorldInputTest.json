@@ -1,0 +1,83 @@
+{
+  "id": "HelloWorld",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          2
+        ]
+      },
+      "type": "Start"
+    },
+    "2": {
+      "id": 2,
+      "data": {
+        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"Hello\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        1
+      ],
+      "outputs": {
+        " Output": []
+      },
+      "type": "General"
+    },
+    "3": {
+      "id": 3,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          4
+        ]
+      },
+      "type": "Start"
+    },
+    "4": {
+      "id": 4,
+      "data": {
+        "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        3
+      ],
+      "outputs": {
+        " Output": []
+      },
+      "type": "General"
+    },
+    "5": {
+      "id": 5,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          6
+        ]
+      },
+      "type": "Start"
+    },
+    "6": {
+      "id": 6,
+      "data": {
+        "code": "nodesLists[\"active\"][6] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Hello\"), block:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"][6] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        5
+      ],
+      "outputs": {
+        " Output": []
+      },
+      "type": "General"
+    }
+  }
+}

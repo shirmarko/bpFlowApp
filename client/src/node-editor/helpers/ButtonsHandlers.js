@@ -5,6 +5,12 @@ import { clearPrevSelectedNodeId, clearPrevActiveNodes } from "../EventHandlers/
 
 export async function SendGraphToServer(editor, engine, nodeNamesToIds, route) {
     console.log('--------click run--------');
+
+    if(route === "debug"){
+        clearPrevSelectedNodeId();
+        clearPrevActiveNodes();
+    }
+    
     console.log(editor.toJSON());
     console.log(JSON.stringify(editor.toJSON()));
     await engine.abort();
@@ -20,7 +26,7 @@ export async function OnClickStop(editor, nodeNamesToIds) {
     clearPrevSelectedNodeId();
     clearPrevActiveNodes();
     editor.nodes.forEach(node => {
-        node.data.color = "BLUE";
+        node.data.color = "BRIGHTGRAY";
         node.data.payloadView = {};
         node.update();
     });
