@@ -1,0 +1,61 @@
+{
+  "id": "SimpleMixed",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          2
+        ]
+      },
+      "type": "Start"
+    },
+    "2": {
+      "id": 2,
+      "data": {
+        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"a\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        1
+      ],
+      "outputs": {
+        " Output": [
+          3
+        ]
+      },
+      "type": "General"
+    },
+    "3": {
+      "id": 3,
+      "data": {
+        "code": "let outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        2
+      ],
+      "outputs": {
+        "output1": [
+          4
+        ]
+      },
+      "type": "General"
+    },
+    "4": {
+      "id": 4,
+      "data": {
+        "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"b\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        3
+      ],
+      "outputs": {
+        " Output": []
+      },
+      "type": "General"
+    }
+  }
+}

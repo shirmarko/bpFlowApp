@@ -1,5 +1,6 @@
-export let unconnectedGraphBeforeParse = {
-    "id": "22d60b88-0fe2-47c8-b14e-0194278a7463@0.1.0",
+export let unconnectedGraphBeforeParse = 
+{
+    "id": "eb34d2c3-fffb-4597-b851-45bee124257a@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
@@ -7,15 +8,7 @@ export let unconnectedGraphBeforeParse = {
         "inputs": {},
         "outputs": {
           " Output": {
-            "connections": [
-              {
-                "node": 2,
-                "input": "input",
-                "data": {
-                  "pins": []
-                }
-              }
-            ]
+            "connections": []
           }
         },
         "position": [
@@ -28,24 +21,24 @@ export let unconnectedGraphBeforeParse = {
         "id": 2,
         "data": {
           "payloadView": {},
-          "color": "BLUE"
+          "color": "BRIGHTGRAY"
         },
         "inputs": {
           "input": {
+            "connections": []
+          }
+        },
+        "outputs": {
+          " Output": {
             "connections": [
               {
-                "node": 1,
-                "output": " Output",
+                "node": 3,
+                "input": "input",
                 "data": {
                   "pins": []
                 }
               }
             ]
-          }
-        },
-        "outputs": {
-          " Output": {
-            "connections": []
           }
         },
         "position": [
@@ -61,7 +54,15 @@ export let unconnectedGraphBeforeParse = {
         },
         "inputs": {
           "input": {
-            "connections": []
+            "connections": [
+              {
+                "node": 2,
+                "output": " Output",
+                "data": {
+                  "pins": []
+                }
+              }
+            ]
           }
         },
         "outputs": {
@@ -70,52 +71,53 @@ export let unconnectedGraphBeforeParse = {
           }
         },
         "position": [
-          412.5735191303933,
-          346.32618401461116
+          870.6913969375641,
+          117.77781784317395
         ],
         "name": "General"
       }
     }
   }
+
 export let unconnectedGraphExpectedParse = {
-    "id": "22d60b88-0fe2-47c8-b14e-0194278a7463@0.1.0",
-    "nodes": {
-      "1": {
-        "id": 1,
-        "data": {
-          "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
-        },
-        "inputs": [],
-        "outputs": {
-          " Output": [
-            2
-          ]
-        },
-        "type": "Start"
+  "id": "eb34d2c3-fffb-4597-b851-45bee124257a@0.1.0",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
       },
-      "2": {
-        "id": 2,
-        "data": {
-          "code": "nodesLists[\"active\"].push(2);\n\n                bp.sync( {} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(2), 1);\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
-        },
-        "inputs": [
-          1
-        ],
-        "outputs": {
-          " Output": []
-        },
-        "type": "General"
+      "inputs": [],
+      "outputs": {
+        " Output": []
       },
-      "3": {
-        "id": 3,
-        "data": {
-          "code": "let outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
-        },
-        "inputs": [],
-        "outputs": {
-          "output1": []
-        },
-        "type": "General"
-      }
+      "type": "Start"
+    },
+    "2": {
+      "id": 2,
+      "data": {
+        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {} );\n\n                nodesLists[\"active\"][2] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          3
+        ]
+      },
+      "type": "General"
+    },
+    "3": {
+      "id": 3,
+      "data": {
+        "code": "let outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        2
+      ],
+      "outputs": {
+        "output1": []
+      },
+      "type": "General"
     }
   }
+}

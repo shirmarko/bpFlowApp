@@ -1,0 +1,27 @@
+{
+  "id": "UnconnectedGraph1",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": []
+      },
+      "type": "Start"
+    },
+    "2": {
+      "id": 2,
+      "data": {
+        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {} );\n\n                nodesLists[\"active\"][2] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": []
+      },
+      "type": "General"
+    }
+  }
+}

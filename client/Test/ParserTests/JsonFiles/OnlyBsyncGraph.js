@@ -1,5 +1,6 @@
-export let OnlyBsyncGraphBeforeParse = {
-    "id": "51d38337-3a8a-4592-a149-bb3fa772603b@0.1.0",
+export let OnlyBsyncGraphBeforeParse = 
+{
+    "id": "bd96d172-a15f-4435-b133-ed18c294a4ad@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
@@ -14,14 +15,78 @@ export let OnlyBsyncGraphBeforeParse = {
                 "data": {
                   "pins": []
                 }
-              },
+              }
+            ]
+          }
+        },
+        "position": [
+          64.94434410418683,
+          92.37920524004062
+        ],
+        "name": "Start"
+      },
+      "2": {
+        "id": 2,
+        "data": {
+          "payloadView": {},
+          "color": "BRIGHTGRAY",
+          "request": "\"a\""
+        },
+        "inputs": {
+          "input": {
+            "connections": [
+              {
+                "node": 1,
+                "output": " Output",
+                "data": {
+                  "pins": []
+                }
+              }
+            ]
+          }
+        },
+        "outputs": {
+          " Output": {
+            "connections": [
               {
                 "node": 3,
                 "input": "input",
                 "data": {
                   "pins": []
                 }
-              },
+              }
+            ]
+          }
+        },
+        "position": [
+          400,
+          100
+        ],
+        "name": "Bsync"
+      },
+      "3": {
+        "id": 3,
+        "data": {
+          "payloadView": {},
+          "color": "BRIGHTGRAY",
+          "request": "\"b\""
+        },
+        "inputs": {
+          "input": {
+            "connections": [
+              {
+                "node": 2,
+                "output": " Output",
+                "data": {
+                  "pins": []
+                }
+              }
+            ]
+          }
+        },
+        "outputs": {
+          " Output": {
+            "connections": [
               {
                 "node": 4,
                 "input": "input",
@@ -33,23 +98,23 @@ export let OnlyBsyncGraphBeforeParse = {
           }
         },
         "position": [
-          100,
-          99.29958520517273
+          789.565242719289,
+          100.87199527483955
         ],
-        "name": "Start"
+        "name": "Bsync"
       },
-      "2": {
-        "id": 2,
+      "4": {
+        "id": 4,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
-          "request": "\"a\""
+          "color": "BRIGHTGRAY",
+          "request": "\"c\""
         },
         "inputs": {
           "input": {
             "connections": [
               {
-                "node": 1,
+                "node": 3,
                 "output": " Output",
                 "data": {
                   "pins": []
@@ -72,70 +137,8 @@ export let OnlyBsyncGraphBeforeParse = {
           }
         },
         "position": [
-          400,
-          100
-        ],
-        "name": "Bsync"
-      },
-      "3": {
-        "id": 3,
-        "data": {
-          "payloadView": {},
-          "color": "BLUE",
-          "request": "\"c\""
-        },
-        "inputs": {
-          "input": {
-            "connections": [
-              {
-                "node": 1,
-                "output": " Output",
-                "data": {
-                  "pins": []
-                }
-              }
-            ]
-          }
-        },
-        "outputs": {
-          " Output": {
-            "connections": []
-          }
-        },
-        "position": [
-          396.6627319304657,
-          336.8195527446963
-        ],
-        "name": "Bsync"
-      },
-      "4": {
-        "id": 4,
-        "data": {
-          "payloadView": {},
-          "color": "BLUE",
-          "request": "\"d\""
-        },
-        "inputs": {
-          "input": {
-            "connections": [
-              {
-                "node": 1,
-                "output": " Output",
-                "data": {
-                  "pins": []
-                }
-              }
-            ]
-          }
-        },
-        "outputs": {
-          " Output": {
-            "connections": []
-          }
-        },
-        "position": [
-          401.1751965487107,
-          578.2217034117207
+          1161.4596773434528,
+          106.96858081263838
         ],
         "name": "Bsync"
       },
@@ -143,14 +146,14 @@ export let OnlyBsyncGraphBeforeParse = {
         "id": 5,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
-          "request": "\"b\""
+          "color": "BRIGHTGRAY",
+          "request": "\"d\""
         },
         "inputs": {
           "input": {
             "connections": [
               {
-                "node": 2,
+                "node": 4,
                 "output": " Output",
                 "data": {
                   "pins": []
@@ -165,15 +168,17 @@ export let OnlyBsyncGraphBeforeParse = {
           }
         },
         "position": [
-          773.5435258392447,
-          97.35794820650469
+          1528.7817258834698,
+          106.96857418531914
         ],
         "name": "Bsync"
       }
     }
   }
-export let OnlyBsyncGraphExpectedParse = {
-    "id": "51d38337-3a8a-4592-a149-bb3fa772603b@0.1.0",
+
+export let OnlyBsyncGraphExpectedParse = 
+{
+    "id": "bd96d172-a15f-4435-b133-ed18c294a4ad@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
@@ -183,9 +188,7 @@ export let OnlyBsyncGraphExpectedParse = {
         "inputs": [],
         "outputs": {
           " Output": [
-            2,
-            3,
-            4
+            2
           ]
         },
         "type": "Start"
@@ -193,10 +196,40 @@ export let OnlyBsyncGraphExpectedParse = {
       "2": {
         "id": 2,
         "data": {
-          "code": "nodesLists[\"active\"].push(2);\n\n                bp.sync( {request:bp.Event(\"a\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(2), 1);\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"a\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           1
+        ],
+        "outputs": {
+          " Output": [
+            3
+          ]
+        },
+        "type": "General"
+      },
+      "3": {
+        "id": 3,
+        "data": {
+          "code": "nodesLists[\"active\"][3] = true;\n\n                bp.sync( {request:bp.Event(\"b\")} );\n\n                nodesLists[\"active\"][3] = false;\nnodesLists[\"selectedEvent\"] = 3;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        },
+        "inputs": [
+          2
+        ],
+        "outputs": {
+          " Output": [
+            4
+          ]
+        },
+        "type": "General"
+      },
+      "4": {
+        "id": 4,
+        "data": {
+          "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"c\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        },
+        "inputs": [
+          3
         ],
         "outputs": {
           " Output": [
@@ -205,39 +238,13 @@ export let OnlyBsyncGraphExpectedParse = {
         },
         "type": "General"
       },
-      "3": {
-        "id": 3,
-        "data": {
-          "code": "nodesLists[\"active\"].push(3);\n\n                bp.sync( {request:bp.Event(\"c\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(3), 1);\nnodesLists[\"selectedEvent\"] = 3;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
-        },
-        "inputs": [
-          1
-        ],
-        "outputs": {
-          " Output": []
-        },
-        "type": "General"
-      },
-      "4": {
-        "id": 4,
-        "data": {
-          "code": "nodesLists[\"active\"].push(4);\n\n                bp.sync( {request:bp.Event(\"d\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(4), 1);\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
-        },
-        "inputs": [
-          1
-        ],
-        "outputs": {
-          " Output": []
-        },
-        "type": "General"
-      },
       "5": {
         "id": 5,
         "data": {
-          "code": "nodesLists[\"active\"].push(5);\n\n                bp.sync( {request:bp.Event(\"b\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(5), 1);\nnodesLists[\"selectedEvent\"] = 5;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"][5] = true;\n\n                bp.sync( {request:bp.Event(\"d\")} );\n\n                nodesLists[\"active\"][5] = false;\nnodesLists[\"selectedEvent\"] = 5;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
-          2
+          4
         ],
         "outputs": {
           " Output": []

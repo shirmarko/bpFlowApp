@@ -1,0 +1,16 @@
+{
+  "id": "OnlyStartGraph",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": []
+      },
+      "type": "Start"
+    }
+  }
+}

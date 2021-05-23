@@ -1,5 +1,5 @@
 export let unconnectedGraphBeforeParse = {
-    "id": "ab14e1f9-2fde-4c7f-a724-a8445f7f0182@0.1.0",
+    "id": "da7b6be1-ebca-41d1-ad64-da0bc0c98691@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
@@ -20,8 +20,7 @@ export let unconnectedGraphBeforeParse = {
         "id": 2,
         "data": {
           "payloadView": {},
-          "color": "BLUE",
-          "request": "\"a\""
+          "color": "BRIGHTGRAY"
         },
         "inputs": {
           "input": {
@@ -41,8 +40,9 @@ export let unconnectedGraphBeforeParse = {
       }
     }
   }
-export let unconnectedGraphExpectedParse = {
-    "id": "ab14e1f9-2fde-4c7f-a724-a8445f7f0182@0.1.0",
+export let unconnectedGraphExpectedParse =
+{
+    "id": "da7b6be1-ebca-41d1-ad64-da0bc0c98691@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
@@ -58,7 +58,7 @@ export let unconnectedGraphExpectedParse = {
       "2": {
         "id": 2,
         "data": {
-          "code": "nodesLists[\"active\"].push(2);\n\n                bp.sync( {request:bp.Event(\"a\")} );\n\n                nodesLists[\"active\"].splice(nodesLists[\"active\"].indexOf(2), 1);\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {} );\n\n                nodesLists[\"active\"][2] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [],
         "outputs": {
