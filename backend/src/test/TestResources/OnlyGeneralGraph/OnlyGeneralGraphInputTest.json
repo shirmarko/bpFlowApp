@@ -1,0 +1,47 @@
+{
+  "id": "OnlyGeneralGraph",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {
+        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [],
+      "outputs": {
+        " Output": [
+          3,
+          4
+        ]
+      },
+      "type": "Start"
+    },
+    "3": {
+      "id": 3,
+      "data": {
+        "code": "let outputs = {};\noutputs[\"output1\"] = payload;\noutputs[\"output2\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        1
+      ],
+      "outputs": {
+        "output1": [],
+        "output2": []
+      },
+      "type": "General"
+    },
+    "4": {
+      "id": 4,
+      "data": {
+        "code": "let outputs = {};\noutputs[\"output1\"] = payload;\noutputs[\"output2\"] = payload;\nreturn outputs;"
+      },
+      "inputs": [
+        1
+      ],
+      "outputs": {
+        "output1": [],
+        "output2": []
+      },
+      "type": "General"
+    }
+  }
+}

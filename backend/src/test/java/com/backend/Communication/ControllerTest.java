@@ -44,6 +44,12 @@ public class ControllerTest {
     @MockBean
     private ServiceImpl service;
 
+    private final String[] emptyGraphBpEventExpectedResult = new String[]{"Program execution ended."};
+    private final String[] onlyBsyncGraphBpEventsExpectedResult = new String[]{"a", "b", "c", "d", "Program execution ended."};
+    private final String[] onlyGeneralGraphBpEventsExpectedResult = new String[]{"Program execution ended."};
+    private final String[] onlyStartGraphBpEventsExpectedResult = new String[]{"Program execution ended."};
+    private final String[] simpleMixedGraphBpEventsExpectedResult = new String[]{"a", "b", "Program execution ended."};
+    private final String[] unconnectedGraphBpEventsExpectedResult = new String[]{"Program execution ended."};
     private final String[] helloWorldBpEventsExpectedResult = new String[]{"Hello", "World", "Program execution ended."};
     private final String[] hotCold0BpEventsExpectedResult = new String[]{"Program execution ended."};
     private final String[] hotCold3BpEventsExpectedResult = new String[]{"Hot", "Cold", "Hot", "Cold", "Hot", "Cold", "Program execution ended."};
@@ -51,28 +57,175 @@ public class ControllerTest {
 
 
     @Test
-    public void runHotCold() throws Exception {
-        runTest("HotCold/HotColdInputTest.json", hotCold3BpEventsExpectedResult);
+    public void runEmptyGraph() throws Exception {
+        runTest("EmptyGraph/EmptyGraphInputTest.json", emptyGraphBpEventExpectedResult);
+    }
+
+    @Test
+    public void debugEmptyGraph() throws Exception {
+        MvcResult emmiter = debugTest("EmptyGraph/EmptyGraphInputTest.json");
+        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("Empty", emmiter);
+
+        ArrayList<String> bpEvents = events.getLeft();
+        Assert.assertArrayEquals(emptyGraphBpEventExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.getRight();
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\EmptyGraph\\EmptyGraphDebugStep1.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
+    }
+
+    @Test
+    public void runOnlyBsyncGraph() throws Exception {
+        runTest("OnlyBsyncGraph/OnlyBsyncGraphInputTest.json", onlyBsyncGraphBpEventsExpectedResult);
+    }
+
+    @Test
+    public void debugOnlyBsyncGraph() throws Exception {
+        MvcResult emmiter = debugTest("OnlyBsyncGraph/OnlyBsyncGraphInputTest.json");
+        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("OnlyBsync", emmiter);
+
+        ArrayList<String> bpEvents = events.getLeft();
+        Assert.assertArrayEquals(onlyBsyncGraphBpEventsExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.getRight();
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\OnlyBsyncGraph\\OnlyBsyncGraphDebugStep1.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\OnlyBsyncGraph\\OnlyBsyncGraphDebugStep2.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\OnlyBsyncGraph\\OnlyBsyncGraphDebugStep3.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\OnlyBsyncGraph\\OnlyBsyncGraphDebugStep4.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\OnlyBsyncGraph\\OnlyBsyncGraphDebugStep5.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for (int i = 0; i < expectedStepEventsData.size(); i++) {
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+", ""), stepEvents.get(i));
+        }
+    }
+
+    @Test
+    public void runOnlyGeneralGraph() throws Exception {
+        runTest("OnlyGeneralGraph/OnlyGeneralGraphInputTest.json", onlyGeneralGraphBpEventsExpectedResult);
+    }
+
+    @Test
+    public void debugOnlyGeneralGraph() throws Exception {
+        MvcResult emmiter = debugTest("OnlyGeneralGraph/OnlyGeneralGraphInputTest.json");
+        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("OnlyGeneralGraph", emmiter);
+
+        ArrayList<String> bpEvents = events.getLeft();
+        Assert.assertArrayEquals(onlyGeneralGraphBpEventsExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.getRight();
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\OnlyGeneralGraph\\OnlyGeneralGraphDebugStep1.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
+    }
+
+    @Test
+    public void runOnlyStartGraph() throws Exception {
+        runTest("OnlyStartGraph/OnlyStartGraphInputTest.json", onlyStartGraphBpEventsExpectedResult);
+    }
+
+    @Test
+    public void debugOnlyStartGraph() throws Exception {
+        MvcResult emmiter = debugTest("OnlyStartGraph/OnlyStartGraphInputTest.json");
+        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("OnlyStartGraph", emmiter);
+
+        ArrayList<String> bpEvents = events.getLeft();
+        Assert.assertArrayEquals(onlyStartGraphBpEventsExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.getRight();
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\OnlyStartGraph\\OnlyStartGraphDebugStep1.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
+    }
+
+    @Test
+    public void runSimpleMixedGraph() throws Exception {
+        runTest("SimpleMixedGraph/SimpleMixedGraphInputTest.json", simpleMixedGraphBpEventsExpectedResult);
+    }
+
+    @Test
+    public void debugSimpleMixedGraph() throws Exception {
+        MvcResult emmiter = debugTest("SimpleMixedGraph/SimpleMixedGraphInputTest.json");
+        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("SimpleMixed", emmiter);
+
+        ArrayList<String> bpEvents = events.getLeft();
+        Assert.assertArrayEquals(simpleMixedGraphBpEventsExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.getRight();
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\SimpleMixedGraph\\SimpleMixedGraphDebugStep1.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\SimpleMixedGraph\\SimpleMixedGraphDebugStep2.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\SimpleMixedGraph\\SimpleMixedGraphDebugStep3.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
+    }
+
+    @Test
+    public void runUnconnectedGraph1() throws Exception {
+        runTest("UnconnectedGraph1/UnconnectedGraph1InputTest.json", unconnectedGraphBpEventsExpectedResult);
+    }
+
+    @Test
+    public void debugUnconnectedGraph1() throws Exception {
+        MvcResult emmiter = debugTest("UnconnectedGraph1/UnconnectedGraph1InputTest.json");
+        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("UnconnectedGraph1", emmiter);
+
+        ArrayList<String> bpEvents = events.getLeft();
+        Assert.assertArrayEquals(unconnectedGraphBpEventsExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.getRight();
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\UnconnectedGraph1\\UnconnectedGraph1DebugStep1.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
+    }
+
+    @Test
+    public void runUnconnectedGraph2() throws Exception {
+        runTest("UnconnectedGraph2/UnconnectedGraph2InputTest.json", unconnectedGraphBpEventsExpectedResult);
+    }
+
+    @Test
+    public void debugUnconnectedGraph2() throws Exception {
+        MvcResult emmiter = debugTest("UnconnectedGraph2/UnconnectedGraph2InputTest.json");
+        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("UnconnectedGraph2", emmiter);
+
+        ArrayList<String> bpEvents = events.getLeft();
+        Assert.assertArrayEquals(unconnectedGraphBpEventsExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.getRight();
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\UnconnectedGraph2\\UnconnectedGraph2DebugStep1.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
     }
 
     @Test
     public void runHelloWorld() throws Exception {
         runTest("HelloWorld/HelloWorldInputTest.json", helloWorldBpEventsExpectedResult);
-    }
-
-    @Test
-    public void runGenericHotCold3() throws Exception {
-        runTest("GenericHotCold3/GenericHotCold3InputTest.json", hotCold3BpEventsExpectedResult);
-    }
-
-    @Test
-    public void runGenericHotCold5() throws Exception {
-        runTest("GenericHotCold5/GenericHotCold5InputTest.json", hotCold5BpEventsExpectedResult);
-    }
-
-    @Test
-    public void runGenericHotCold0() throws Exception {
-        runTest("GenericHotCold0/GenericHotCold0InputTest.json", hotCold0BpEventsExpectedResult);
     }
 
     @Test
@@ -95,6 +248,11 @@ public class ControllerTest {
         for(int i = 0; i < expectedStepEventsData.size(); i++){
             Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
         }
+    }
+
+    @Test
+    public void runHotCold() throws Exception {
+        runTest("HotCold/HotColdInputTest.json", hotCold3BpEventsExpectedResult);
     }
 
     @Test
@@ -122,6 +280,11 @@ public class ControllerTest {
     }
 
     @Test
+    public void runGenericHotCold0() throws Exception {
+        runTest("GenericHotCold0/GenericHotCold0InputTest.json", hotCold0BpEventsExpectedResult);
+    }
+
+    @Test
     public void debugGenericHotCold0() throws Exception {
         MvcResult emmiter = debugTest("GenericHotCold0/GenericHotCold0InputTest.json");
         Pair<ArrayList<String>, ArrayList<String>> events = stepTest("GenericHotCold0", emmiter);
@@ -137,6 +300,11 @@ public class ControllerTest {
         for(int i = 0; i < expectedStepEventsData.size(); i++){
             Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
         }
+    }
+
+    @Test
+    public void runGenericHotCold3() throws Exception {
+        runTest("GenericHotCold3/GenericHotCold3InputTest.json", hotCold3BpEventsExpectedResult);
     }
 
     @Test
@@ -161,6 +329,11 @@ public class ControllerTest {
         for(int i = 0; i < expectedStepEventsData.size(); i++){
             Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
         }
+    }
+
+    @Test
+    public void runGenericHotCold5() throws Exception {
+        runTest("GenericHotCold5/GenericHotCold5InputTest.json", hotCold5BpEventsExpectedResult);
     }
 
     @Test
