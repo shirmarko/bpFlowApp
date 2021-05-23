@@ -77,6 +77,7 @@
 <script>
 //import Modal from './Modal.vue';
 import { codemirror } from "vue-codemirror";
+
 require("codemirror/mode/javascript/javascript.js");
 require("codemirror/addon/fold/foldcode.js");
 require("codemirror/addon/fold/foldgutter.js");
@@ -85,6 +86,7 @@ require("codemirror/addon/fold/xml-fold.js");
 require("codemirror/addon/fold/indent-fold.js");
 require("codemirror/addon/fold/markdown-fold.js");
 require("codemirror/addon/fold/comment-fold.js");
+import 'codemirror/theme/base16-dark.css';
 
 
 import {
@@ -114,8 +116,8 @@ export default {
       },
       cmOptions: {
         tabSiz: 4,
-        mode: "python",
-        theme: 'base16-light',
+        mode: "text/javascript",
+        theme: 'base16-dark',
         lineNumbers: true,
         lineWrapping: true,
         extraKeys: { Ctrl: "autocomplete" },
@@ -162,6 +164,11 @@ export default {
       });
     },
   },
+  computed: {
+    codemirror() {
+      return this.$refs.cmEditor.codemirror
+    }
+  },
   components: {
     BModal,
     BButton,
@@ -169,8 +176,7 @@ export default {
     BFormInput,
     BFormTextarea,
     BTooltip,
-    codemirror,
-    codemirror,
+    codemirror
   },
   directives: { "b-modal": VBModal, "b-tooltip": VBTooltip },
 };
