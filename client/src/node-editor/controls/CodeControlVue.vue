@@ -36,13 +36,6 @@
       <form ref="form" @submit.stop.prevent="handleSubmit">
         function(payload){
         <b-form-group invalid-feedback="Code is required" :state="codeState">
-          <!-- <b-form-textarea
-            id="code-input"
-            v-model="code"
-            placeholder="Enter function body..."
-            rows="10"
-            max-rows="20"
-          ></b-form-textarea> -->
           <codemirror
             id="code-input"
             ref="myCm"
@@ -119,7 +112,7 @@ export default {
         autocapitalize: true,
         autocorrect: true,
         spellcheck:  true,
-        
+
       },
     };
   },
