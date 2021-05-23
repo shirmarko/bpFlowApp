@@ -89,7 +89,7 @@ import { OutputWithPayload } from "../components/OutputWithPayload.js"
 export default {
   props: ["ikey", "name", "nodeOutputs", "myNode", "globalEditor", "nodeId"],
   data() {
-    let myData = {
+    return {
       titleValue: this.name,
       numberOfOutputsValue: this.nodeOutputs.size,
       stateTitleVal: this.name.length > 0,
@@ -98,7 +98,6 @@ export default {
       componentKey: 0,
       curNodeId: this.nodeId
     };
-    return myData;
   },
   computed: {
     stateTitle() {
@@ -153,17 +152,8 @@ export default {
       if (!this.checkFormValidity()) {
         return;
       }
-
       this.forceRerender();
-
-    //   for (const [key, output] of this.outputs.entries()) {
-    //     output.name = output.key;
-    //   }
-
       this.myNode.update();
-      //this.putData(this.ikey, this.code);
-      // this.submittedNames.push(this.name)
-      
       // Hide the modal manually
       this.$nextTick(() => {
         this.$refs["editNode-modal"].hide("editNode-modal-prevent-closing");
