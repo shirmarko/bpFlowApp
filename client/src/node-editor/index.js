@@ -4,8 +4,8 @@ import ConnectionPlugin from "rete-connection-plugin";
 import AreaPlugin from "rete-area-plugin";
 import ContextMenuPlugin from "rete-context-menu-plugin";
 import ConnectionReroutePlugin from 'rete-connection-reroute-plugin';
+import ReadonlyPlugin from 'rete-readonly-plugin';
 // import DockPlugin from "rete-dock-plugin";
-import CommentPlugin from "rete-comment-plugin";
 import { BsyncComponent, statusColor } from "./components/BsyncComponent";
 import { StartComponent } from "./components/StartComponent";
 import { GeneralComponent } from "./components/GeneralComponent";
@@ -79,6 +79,18 @@ export function disableRunButton(){
     nevBarbuttonsVisibility.isRunDisabled = true;
 }
 
+export function cleanBoard(){
+    editor.clear();
+}
+
+export async function ChangeGraphReadOnly(){
+    let readonlyEnabled = editor.trigger('isreadonly');
+    await editor.trigger('readonly', !readonlyEnabled);
+    
+    console.log("readonly graph state: ", !readonlyEnabled);
+}
+
+
 export function init(container, logContent, buttonsVisibility) {
     // //----------------EventListener---------------
     console.log('-----init editor--------');
@@ -99,10 +111,11 @@ export function init(container, logContent, buttonsVisibility) {
         editor.use(VueRenderPlugin);
         editor.use(ContextMenuPlugin);
         editor.use(ConnectionReroutePlugin);
+        editor.use(ReadonlyPlugin, { enabled: false }); // enabled is true by default
         // editor.use(DockPlugin);
         editor.use(AreaPlugin);
-        //editor.use(CommentPlugin);
 
+       
         components.map(c => {
             editor.register(c);
             engine.register(c);
@@ -119,7 +132,7 @@ export function init(container, logContent, buttonsVisibility) {
 
         editor.view.resize();
         AreaPlugin.zoomAt(editor);
-        editor.trigger('process');
 
+        editor.trigger('process');
     })();
 }

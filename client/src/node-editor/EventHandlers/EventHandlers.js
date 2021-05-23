@@ -87,5 +87,7 @@ function endDebug(){
     Index.enableDebugButton();
     Index.disableStepButton();
     Index.disableStopButton();
+
+    Index.ChangeGraphReadOnly();
     //for (var entry in nodeNamesToIds) delete nodeNamesToIds[entry];
 }
