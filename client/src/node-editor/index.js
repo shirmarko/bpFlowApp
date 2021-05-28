@@ -104,7 +104,7 @@ export function init(container, logContent, buttonsVisibility) {
     engine = new Rete.Engine(id);
     // var container = document.querySelector('#rete');
     editor = new Rete.NodeEditor(id, container);
-    const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName), new GeneralComponent("General", 2, ["output1", "output2"])];
+    const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName), new GeneralComponent("General", 1, ["output1"])];
 
     (async () => {
         editor.use(ConnectionPlugin);

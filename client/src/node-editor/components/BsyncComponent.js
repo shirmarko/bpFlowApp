@@ -9,7 +9,7 @@ export const statusColor = { BRIGHTGRAY: "node", GREEN: "selectedNode", RED: "bl
 //---------------------------------------Bsync-------------------------------------------------
 var CustomBSyncNode = {
     template: `<div v-bind:class="[ chooseColor(node) ]"> 
-    <div class="title">{{node.name}}</div>
+    <div class="title">{{node.id}}. {{node.name}}</div>
     <!-- Outputs-->
     <div class="output" v-for="output in outputs()" :key="output.key">
     <!-- <div class="output-title">{{output.name}}</div> -->
