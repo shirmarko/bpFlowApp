@@ -9,7 +9,7 @@ function goToFollowers(curNode, ths, bp, payloads) {
         let firstBP;
         const outputsKeys = outputs.keySet().toArray();
         for(var i in outputsKeys){
-            if(outputs.get(outputsKeys[i]).size() > 0){ //check if this output have connected nodes
+            if(outputs.get(outputsKeys[i]).size() > 0  && payloads.hasOwnProperty(outputsKeys[i])){ //check if this output have connected nodes
                 let j = 0;
                 if(!isFirstFound){
                     j = 1;
@@ -38,9 +38,7 @@ function runInNewBT(curNode, payload) {
 		eval("var f=f" + curNode.id);
         //bp.log.info("curNode.id - " + curNode.id);
 		const payloads = f(context, this, bp, nodesLists);
-        if(payloads != -1){
-            goToFollowers(curNode, this, bp, payloads);
-        }
+        goToFollowers(curNode, this, bp, payloads);
 	});
 }
 
@@ -51,10 +49,8 @@ function runInSameBT(curNode, payload, ths, bp) {
 	eval("var f=f" + curNode.id);
 
 	const payloads = f(payload, ths, bp, nodesLists);
+    goToFollowers(curNode, ths, bp, payloads);
 
-    if(payloads != -1){
-        goToFollowers(curNode, ths, bp, payloads);
-    }
 }
 
 //Main:

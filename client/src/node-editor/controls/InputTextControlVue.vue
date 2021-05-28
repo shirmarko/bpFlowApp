@@ -8,7 +8,7 @@ export default {
   props: ["ikey", "getData", "putData"],
   data() {
     return {
-      value: ""
+      value: this.getData(this.ikey)
     };
   },
   methods: {
