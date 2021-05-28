@@ -3,7 +3,7 @@ import { post } from "../Comunication/Controller"
 import { clearPrevSelectedNodeId, clearPrevActiveNodes } from "../EventHandlers/EventHandlers"
 
 
-export async function SendGraphToServer(editor, engine, nodeNamesToIds, route) {
+export async function SendGraphToServer(editor, engine, route) {
     console.log('--------click run--------');
 
     if(route === "debug"){
@@ -16,13 +16,13 @@ export async function SendGraphToServer(editor, engine, nodeNamesToIds, route) {
     await engine.abort();
     await engine.process(editor.toJSON());
 
-    let dataToSend = parseDataToSend(editor, editor.toJSON(), nodeNamesToIds);
+    let dataToSend = parseDataToSend(editor, editor.toJSON());
     dataToSend = JSON.stringify(dataToSend);
     console.log(dataToSend);
     post(route, dataToSend);
 }
 
-export async function OnClickStop(editor, nodeNamesToIds) {
+export async function OnClickStop(editor) {
     clearPrevSelectedNodeId();
     clearPrevActiveNodes();
     editor.nodes.forEach(node => {
@@ -30,7 +30,6 @@ export async function OnClickStop(editor, nodeNamesToIds) {
         node.data.payloadView = {};
         node.update();
     });
-    for (var entry in nodeNamesToIds) delete nodeNamesToIds[entry];
     let dataToSend = editor.toJSON().id;
     post("stop", dataToSend);
 }
