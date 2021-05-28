@@ -17,7 +17,7 @@ function goToFollowers(curNode, ths, bp, payloads) {
         let firstBP;
         const outputsKeys = outputs.keySet().toArray();
         for(var i in outputsKeys){
-            if(outputs.get(outputsKeys[i]).size() > 0){ //check if this output have connected nodes
+            if(outputs.get(outputsKeys[i]).size() > 0 && payloads.hasOwnProperty(outputsKeys[i])){ //check if this output have connected nodes
                 let j = 0;
                 if(!isFirstFound){
                     j = 1;
@@ -46,22 +46,18 @@ function runInNewBT(curNode, payload) {
 	bp.registerBThread(curNode.id, function() {
 		eval("var f=f" + curNode.id);
 		const payloads = f(context, this, bp, nodesLists);
-        if(payloads != -1){
-            goToFollowers(curNode, this, bp, payloads);
-        }
+        goToFollowers(curNode, this, bp, payloads);
 	});
 }
 
 function runInSameBT(curNode, payload, ths, bp) {
-    bp.log.info("in runInSameBT!!!! - " + curNode.id + " :" + JSON.stringify(payload));
+    bp.log.info("in runInSameBT!!!! - {0} :{1}", curNode.id, payload);
     nodesLists["payloads"][curNode.id] = payload;
 	eval("var f=f" + curNode.id);
 
 	const payloads = f(payload, ths, bp, nodesLists);
+    goToFollowers(curNode, ths, bp, payloads);
 
-    if(payloads != -1){
-        goToFollowers(curNode, ths, bp, payloads);
-    }
 }
 
 //Main:

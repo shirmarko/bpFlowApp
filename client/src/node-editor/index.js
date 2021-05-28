@@ -13,8 +13,8 @@ import * as Consts from "./helpers/Consts";
 import * as ButtonsHandlers from "./helpers/ButtonsHandlers" 
 import * as EventHandlers from "./EventHandlers/EventHandlers.js"
 
+
 const eventSource = new EventSource('http://localhost:8090/subscribe');
-export let nodeNamesToIds = {};
 export let editor;
 let engine;
 let logConsoleContent;
@@ -28,15 +28,15 @@ function createUUID() {
 }
 
 export async function OnClickRun() {
-    ButtonsHandlers.SendGraphToServer(editor, engine, nodeNamesToIds, "run");
+    ButtonsHandlers.SendGraphToServer(editor, engine, "run");
 }
 
 export async function OnClickDebug() {
-    ButtonsHandlers.SendGraphToServer(editor, engine, nodeNamesToIds, "debug");
+    ButtonsHandlers.SendGraphToServer(editor, engine, "debug");
 }
 
 export async function OnClickStop() {
-    ButtonsHandlers.OnClickStop(editor, nodeNamesToIds);
+    ButtonsHandlers.OnClickStop(editor);
 }
 
 export async function OnClickStep() {
@@ -121,15 +121,18 @@ export function init(container, logContent, buttonsVisibility) {
             engine.register(c);
         });
 
-        var startNode = await components[0].createNode();
-        var bsyncNode = await components[1].createNode();
+        // var startNode = await components[0].createNode();
+        // var bsyncNode = await components[1].createNode();
         
-        startNode.position = [100, 100];
-        bsyncNode.position = [400, 100];
+        // startNode.position = [100, 100];
+        // bsyncNode.position = [400, 100];
 
-        editor.addNode(startNode);
-        editor.addNode(bsyncNode);
+        // editor.addNode(startNode);
+        // editor.addNode(bsyncNode);
 
+        const data = require("../Resources/HelloWorld.json");
+        data.id = id;
+        await editor.fromJSON(data);
         editor.view.resize();
         AreaPlugin.zoomAt(editor);
 

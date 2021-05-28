@@ -1,1 +1,1 @@
-export const defaultOutputName = " Output";
+export const defaultOutputName = "Output";

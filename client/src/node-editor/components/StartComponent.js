@@ -16,25 +16,26 @@ var CustomStartNode = {
   </div>`,
     mixins: [VueRenderPlugin.mixin],
     components: {
-      Socket: VueRenderPlugin.Socket
+        Socket: VueRenderPlugin.Socket
     }
-  }
+}
 
-  export class StartComponent extends Rete.Component {
+export class StartComponent extends Rete.Component {
     constructor(outputName) {
-      super("Start");
-      this.data.component = CustomStartNode;
-      this.outputName = outputName;
+        super("Start");
+        this.data.component = CustomStartNode;
+        this.outputName = outputName;
     }
 
     builder(node) {
-      var out = new OutputWithPayload(this.outputName, this.outputName, Socket.general);
-      return node
-        .addOutput(out)
-        .addControl(new CodeControl('code', node.outputs))
+        //node.data.code = `outputs["${this.outputName}"] = {}`;
+        var out = new OutputWithPayload(this.outputName, this.outputName, Socket.general);
+        return node
+            .addOutput(out)
+            .addControl(new CodeControl('code', node.outputs))
     }
 
     worker(node, inputs, outputs) {
 
     }
-  }
+}

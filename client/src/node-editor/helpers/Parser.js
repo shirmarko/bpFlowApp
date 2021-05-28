@@ -26,7 +26,7 @@ function parseNodeOutputs(editor, curNode) {
     curNode.outputs = outputs;
 }
 
-function generateBPSyncCode(curNode, curId){
+function generateBPSyncCode(curNode){
     let body = [];
     if (curNode.data.hasOwnProperty("request") && curNode.data["request"] != "") {
         //nodeNamesToIds[curNode.data["request"]] = curId;
@@ -44,11 +44,11 @@ function generateBPSyncCode(curNode, curId){
     return body;
 }
 
-function generateBsyncCode(curNode, nodeNamesToIds){
+function generateBsyncCode(curNode){
     
     let hasRequest = curNode.data.hasOwnProperty("request") && curNode.data["request"] != "";
     let curId = parseInt(curNode.id, 10);
-    let body = generateBPSyncCode(curNode, curId);
+    let body = generateBPSyncCode(curNode);
     
     let code = `nodesLists["active"][${curId}] = true;\n
                 bp.sync( {${body.join(", ")}} );\n
@@ -57,41 +57,37 @@ function generateBsyncCode(curNode, nodeNamesToIds){
         code += `nodesLists["selectedEvent"] = ${curId};\n`;
     }
 
-
     let returnPayloadCode = [`let outputs = {};`, `outputs["${Consts.defaultOutputName}"] = payload;`, `return outputs;`];
     returnPayloadCode = returnPayloadCode.join("\n");
     curNode.data["code"] = `${code}\n${returnPayloadCode}`;
     curNode.type = "General";
 }
 
-//generate outputs if the code is empty
-function generateCode(curNode, editor){
-    const node = editor.nodes.find(n => n.id == curNode.id);
-    let payloadsCode = [`let outputs = {};`];
-    for (const [key, output] of node.outputs.entries()) {
-        payloadsCode.push(`outputs["${output.key}"] = ${output.payload};`);
-    }
-    payloadsCode.push("return outputs;");
-    payloadsCode = payloadsCode.join("\n");
-    curNode.data["code"] = payloadsCode;
+function generateGeneralCode(curNode){
+    let codeBody = ["let outputs = {};"];
+    codeBody.push(curNode.data["code"]);
+    codeBody.push("return outputs;")
+    curNode.data["code"] = codeBody.join("\n");
 }
 
-function parseNodeData(editor, curNode, nodeNamesToIds) {
+function parseNodeData(curNode) {
     //data:
     delete curNode.data.color;
     delete curNode.data.payloadView;
     //parse bsync:
     if (curNode.type === "Bsync") {
-        generateBsyncCode(curNode, nodeNamesToIds);
+        generateBsyncCode(curNode);
     }
-
-    if(!curNode.data.hasOwnProperty("code")){ //in case code of general\start node wasn't edited
-        generateCode(curNode, editor);
+    else{
+        generateGeneralCode(curNode);
     }
+    // if(!curNode.data.hasOwnProperty("code")){ //in case code of general\start node wasn't edited
+    //     generateCode(curNode, editor);
+    // }
 }
 
 
-function parseNodes(editor, newData, nodeNamesToIds) {
+function parseNodes(editor, newData) {
     for (var i in newData.nodes) {
         let curNode = newData.nodes[i];
         delete curNode.position;
@@ -102,13 +98,13 @@ function parseNodes(editor, newData, nodeNamesToIds) {
 
         parseNodeInputs(curNode);
         parseNodeOutputs(editor, curNode);
-        parseNodeData(editor, curNode, nodeNamesToIds);
+        parseNodeData(curNode);
     }
 }
 
-export function parseDataToSend(editor, data, nodeNamesToIds) {
+export function parseDataToSend(editor, data) {
     let newData = JSON.parse(JSON.stringify(data));
     delete newData.comments;
-    parseNodes(editor, newData, nodeNamesToIds);
+    parseNodes(editor, newData);
     return newData;
 }

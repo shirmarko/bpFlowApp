@@ -34,7 +34,9 @@
       @ok="handleOk"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        function(payload){
+        function(payload){<br>
+        &emsp;&emsp;let outputs = {};
+            
         <b-form-group invalid-feedback="Code is required" :state="codeState">
           <codemirror
             id="code-input"
@@ -44,24 +46,8 @@
             class="code"
           ></codemirror>
         </b-form-group>
+        &emsp;&emsp;return outputs;<br>
         }
-
-        <b-form-group
-          v-for="(output, index) in Object.fromEntries(outputs)"
-          :key="`${componentKey}-${index}`"
-          :id="`editoutputPayload-${index}`"
-          :label="`${output.name}:`"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-        >
-          <b-form-input
-            :id="`outputPayload-${index}`"
-            v-model="output.payload"
-            trim
-          ></b-form-input>
-        </b-form-group>
       </form>
     </b-modal>
   </div>
@@ -86,10 +72,10 @@ import {
 
 export default {
   name: "CodeControlVueComp",
-  props: ["ikey", "putData", "nodeOutputs", "nodeId"],
+  props: ["ikey", "putData", "nodeOutputs", "nodeId", "getData"],
   data() {
     return {
-      code: "",
+      code: this.getData(this.ikey),
       codeState: null,
       outputs: this.nodeOutputs,
       componentKey: 0,
@@ -138,13 +124,7 @@ export default {
       if (!this.checkFormValidity()) {
         return;
       }
-      let payloadsCode = [`let outputs = {};`];
-      for (const [key, output] of this.outputs.entries()) {
-        payloadsCode.push(`outputs["${output.key}"] = ${output.payload};`);
-      }
-      payloadsCode.push("return outputs;");
-      payloadsCode = payloadsCode.join("\n");
-      this.putData(this.ikey, `${this.code}\n${payloadsCode}`);
+      this.putData(this.ikey, this.code);
       // Hide the modal manually
       this.$nextTick(() => {
         this.$refs["code-modal"].hide("code-modal-prevent-closing");
