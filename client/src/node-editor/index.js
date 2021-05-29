@@ -19,6 +19,7 @@ export let editor;
 let engine;
 let logConsoleContent;
 let nevBarbuttonsVisibility;
+let id;
 
 function createUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -92,8 +93,15 @@ export function saveEditor() {
     FileSaver.saveAs(blob, `editor.json`);
 }
 
-export function loadEditor(file) {
-    console.log("upload editor: ", file);
+export async function loadEditor(json_file) {
+    console.log("upload editor: ", json_file);
+    cleanBoard();
+    const data = JSON.parse(json_file);
+    data.id = id;
+    await editor.fromJSON(data);
+    editor.view.resize();
+    AreaPlugin.zoomAt(editor);
+
 }
 
 export async function ChangeGraphReadOnly() {
@@ -113,7 +121,7 @@ export function init(container, logContent, buttonsVisibility) {
     eventSource.addEventListener('step', EventHandlers.stepEventHandler);
 
 
-    const id = createUUID();
+    id = createUUID();
     engine = new Rete.Engine(id);
 
     editor = new Rete.NodeEditor(id, container);
@@ -136,7 +144,7 @@ export function init(container, logContent, buttonsVisibility) {
 
         // var startNode = await components[0].createNode();
         // var bsyncNode = await components[1].createNode();
-        
+
         // startNode.position = [100, 100];
         // bsyncNode.position = [400, 100];
 

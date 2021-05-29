@@ -177,9 +177,8 @@
 </template>
 
 <script>
-import { init } from "../node-editor/index";
-
 import {
+  init,
   OnClickRun,
   OnClickStep,
   OnClickStop,
@@ -187,7 +186,7 @@ import {
   cleanBoard,
   ChangeGraphReadOnly,
   saveEditor,
-  loadEditor,
+  loadEditor
 } from "../node-editor/index";
 import {
   BModal,
