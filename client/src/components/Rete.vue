@@ -14,6 +14,7 @@
               id="run-button"
               v-on:click="OnClickRun"
               :disabled="buttonsVisibility.isRunDisabled"
+              v-b-tooltip.hover="{title:'Run', placement: 'bottom'}"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -34,6 +35,7 @@
               @click="makeToast('success')"
               class="mb-2"
               :disabled="buttonsVisibility.isDebugDisabled"
+              v-b-tooltip.hover="{title:'Debug',placement: 'bottom'}"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +59,7 @@
               class="mb-2"
               @click="makeToast('danger')"
               :disabled="buttonsVisibility.isStopDisabled"
+              v-b-tooltip.hover="{title:'Stop', placement: 'bottom'}"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -94,6 +97,7 @@
               id="step-forward-button"
               v-on:click="OnClickStep"
               :disabled="buttonsVisibility.isStepDisabled"
+              v-b-tooltip.hover="{title:'Step',placement: 'bottom'}"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +113,11 @@
                 />
               </svg>
             </b-nav-item>
-            <b-nav-item id="clean-board-button" v-on:click="OnClickCleanBoard" v-b-tooltip.bottom="'Clean Board'">
+            <b-nav-item
+              id="clean-board-button"
+              v-on:click="OnClickCleanBoard"
+              v-b-tooltip.bottom="'Clean Board'"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -123,6 +131,29 @@
                 />
               </svg>
             </b-nav-item>
+            
+            <b-nav-item-dropdown
+              id="my-nav-dropdown"
+              text="Menu"
+              toggle-class="nav-link-custom"
+              right
+            >
+              <b-dropdown-item id="save-button" v-on:click="OnClickSave"
+                >Save File</b-dropdown-item
+              >
+              <b-dropdown-item id="load-from-file-button" v-b-modal.modal-upload-json
+                >Load File</b-dropdown-item
+              >
+              <b-modal id="modal-upload-json" title="File Upload" v-on:ok="OnClickLoad">
+                <p class="my-4">Please upload your JSON file:</p>
+                <b-form-file
+                  v-model="file"
+                  :state="Boolean(file)"
+                  placeholder="Choose a JSON file or drop it here..."
+                  accept=".json"
+                ></b-form-file>
+              </b-modal>
+            </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
@@ -146,14 +177,16 @@
 </template>
 
 <script>
-import { init } from "../node-editor/index";
 import {
+  init,
   OnClickRun,
   OnClickStep,
   OnClickStop,
   OnClickDebug,
   cleanBoard,
-  ChangeGraphReadOnly
+  ChangeGraphReadOnly,
+  saveEditor,
+  loadEditor
 } from "../node-editor/index";
 import {
   BModal,
@@ -172,10 +205,9 @@ import {
   BSidebar,
   BCard,
   BTooltip,
-  VBTooltip
+  VBTooltip,
+  BFormFile,
 } from "bootstrap-vue";
-//import Modal from './Modal.vue';
-// import { BModal, VBModal } from 'bootstrap-vue'
 
 export default {
   data() {
@@ -186,8 +218,9 @@ export default {
         isStepDisabled: true,
         isStopDisabled: true,
         isDebugDisabled: false,
-        isRunDisabled: false,
+        isRunDisabled: false
       },
+      file: null,
     };
   },
   methods: {
@@ -236,6 +269,21 @@ export default {
     ClearConsole() {
       this.logContent.splice(0, this.logContent.length);
     },
+    OnClickSave() {
+      saveEditor();
+    },
+    async OnClickLoad() {
+      console.log("upload file: ", this.file);
+      let reader = new FileReader();
+      let json;
+      reader.onload = (e) => {
+        json = e.target.result;
+        loadEditor(json);
+      };
+      reader.readAsText(this.file);
+
+      this.file = null;
+    },
   },
   components: {
     BModal,
@@ -252,9 +300,10 @@ export default {
     BNav,
     BSidebar,
     BCard,
-    BTooltip
+    BTooltip,
+    BFormFile,
   },
-  directives: { "b-modal": VBModal, 'b-tooltip': VBTooltip },
+  directives: { "b-modal": VBModal, "b-tooltip": VBTooltip },
   mounted() {
     init(this.$refs.rete, this.logContent, this.buttonsVisibility);
   },

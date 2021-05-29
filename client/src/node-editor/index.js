@@ -5,12 +5,12 @@ import AreaPlugin from "rete-area-plugin";
 import ContextMenuPlugin from "rete-context-menu-plugin";
 import ConnectionReroutePlugin from 'rete-connection-reroute-plugin';
 import ReadonlyPlugin from 'rete-readonly-plugin';
-// import DockPlugin from "rete-dock-plugin";
-import { BsyncComponent, statusColor } from "./components/BsyncComponent";
+import FileSaver from 'file-saver';
+import { BsyncComponent } from "./components/BsyncComponent";
 import { StartComponent } from "./components/StartComponent";
 import { GeneralComponent } from "./components/GeneralComponent";
 import * as Consts from "./helpers/Consts";
-import * as ButtonsHandlers from "./helpers/ButtonsHandlers" 
+import * as ButtonsHandlers from "./helpers/ButtonsHandlers"
 import * as EventHandlers from "./EventHandlers/EventHandlers.js"
 
 
@@ -19,6 +19,7 @@ export let editor;
 let engine;
 let logConsoleContent;
 let nevBarbuttonsVisibility;
+let id;
 
 function createUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -43,50 +44,70 @@ export async function OnClickStep() {
     ButtonsHandlers.OnClickStep(editor, engine);
 }
 
-export function addLogLine(line){
+export function addLogLine(line) {
     logConsoleContent.push(line);
 }
 
-export function enableStepButton(){
+export function enableStepButton() {
     nevBarbuttonsVisibility.isStepDisabled = false;
 }
 
-export function disableStepButton(){
+export function disableStepButton() {
     nevBarbuttonsVisibility.isStepDisabled = true;
 }
 
-export function enableStopButton(){
+export function enableStopButton() {
     nevBarbuttonsVisibility.isStopDisabled = false;
 }
 
-export function disableStopButton(){
+export function disableStopButton() {
     nevBarbuttonsVisibility.isStopDisabled = true;
 }
 
-export function enableDebugButton(){
+export function enableDebugButton() {
     nevBarbuttonsVisibility.isDebugDisabled = false;
 }
 
-export function disableDebugButton(){
+export function disableDebugButton() {
     nevBarbuttonsVisibility.isDebugDisabled = true;
 }
 
-export function enableRunButton(){
+export function enableRunButton() {
     nevBarbuttonsVisibility.isRunDisabled = false;
 }
 
-export function disableRunButton(){
+export function disableRunButton() {
     nevBarbuttonsVisibility.isRunDisabled = true;
 }
 
-export function cleanBoard(){
+export function cleanBoard() {
     editor.clear();
 }
 
-export async function ChangeGraphReadOnly(){
+export function saveEditor() {
+
+    const curr_editor = editor.toJSON();
+    const data = JSON.stringify(curr_editor);
+
+    const blob = new Blob([data], { type: 'application/json' })
+    FileSaver.saveAs(blob, `editor.json`);
+}
+
+export async function loadEditor(json_file) {
+    console.log("upload editor: ", json_file);
+    cleanBoard();
+    const data = JSON.parse(json_file);
+    data.id = id;
+    await editor.fromJSON(data);
+    editor.view.resize();
+    AreaPlugin.zoomAt(editor);
+
+}
+
+export async function ChangeGraphReadOnly() {
     let readonlyEnabled = editor.trigger('isreadonly');
     await editor.trigger('readonly', !readonlyEnabled);
-    
+
     console.log("readonly graph state: ", !readonlyEnabled);
 }
 
@@ -100,9 +121,9 @@ export function init(container, logContent, buttonsVisibility) {
     eventSource.addEventListener('step', EventHandlers.stepEventHandler);
 
 
-    const id = createUUID();
+    id = createUUID();
     engine = new Rete.Engine(id);
-    // var container = document.querySelector('#rete');
+
     editor = new Rete.NodeEditor(id, container);
     const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName), new GeneralComponent("General", 2, ["output1", "output2"])];
 
@@ -115,7 +136,7 @@ export function init(container, logContent, buttonsVisibility) {
         // editor.use(DockPlugin);
         editor.use(AreaPlugin);
 
-       
+
         components.map(c => {
             editor.register(c);
             engine.register(c);
@@ -123,7 +144,7 @@ export function init(container, logContent, buttonsVisibility) {
 
         // var startNode = await components[0].createNode();
         // var bsyncNode = await components[1].createNode();
-        
+
         // startNode.position = [100, 100];
         // bsyncNode.position = [400, 100];
 
