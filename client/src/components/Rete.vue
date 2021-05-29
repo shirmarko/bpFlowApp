@@ -14,6 +14,7 @@
               id="run-button"
               v-on:click="OnClickRun"
               :disabled="buttonsVisibility.isRunDisabled"
+              v-b-tooltip.hover="{title:'Run', placement: 'bottom'}"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -34,6 +35,7 @@
               @click="makeToast('success')"
               class="mb-2"
               :disabled="buttonsVisibility.isDebugDisabled"
+              v-b-tooltip.hover="{title:'Debug',placement: 'bottom'}"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +59,7 @@
               class="mb-2"
               @click="makeToast('danger')"
               :disabled="buttonsVisibility.isStopDisabled"
+              v-b-tooltip.hover="{title:'Stop', placement: 'bottom'}"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -94,6 +97,7 @@
               id="step-forward-button"
               v-on:click="OnClickStep"
               :disabled="buttonsVisibility.isStepDisabled"
+              v-b-tooltip.hover="{title:'Step',placement: 'bottom'}"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
