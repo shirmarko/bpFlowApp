@@ -32,7 +32,7 @@ export class StartComponent extends Rete.Component {
         var out = new OutputWithPayload(this.outputName, this.outputName, Socket.general);
         return node
             .addOutput(out)
-            .addControl(new CodeControl('code', node.outputs))
+            .addControl(new CodeControl(node.outputs, node.id))
     }
 
     worker(node, inputs, outputs) {
