@@ -8,18 +8,17 @@ import Rete from "rete";
 
 var CustomGeneralNode = {
     template: `<div class="node">
-    <div class="title">{{node.id}}. {{node.name}}</div>
-    <!-- Outputs-->
-    <div class="outputGeneral" v-for="output in outputs()" :key="output.key">
-      <div class="output-title">{{output.name}}</div>
-      <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
-    </div>
-
     <!-- Inputs-->
     <div class="input" v-for="input in inputs()" :key="input.key">
       <Socket v-socket:input="input" type="input" :socket="input.socket"></Socket>
       <!-- <div class="input-title" v-show="!input.showControl()">{{input.name}}</div> -->
       <div class="input-control" v-show="input.showControl()" v-control="input.control"></div>
+    </div>
+    <div class="title">&nbsp;&nbsp;{{node.id}}. {{node.name}}</div>
+    <!-- Outputs-->
+    <div class="outputGeneral" v-for="output in outputs()" :key="output.key">
+      <div class="output-title">{{output.name}}</div>
+      <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
     </div>
     
     <!-- Controls-->

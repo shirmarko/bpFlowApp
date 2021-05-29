@@ -101,7 +101,6 @@ export async function loadEditor(json_file) {
     await editor.fromJSON(data);
     editor.view.resize();
     AreaPlugin.zoomAt(editor);
-
 }
 
 export async function ChangeGraphReadOnly() {
