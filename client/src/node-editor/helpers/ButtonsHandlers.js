@@ -1,15 +1,16 @@
 import { parseDataToSend } from "./Parser";
 import { post } from "../Comunication/Controller"
-import { clearPrevSelectedNodeId, clearPrevActiveNodes } from "../EventHandlers/EventHandlers"
+import { stop, colorSecondStep} from "../EventHandlers/EventHandlers"
 
+let shouldCallToServer = true;
 
 export async function SendGraphToServer(editor, engine, route) {
     console.log('--------click run--------');
 
-    if(route === "debug"){
-        clearPrevSelectedNodeId();
-        clearPrevActiveNodes();
-    }
+    // if(route === "debug"){
+    //     clearPrevSelectedNodeId();
+    //     clearPrevActiveNodes();
+    // }
     
     console.log(editor.toJSON());
     console.log(JSON.stringify(editor.toJSON()));
@@ -23,8 +24,8 @@ export async function SendGraphToServer(editor, engine, route) {
 }
 
 export async function OnClickStop(editor) {
-    clearPrevSelectedNodeId();
-    clearPrevActiveNodes();
+    stop();
+    shouldCallToServer = true;
     editor.nodes.forEach(node => {
         node.data.color = "BRIGHTGRAY";
         node.data.payloadView = {};
@@ -40,6 +41,17 @@ export async function OnClickStep(editor, engine) {
     await engine.process(editor.toJSON());
     let dataToSend = editor.toJSON().id;
 
-    post("step", dataToSend);
+    if(shouldCallToServer){
+        shouldCallToServer = false;
+        post("step", dataToSend);
+    }
+    else{
+        shouldCallToServer = true;
+        colorSecondStep();
+    }
+}
+
+export function setShouldCallToServer(newValue){
+    shouldCallToServer = newValue;
 }
 

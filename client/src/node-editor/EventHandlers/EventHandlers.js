@@ -1,31 +1,24 @@
 import * as Index from "../index"
+import {setShouldCallToServer} from "../helpers/ButtonsHandlers"
 
-let prevSelectedNodeId;
+
+let prevSelectedNodeId = [];
 let prevActiveNodes = {};
+let globalData;
+let isFirstStep = true;
 
-
-export function clearPrevSelectedNodeId(){
-    prevSelectedNodeId = undefined;
-}
-
-export function clearPrevActiveNodes(){
+export function stop(){
+    prevSelectedNodeId = [];
     prevActiveNodes = {};
+    isFirstStep = true;
 }
+
 
 export function stepEventHandler(event) {
-    //prevActiveNodes.forEach(nodeId => changeNodeColor(nodeId, "BRIGHTGRAY"));
-    for(let nodeId in prevActiveNodes){
-        if(prevActiveNodes[nodeId]){
-            changeNodeColor(nodeId, "BRIGHTGRAY");
-        }
-    }
 
     let data = JSON.parse(event.data);
     console.log(data);
     console.log(Index.nodeNamesToIds);
-    if (prevSelectedNodeId != undefined) {
-        changeNodeColor(prevSelectedNodeId, "BRIGHTGRAY");
-    }
 
     if (data.isDone) {
         endDebug();
@@ -37,31 +30,58 @@ export function stepEventHandler(event) {
             changeNodeColor(nodeId, "RED");
         }
     }
-    //data.blocked.forEach(nodeId => changeNodeColor(nodeId, "RED"));
-    for(let nodeId in data.active){
-        if(data.active[nodeId]){
-            changeNodeColor(nodeId, "DARKGRAY");
+
+    if(isFirstStep){
+        for(let nodeId in data.active){
+            if(data.active[nodeId]){
+                changeNodeColor(nodeId, "DARKGRAY");
+            }
+        }
+        updatePayloads(data);
+        isFirstStep = false;
+    }
+
+    if(data.selectedEvent != null){
+        changeNodeColor(data.selectedEvent, "GREEN");
+        prevSelectedNodeId.push(data.selectedEvent);
+    }
+    for(let nodeId in prevActiveNodes){
+        if(prevActiveNodes[nodeId] && !data.active[nodeId]){
+            changeNodeColor(nodeId, "GREEN");
+            prevSelectedNodeId.push(nodeId);
         }
     }
 
-    //data.active.forEach(nodeId => changeNodeColor(nodeId, "DARKGRAY"));
+    
+    globalData = data;
+    prevActiveNodes = data.active;
+};
 
-    if (data.selectedEvent != null) {
-        //let nodeId = nodeNamesToIds[data.selectedEvent.name] == undefined ? nodeNamesToIds[`"${data.selectedEvent.name}"`] : nodeNamesToIds[data.selectedEvent.name];
-        let nodeId = data.selectedEvent;
-        changeNodeColor(nodeId, "GREEN");
-        prevSelectedNodeId = nodeId;
+export function colorSecondStep(){
+     //clear all "already-selected" nodes and update selected-list
+    if (prevSelectedNodeId.length > 0) {
+        for(var i = 0 ; i < prevSelectedNodeId.length ; i++){
+            changeNodeColor(prevSelectedNodeId[i], "BRIGHTGRAY");
+        }
+        prevSelectedNodeId = [];
     }
 
+    for(let nodeId in globalData.active){
+        if(globalData.active[nodeId]){
+            changeNodeColor(nodeId, "DARKGRAY");
+        }
+    }
+    updatePayloads(globalData);
+}
+
+function updatePayloads(data){
     //payloads update
     for(let nodeId in data.payloads){
         const node = Index.editor.nodes.find(n => n.id == nodeId);
         node.data.payloadView = data.payloads[nodeId];
         node.update();
     }
-
-    prevActiveNodes = data.active;
-};
+}
 
 function changeNodeColor(nodeId, color){
     const node = Index.editor.nodes.find(n => n.id == nodeId);
@@ -76,7 +96,7 @@ export function flowEventHandler(event) {
 
 
 function endDebug(){
-    prevSelectedNodeId = undefined;
+    prevSelectedNodeId = [];
     prevActiveNodes = {};
     Index.editor.nodes.forEach(node => {
         node.data.color = "BRIGHTGRAY";
@@ -89,5 +109,6 @@ function endDebug(){
     Index.disableStopButton();
 
     Index.ChangeGraphReadOnly();
-    //for (var entry in nodeNamesToIds) delete nodeNamesToIds[entry];
+    isFirstStep = true;
+    setShouldCallToServer(true);
 }
