@@ -1,36 +1,36 @@
 import { parseDataToSend } from "./Parser";
 import { post } from "../Comunication/Controller"
-import { clearPrevSelectedNodeId, clearPrevActiveNodes } from "../EventHandlers/EventHandlers"
+import { stop, colorSecondStep} from "../EventHandlers/EventHandlers"
 
+let shouldCallToServer = true;
 
-export async function SendGraphToServer(editor, engine, nodeNamesToIds, route) {
+export async function SendGraphToServer(editor, engine, route) {
     console.log('--------click run--------');
 
-    if(route === "debug"){
-        clearPrevSelectedNodeId();
-        clearPrevActiveNodes();
-    }
+    // if(route === "debug"){
+    //     clearPrevSelectedNodeId();
+    //     clearPrevActiveNodes();
+    // }
     
     console.log(editor.toJSON());
     console.log(JSON.stringify(editor.toJSON()));
     await engine.abort();
     await engine.process(editor.toJSON());
 
-    let dataToSend = parseDataToSend(editor, editor.toJSON(), nodeNamesToIds);
+    let dataToSend = parseDataToSend(editor, editor.toJSON());
     dataToSend = JSON.stringify(dataToSend);
     console.log(dataToSend);
     post(route, dataToSend);
 }
 
-export async function OnClickStop(editor, nodeNamesToIds) {
-    clearPrevSelectedNodeId();
-    clearPrevActiveNodes();
+export async function OnClickStop(editor) {
+    stop();
+    shouldCallToServer = true;
     editor.nodes.forEach(node => {
         node.data.color = "BRIGHTGRAY";
         node.data.payloadView = {};
         node.update();
     });
-    for (var entry in nodeNamesToIds) delete nodeNamesToIds[entry];
     let dataToSend = editor.toJSON().id;
     post("stop", dataToSend);
 }
@@ -41,6 +41,17 @@ export async function OnClickStep(editor, engine) {
     await engine.process(editor.toJSON());
     let dataToSend = editor.toJSON().id;
 
-    post("step", dataToSend);
+    if(shouldCallToServer){
+        shouldCallToServer = false;
+        post("step", dataToSend);
+    }
+    else{
+        shouldCallToServer = true;
+        colorSecondStep();
+    }
+}
+
+export function setShouldCallToServer(newValue){
+    shouldCallToServer = newValue;
 }
 
