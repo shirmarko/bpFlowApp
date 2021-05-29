@@ -101,7 +101,6 @@ export async function loadEditor(json_file) {
     await editor.fromJSON(data);
     editor.view.resize();
     AreaPlugin.zoomAt(editor);
-
 }
 
 export async function ChangeGraphReadOnly() {
@@ -125,7 +124,7 @@ export function init(container, logContent, buttonsVisibility) {
     engine = new Rete.Engine(id);
 
     editor = new Rete.NodeEditor(id, container);
-    const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName), new GeneralComponent("General", 2, ["output1", "output2"])];
+    const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName), new GeneralComponent("General", 1, ["output1"])];
 
     (async () => {
         editor.use(ConnectionPlugin);

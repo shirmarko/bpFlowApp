@@ -1,5 +1,5 @@
 {
-    "id": "f28352e8-be6d-43c9-814e-3b32814ab1f3@0.1.0",
+    "id": "e84a0599-589a-43f4-b0cc-5ad912192785@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
@@ -311,6 +311,13 @@
                 "data": {
                   "pins": []
                 }
+              },
+              {
+                "node": 11,
+                "output": "Output",
+                "data": {
+                  "pins": []
+                }
               }
             ]
           }
@@ -357,7 +364,15 @@
         },
         "outputs": {
           "Output": {
-            "connections": []
+            "connections": [
+              {
+                "node": 10,
+                "input": "input",
+                "data": {
+                  "pins": []
+                }
+              }
+            ]
           }
         },
         "position": [
