@@ -1,10 +1,7 @@
 import VueRenderPlugin from "rete-vue-render-plugin";
 import { CodeControl } from "../controls/CodeControlVue.js"
-import { PayloadControl } from "../controls/PayloadControlVue"
-import { OutputWithPayload } from "./OutputWithPayload.js"
 import { EditGeneralNodeControl } from "../controls/EditGeneralNodeControl.js"
-import * as Socket from "../sockets";
-import Rete from "rete";
+import { AbstractComponent } from "./AbstractComponent"
 
 var CustomGeneralNode = {
     template: `<div class="node">
@@ -37,27 +34,17 @@ var CustomGeneralNode = {
 }
 
 
-export class GeneralComponent extends Rete.Component {
-    constructor(name, numOfOutputs, outputsTitles) {
-        super(name);
-        this.data.component = CustomGeneralNode;
-        this.outputsTitles = outputsTitles;
-        this.numOfOutputs = numOfOutputs;
+export class GeneralComponent extends AbstractComponent {
+    constructor() {
+        super("General");
     }
 
     builder(node) {
-        for (let i = 0; i < this.numOfOutputs; i++) {
-            node.addOutput(new OutputWithPayload(this.outputsTitles[i], this.outputsTitles[i], Socket.general));
-        }
-        node.data.payloadView = {};
-        var inp = new Rete.Input('input', "Input", Socket.general, true);
-        const editGeneralNodeControl = new EditGeneralNodeControl('edit', this.name, node.outputs, this.editor, node.id);
-        node.addInput(inp)
-            .addControl(new CodeControl('code', node.outputs, node.id))
-            .addControl(new PayloadControl('payload', node.data, node.id))
+        node = AbstractComponent.prototype.builder(node, 1, ["output1"]);
+
+        const editGeneralNodeControl = new EditGeneralNodeControl(this.name, node.outputs, this.editor, node.id);
+        node.addControl(new CodeControl(node.outputs, node.id))
             .addControl(editGeneralNodeControl)
-
-
         editGeneralNodeControl.addNodeToProps(node);
 
         return node;

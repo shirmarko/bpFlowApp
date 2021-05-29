@@ -24,7 +24,7 @@ var CustomBSyncNode = {
     
     <!-- Controls-->
     <div class="control" v-for="control in controls()" v-control="control">
-            <div v-if="control.key!=='payload'" class="control-title">{{control.key}}:</div>
+            <div v-if="control.key!=='payloadView'" class="control-title">{{control.key}}:</div>
     </div>
 
   </div>`,
@@ -58,7 +58,7 @@ var CustomBSyncNode = {
         .addControl(new InputTextControl('request'))
         .addControl(new InputTextControl('wait'))
         .addControl(new InputTextControl('block'))
-        .addControl(new PayloadControl('payload', node.data, node.id))
+        .addControl(new PayloadControl(node.data, node.id))
     }
 
     worker(node, inputs, outputs) {

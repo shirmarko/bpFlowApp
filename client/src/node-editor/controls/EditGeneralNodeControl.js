@@ -2,12 +2,12 @@ import Rete from "rete";
 import EditGeneralNodeControlVue from "./EditGeneralNodeControlVue.vue"
 
 export class EditGeneralNodeControl extends Rete.Control {
-  constructor(key, name, nodeOutputs, editor, nodeId) {
-    super(key);
+  constructor(name, nodeOutputs, editor, nodeId) {
+    super('edit');
     // console.log("outputs :" + JSON.stringify(Object.fromEntries(nodeOutputs)));
     let myNode;
     let globalEditor = editor;
-    this.props = { ikey: key, name, nodeOutputs, myNode, globalEditor, nodeId };
+    this.props = { ikey: 'edit', name, nodeOutputs, myNode, globalEditor, nodeId };
     this.component = EditGeneralNodeControlVue;
   }
 

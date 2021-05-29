@@ -9,6 +9,7 @@ import FileSaver from 'file-saver';
 import { BsyncComponent } from "./components/BsyncComponent";
 import { StartComponent } from "./components/StartComponent";
 import { GeneralComponent } from "./components/GeneralComponent";
+import { ForComponent } from "./components/ForComponent";
 import * as Consts from "./helpers/Consts";
 import * as ButtonsHandlers from "./helpers/ButtonsHandlers"
 import * as EventHandlers from "./EventHandlers/EventHandlers.js"
@@ -94,7 +95,6 @@ export function saveEditor() {
 }
 
 export async function loadEditor(json_file) {
-    console.log("upload editor: ", json_file);
     cleanBoard();
     const data = JSON.parse(json_file);
     data.id = id;
@@ -124,7 +124,7 @@ export function init(container, logContent, buttonsVisibility) {
     engine = new Rete.Engine(id);
 
     editor = new Rete.NodeEditor(id, container);
-    const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName), new GeneralComponent("General", 1, ["output1"])];
+    const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName), new GeneralComponent(), , new ForComponent()];
 
     (async () => {
         editor.use(ConnectionPlugin);

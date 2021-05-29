@@ -60,14 +60,39 @@ function generateBsyncCode(curNode){
     let returnPayloadCode = [`let outputs = {};`, `outputs["${Consts.defaultOutputName}"] = payload;`, `return outputs;`];
     returnPayloadCode = returnPayloadCode.join("\n");
     curNode.data["code"] = `${code}\n${returnPayloadCode}`;
-    curNode.type = "General";
 }
 
 function generateGeneralCode(curNode){
-    let codeBody = ["let outputs = {};"];
+    let codeBody = [];
+    for (var key in curNode.data){
+        if(!Consts.DefaultControlsNames.includes(key)){
+            codeBody.push(`let ${key} = ${curNode.data[key]};`)
+            delete curNode.data[key];
+        }
+    }
+
+    codeBody.push("let outputs = {};");
     codeBody.push(curNode.data["code"]);
     codeBody.push("return outputs;")
     curNode.data["code"] = codeBody.join("\n");
+}
+
+// function generateLocalEnv(curNode){
+//     let env = {};
+//     for (var key in curNode.data){
+//         console.log(`generateLocalEnv key = ${key}`);
+//         if(!Consts.DefaultControlsNames.includes(key)){
+//             console.log(`generateLocalEnv includes - ${key}`);
+//             env[key] = curNode.data[key];
+//             delete curNode.data[key];
+//         }
+//     }
+//     curNode.data["env"] = env;
+// }
+
+function parseGeneralData(curNode){
+    generateGeneralCode(curNode);
+    //generateLocalEnv(curNode);
 }
 
 function parseNodeData(curNode) {
@@ -79,7 +104,7 @@ function parseNodeData(curNode) {
         generateBsyncCode(curNode);
     }
     else{
-        generateGeneralCode(curNode);
+        parseGeneralData(curNode);
     }
     // if(!curNode.data.hasOwnProperty("code")){ //in case code of general\start node wasn't edited
     //     generateCode(curNode, editor);
@@ -99,6 +124,10 @@ function parseNodes(editor, newData) {
         parseNodeInputs(curNode);
         parseNodeOutputs(editor, curNode);
         parseNodeData(curNode);
+
+        if(curNode.type != "Start"){
+            curNode.type = "General";
+        }
     }
 }
 

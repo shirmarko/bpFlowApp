@@ -273,7 +273,6 @@ export default {
       saveEditor();
     },
     async OnClickLoad() {
-      console.log("upload file: ", this.file);
       let reader = new FileReader();
       let json;
       reader.onload = (e) => {
