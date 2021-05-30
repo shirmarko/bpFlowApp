@@ -20,7 +20,7 @@ function parseNodeOutputs(editor, curNode) {
         for (var j in connections) {
             newConnections.push(connections[j].node);
         }
-        let outputKey = editor.nodes.find(n => n.id == curNode.id).outputs.get(m).key;
+        let outputKey = editor.nodes.find(n => n.id == curNode.id).outputs.get(m).name;
         outputs[outputKey] = newConnections;
     }
     curNode.outputs = outputs;
