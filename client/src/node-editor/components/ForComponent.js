@@ -21,8 +21,7 @@ else{
   outputs["i=n"] = payload; 
 }`
 
-        node.addControl(new CodeControl(node.outputs, node.id))
-            .addControl(new InputTextControl('n'));
+        node.addControl(new InputTextControl('n'));
 
         return node;
     }

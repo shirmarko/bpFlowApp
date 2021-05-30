@@ -30,15 +30,15 @@ function generateBPSyncCode(curNode){
     let body = [];
     if (curNode.data.hasOwnProperty("request") && curNode.data["request"] != "") {
         //nodeNamesToIds[curNode.data["request"]] = curId;
-        body.push(`request:bp.Event(${curNode.data["request"]})`);
+        body.push(`request:${curNode.data["request"]}`);
         delete curNode.data["request"];
     }
     if (curNode.data.hasOwnProperty("wait") && curNode.data["wait"] != "") {
-        body.push(`waitFor:bp.Event(${curNode.data["wait"]})`);
+        body.push(`waitFor:${curNode.data["wait"]}`);
         delete curNode.data["wait"];
     }
     if (curNode.data.hasOwnProperty("block") && curNode.data["block"] != "") {
-        body.push(`block:bp.Event(${curNode.data["block"]})`);
+        body.push(`block:${curNode.data["block"]}`);
         delete curNode.data["block"];
     }
     return body;
@@ -52,10 +52,9 @@ function generateBsyncCode(curNode){
     
     let code = `nodesLists["active"][${curId}] = true;\n
                 bp.sync( {${body.join(", ")}} );\n
-                nodesLists["active"][${curId}] = false;\n`;
-    if (hasRequest) {
-        code += `nodesLists["selectedEvent"] = ${curId};\n`;
-    }
+                nodesLists["active"][${curId}] = false;\n
+                selectedEvents.add(${curId});\n`;
+    
 
     let returnPayloadCode = [`let outputs = {};`, `outputs["${Consts.defaultOutputName}"] = payload;`, `return outputs;`];
     returnPayloadCode = returnPayloadCode.join("\n");

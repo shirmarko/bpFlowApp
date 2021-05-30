@@ -1,5 +1,13 @@
+//bp.registerBThread("any", function(){
+//    while(true){
+//        selectedEvent =  bp.sync({waitFor:bp.all});
+//        //nodesLists["payloads"] = {};
+//        bp.log.info("Selected Event " + selectedEvent + "name = " + selectedEvent.name);
+//    }
+//});
+
 function goToFollowers(curNode, ths, bp, payloads) {
-    bp.log.info("curnode = " + curNode.id + " payloads = " + JSON.stringify(payloads));
+    bp.log.info("curnode = {0} payloads = {1}", curNode.id, payloads);
     const outputs = curNode.outputs;
     bp.log.info("outputs = " + outputs);
     if(outputs.size() > 0){
@@ -30,25 +38,27 @@ function goToFollowers(curNode, ths, bp, payloads) {
 }
 
 function runInNewBT(curNode, payload) {
-    bp.log.info("in runInNewBT@@@@@@@@ - " + curNode.id + " :" + JSON.stringify(payload));
-	var context = JSON.parse(JSON.stringify(payload));
+    bp.log.info("in runInNewBT@@@@@@@@ - {0} :{1}", curNode.id, payload);
+	//var context = JSON.parse(JSON.stringify(payload));
+	var context = payload;
+	bp.log.info("context - {0}", context);
     nodesLists["payloads"][curNode.id] = context;
-
 	bp.registerBThread(curNode.id, function() {
 		eval("var f=f" + curNode.id);
         //bp.log.info("curNode.id - " + curNode.id);
-		const payloads = f(context, this, bp, nodesLists);
+		const payloads = f(context, this, bp, nodesLists, selectedEvent);
+		bp.log.info("payloads: {0}", payloads);
         goToFollowers(curNode, this, bp, payloads);
 	});
 }
 
 function runInSameBT(curNode, payload, ths, bp) {
-    bp.log.info("in runInSameBT!!!! - " + curNode.id + " :" + JSON.stringify(payload));
+    bp.log.info("in runInSameBT!!!! - {0} : {1}", curNode.id, payload);
     //need to clone the payload??
     nodesLists["payloads"][curNode.id] = payload;
 	eval("var f=f" + curNode.id);
 
-	const payloads = f(payload, ths, bp, nodesLists);
+	const payloads = f(payload, ths, bp, nodesLists, selectedEvent);
     goToFollowers(curNode, ths, bp, payloads);
 
 }
@@ -61,9 +71,9 @@ let nodesLists = {};
 nodesLists["active"] = {};
 nodesLists["reqnotblocked"] = {};
 nodesLists["blocked"] = {};
-nodesLists["selectedEvent"] = undefined;
 nodesLists["isDone"] = false;
 nodesLists["payloads"] = {};
+//let selectedEvent;
 
 var startNodes = [];
 for(var i in allNodesArr){
