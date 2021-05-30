@@ -31,7 +31,7 @@
         >
           <b-form-input
             id="title-id"
-            v-model="titleValue"
+            v-model="myNode.name"
             :state="stateTitle"
             trim
           ></b-form-input>
@@ -90,9 +90,9 @@ export default {
   props: ["ikey", "name", "nodeOutputs", "myNode", "globalEditor", "nodeId"],
   data() {
     return {
-      titleValue: this.name,
+      titleValue: this.myNode.name,
       numberOfOutputsValue: this.nodeOutputs.size,
-      stateTitleVal: this.name.length > 0,
+      stateTitleVal: this.myNode.name.length > 0,
       stateNumberVal: this.numOfOutputs >= 0,
       outputs: this.nodeOutputs,
       componentKey: 0,
@@ -101,7 +101,7 @@ export default {
   },
   computed: {
     stateTitle() {
-      this.stateTitleVal = this.titleValue.length > 0;
+      this.stateTitleVal = this.myNode.name.length > 0;
       return this.stateTitleVal;
     },
     stateNumber() {
