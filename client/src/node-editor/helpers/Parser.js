@@ -26,29 +26,59 @@ function parseNodeOutputs(editor, curNode) {
     curNode.outputs = outputs;
 }
 
-function generateBPSyncCode(curNode){
+function generateRequestWaitBlockCode(curNode){
     let body = [];
     if (curNode.data.hasOwnProperty("request") && curNode.data["request"] != "") {
-        //nodeNamesToIds[curNode.data["request"]] = curId;
-        body.push(`request:${curNode.data["request"]}`);
+        body.push(`request:${generateBpEventCode(curNode.data["request"])}`);
         delete curNode.data["request"];
     }
     if (curNode.data.hasOwnProperty("wait") && curNode.data["wait"] != "") {
-        body.push(`waitFor:${curNode.data["wait"]}`);
+        body.push(`waitFor:${generateBpEventCode(curNode.data["wait"])}`);
         delete curNode.data["wait"];
     }
     if (curNode.data.hasOwnProperty("block") && curNode.data["block"] != "") {
-        body.push(`block:${curNode.data["block"]}`);
+        body.push(`block:${generateBpEventCode(curNode.data["block"])}`);
         delete curNode.data["block"];
     }
     return body;
 }
+function generateBpEventCode(input){
+    if(isJsonList(input)){
+        let list = JSON.parse(input);
+        let eventsList = list.map(j => `bp.Event("${j.name}", ${j.data})`); 
+        return `[${eventsList.join(',')}]`;
+    }
+    else if(isString(input)){
+            return `bp.Event(${input})`;
+    }
+    else if(isJson(input)){
+            let jsonInput = JSON.parse(input);
+            return `bp.Event("${jsonInput.name}", ${jsonInput.data})`; 
+    }
+    else{ //assume this is js expression
+        return input;
+    }
+}
+
+function isJsonList(s){
+    return s[0] == '[' && s[1] == '{';
+}
+
+function isStringList(s){
+    return s[0] == '[' && s[1] == '"';
+}
+
+function isString(s){
+    return s[0] == '"';
+}
+
+function isJson(s){
+    return s[0] == '{';
+}
 
 function generateBsyncCode(curNode){
-    
-    let hasRequest = curNode.data.hasOwnProperty("request") && curNode.data["request"] != "";
     let curId = parseInt(curNode.id, 10);
-    let body = generateBPSyncCode(curNode);
+    let body = generateRequestWaitBlockCode(curNode);
     
     let code = `nodesLists["active"].get("${curId}").incrementAndGet();\n
                 bp.sync( {${body.join(", ")}} );\n
