@@ -15,7 +15,6 @@ export function stop(){
 
 export function selectedEventsHandler(event){
     let selectedEvents = JSON.parse(event.data);
-    console.log("selected = " + selectedEvents);
     for(let idx in selectedEvents){
         // if(prevActiveNodes[nodeId] && !data.active[nodeId]){
             changeNodeColor(selectedEvents[idx], "GREEN");
@@ -41,8 +40,9 @@ export function stepEventHandler(event) {
     }
 
     if(isFirstStep){
+        console.log("data.active = " + JSON.stringify(data.active));
         for(let nodeId in data.active){
-            if(data.active[nodeId]){
+            if(data.active[nodeId] > 0){
                 changeNodeColor(nodeId, "DARKGRAY");
             }
         }
@@ -76,7 +76,7 @@ export function colorSecondStep(){
     }
 
     for(let nodeId in globalData.active){
-        if(globalData.active[nodeId]){
+        if(globalData.active[nodeId] > 0){
             changeNodeColor(nodeId, "DARKGRAY");
         }
     }
@@ -99,8 +99,18 @@ function changeNodeColor(nodeId, color){
 }
 
 export function flowEventHandler(event) {
+    let data = JSON.parse(event.data);
     console.log(event.data);
-    Index.addLogLine(event.data);
+    console.log(data);
+    if(data.hasOwnProperty("data") && data.data != null){
+        console.log(`${data.name}, data = ${data.data}`);
+        Index.addLogLine(`${data.name}, data = ${JSON.stringify(data.data)}`);
+    }
+    else{
+        console.log(`${data.name},`);
+        Index.addLogLine(`${data.name}`);
+    }
+    
 };
 
 

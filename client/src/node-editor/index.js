@@ -151,7 +151,7 @@ export function init(container, logContent, buttonsVisibility) {
         // editor.addNode(startNode);
         // editor.addNode(bsyncNode);
 
-        const data = require("../Resources/HelloWorld.json");
+        const data = require("../Resources/new hello world.json");
         data.id = id;
         await editor.fromJSON(data);
         editor.view.resize();

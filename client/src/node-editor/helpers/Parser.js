@@ -50,9 +50,9 @@ function generateBsyncCode(curNode){
     let curId = parseInt(curNode.id, 10);
     let body = generateBPSyncCode(curNode);
     
-    let code = `nodesLists["active"][${curId}] = true;\n
+    let code = `nodesLists["active"].get("${curId}").incrementAndGet();\n
                 bp.sync( {${body.join(", ")}} );\n
-                nodesLists["active"][${curId}] = false;\n
+                nodesLists["active"].get("${curId}").decrementAndGet();\n
                 selectedEvents.add(${curId});\n`;
     
 
