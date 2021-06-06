@@ -54,7 +54,7 @@ function runInNewBT(curNode, payload) {
 
 function runInSameBT(curNode, payload, ths, bp) {
     bp.log.info("in runInSameBT!!!! - {0} : {1}", curNode.id, payload);
-    //need to clone the payload??
+    
 	eval("var f=f" + curNode.id);
 
 	const payloads = f(payload, ths, bp, nodesLists, selectedEvent);
