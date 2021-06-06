@@ -1,13 +1,15 @@
 export let OnlyBsyncGraphBeforeParse = 
 {
-    "id": "bd96d172-a15f-4435-b133-ed18c294a4ad@0.1.0",
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
-        "data": {},
+        "data": {
+          "code": "outputs[\"Output\"] = {}"
+        },
         "inputs": {},
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 2,
@@ -37,7 +39,7 @@ export let OnlyBsyncGraphBeforeParse =
             "connections": [
               {
                 "node": 1,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -46,7 +48,7 @@ export let OnlyBsyncGraphBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 3,
@@ -76,7 +78,7 @@ export let OnlyBsyncGraphBeforeParse =
             "connections": [
               {
                 "node": 2,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -85,7 +87,7 @@ export let OnlyBsyncGraphBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 4,
@@ -115,7 +117,7 @@ export let OnlyBsyncGraphBeforeParse =
             "connections": [
               {
                 "node": 3,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -124,7 +126,7 @@ export let OnlyBsyncGraphBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 5,
@@ -154,7 +156,7 @@ export let OnlyBsyncGraphBeforeParse =
             "connections": [
               {
                 "node": 4,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -163,7 +165,7 @@ export let OnlyBsyncGraphBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": []
           }
         },
@@ -178,16 +180,16 @@ export let OnlyBsyncGraphBeforeParse =
 
 export let OnlyBsyncGraphExpectedParse = 
 {
-    "id": "bd96d172-a15f-4435-b133-ed18c294a4ad@0.1.0",
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
         "data": {
-          "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
         },
         "inputs": [],
         "outputs": {
-          " Output": [
+          "Output": [
             2
           ]
         },
@@ -196,13 +198,13 @@ export let OnlyBsyncGraphExpectedParse =
       "2": {
         "id": 2,
         "data": {
-          "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"a\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"2\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"a\")} );\n\n                nodesLists[\"active\"].get(\"2\").decrementAndGet();\n\n                selectedEvents.add(2);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           1
         ],
         "outputs": {
-          " Output": [
+          "Output": [
             3
           ]
         },
@@ -211,13 +213,13 @@ export let OnlyBsyncGraphExpectedParse =
       "3": {
         "id": 3,
         "data": {
-          "code": "nodesLists[\"active\"][3] = true;\n\n                bp.sync( {request:bp.Event(\"b\")} );\n\n                nodesLists[\"active\"][3] = false;\nnodesLists[\"selectedEvent\"] = 3;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"3\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"b\")} );\n\n                nodesLists[\"active\"].get(\"3\").decrementAndGet();\n\n                selectedEvents.add(3);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           2
         ],
         "outputs": {
-          " Output": [
+          "Output": [
             4
           ]
         },
@@ -226,13 +228,13 @@ export let OnlyBsyncGraphExpectedParse =
       "4": {
         "id": 4,
         "data": {
-          "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"c\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"4\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"c\")} );\n\n                nodesLists[\"active\"].get(\"4\").decrementAndGet();\n\n                selectedEvents.add(4);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           3
         ],
         "outputs": {
-          " Output": [
+          "Output": [
             5
           ]
         },
@@ -241,13 +243,13 @@ export let OnlyBsyncGraphExpectedParse =
       "5": {
         "id": 5,
         "data": {
-          "code": "nodesLists[\"active\"][5] = true;\n\n                bp.sync( {request:bp.Event(\"d\")} );\n\n                nodesLists[\"active\"][5] = false;\nnodesLists[\"selectedEvent\"] = 5;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"5\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"d\")} );\n\n                nodesLists[\"active\"].get(\"5\").decrementAndGet();\n\n                selectedEvents.add(5);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           4
         ],
         "outputs": {
-          " Output": []
+          "Output": []
         },
         "type": "General"
       }

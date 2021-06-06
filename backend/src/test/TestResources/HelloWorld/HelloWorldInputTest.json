@@ -1,14 +1,14 @@
 {
-  "id": "HelloWorld",
+  "id": "Hello World",
   "nodes": {
     "1": {
       "id": 1,
       "data": {
-        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
       },
       "inputs": [],
       "outputs": {
-        " Output": [
+        "Output": [
           2
         ]
       },
@@ -17,24 +17,24 @@
     "2": {
       "id": 2,
       "data": {
-        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"Hello\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"].get(\"2\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"Hello\")} );\n\n                nodesLists[\"active\"].get(\"2\").decrementAndGet();\n\n                selectedEvents.add(2);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         1
       ],
       "outputs": {
-        " Output": []
+        "Output": []
       },
       "type": "General"
     },
     "3": {
       "id": 3,
       "data": {
-        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
       },
       "inputs": [],
       "outputs": {
-        " Output": [
+        "Output": [
           4
         ]
       },
@@ -43,24 +43,24 @@
     "4": {
       "id": 4,
       "data": {
-        "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"].get(\"4\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"].get(\"4\").decrementAndGet();\n\n                selectedEvents.add(4);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         3
       ],
       "outputs": {
-        " Output": []
+        "Output": []
       },
       "type": "General"
     },
     "5": {
       "id": 5,
       "data": {
-        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
       },
       "inputs": [],
       "outputs": {
-        " Output": [
+        "Output": [
           6
         ]
       },
@@ -69,13 +69,13 @@
     "6": {
       "id": 6,
       "data": {
-        "code": "nodesLists[\"active\"][6] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Hello\"), block:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"][6] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"].get(\"6\").incrementAndGet();\n\n                bp.sync( {waitFor:bp.Event(\"Hello\"), block:bp.Event(\"World\")} );\n\n                nodesLists[\"active\"].get(\"6\").decrementAndGet();\n\n                selectedEvents.add(6);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [
         5
       ],
       "outputs": {
-        " Output": []
+        "Output": []
       },
       "type": "General"
     }

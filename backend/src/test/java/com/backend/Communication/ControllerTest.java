@@ -44,7 +44,7 @@ public class ControllerTest {
     @MockBean
     private ServiceImpl service;
 
-    private final String[] emptyGraphBpEventExpectedResult = new String[]{"Program execution ended."};
+    private final String[] emptyGraphBpEventExpectedResult = new String[]{"{\"name\":\"Program execution ended.\"}"};
     private final String[] onlyBsyncGraphBpEventsExpectedResult = new String[]{"a", "b", "c", "d", "Program execution ended."};
     private final String[] onlyGeneralGraphBpEventsExpectedResult = new String[]{"Program execution ended."};
     private final String[] onlyStartGraphBpEventsExpectedResult = new String[]{"Program execution ended."};
@@ -71,7 +71,6 @@ public class ControllerTest {
 
         ArrayList<String> stepEvents = events.getRight();
         ArrayList<String> expectedStepEventsData = new ArrayList<>();
-        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\EmptyGraph\\EmptyGraphDebugStep1.json"))));
 
         Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
         for(int i = 0; i < expectedStepEventsData.size(); i++){
