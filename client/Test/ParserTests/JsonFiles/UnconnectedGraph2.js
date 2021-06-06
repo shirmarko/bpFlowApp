@@ -1,13 +1,15 @@
 export let unconnectedGraphBeforeParse = 
 {
-    "id": "eb34d2c3-fffb-4597-b851-45bee124257a@0.1.0",
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
-        "data": {},
+        "data": {
+          "code": "outputs[\"Output\"] = {}"
+        },
         "inputs": {},
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": []
           }
         },
@@ -29,16 +31,8 @@ export let unconnectedGraphBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
-            "connections": [
-              {
-                "node": 3,
-                "input": "input",
-                "data": {
-                  "pins": []
-                }
-              }
-            ]
+          "Output": {
+            "connections": []
           }
         },
         "position": [
@@ -54,15 +48,7 @@ export let unconnectedGraphBeforeParse =
         },
         "inputs": {
           "input": {
-            "connections": [
-              {
-                "node": 2,
-                "output": " Output",
-                "data": {
-                  "pins": []
-                }
-              }
-            ]
+            "connections": []
           }
         },
         "outputs": {
@@ -79,45 +65,42 @@ export let unconnectedGraphBeforeParse =
     }
   }
 
-export let unconnectedGraphExpectedParse = {
-  "id": "eb34d2c3-fffb-4597-b851-45bee124257a@0.1.0",
-  "nodes": {
-    "1": {
-      "id": 1,
-      "data": {
-        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+export let unconnectedGraphExpectedParse = 
+{
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
+    "nodes": {
+      "1": {
+        "id": 1,
+        "data": {
+          "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
+        },
+        "inputs": [],
+        "outputs": {
+          "Output": []
+        },
+        "type": "Start"
       },
-      "inputs": [],
-      "outputs": {
-        " Output": []
+      "2": {
+        "id": 2,
+        "data": {
+          "code": "nodesLists[\"active\"].get(\"2\").incrementAndGet();\n\n                bp.sync( {} );\n\n                nodesLists[\"active\"].get(\"2\").decrementAndGet();\n\n                selectedEvents.add(2);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
+        },
+        "inputs": [],
+        "outputs": {
+          "Output": []
+        },
+        "type": "General"
       },
-      "type": "Start"
-    },
-    "2": {
-      "id": 2,
-      "data": {
-        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {} );\n\n                nodesLists[\"active\"][2] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
-      },
-      "inputs": [],
-      "outputs": {
-        " Output": [
-          3
-        ]
-      },
-      "type": "General"
-    },
-    "3": {
-      "id": 3,
-      "data": {
-        "code": "let outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
-      },
-      "inputs": [
-        2
-      ],
-      "outputs": {
-        "output1": []
-      },
-      "type": "General"
+      "3": {
+        "id": 3,
+        "data": {
+          "code": "let outputs = {};\n\nreturn outputs;"
+        },
+        "inputs": [],
+        "outputs": {
+          "output1": []
+        },
+        "type": "General"
+      }
     }
   }
-}

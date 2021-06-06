@@ -4,35 +4,31 @@
     "1": {
       "id": 1,
       "data": {
-        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
       },
       "inputs": [],
       "outputs": {
-        " Output": []
+        "Output": []
       },
       "type": "Start"
     },
     "2": {
       "id": 2,
       "data": {
-        "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {} );\n\n                nodesLists[\"active\"][2] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "nodesLists[\"active\"].get(\"2\").incrementAndGet();\n\n                bp.sync( {} );\n\n                nodesLists[\"active\"].get(\"2\").decrementAndGet();\n\n                selectedEvents.add(2);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
       },
       "inputs": [],
       "outputs": {
-        " Output": [
-          3
-        ]
+        "Output": []
       },
       "type": "General"
     },
     "3": {
       "id": 3,
       "data": {
-        "code": "let outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
+        "code": "let outputs = {};\n\nreturn outputs;"
       },
-      "inputs": [
-        2
-      ],
+      "inputs": [],
       "outputs": {
         "output1": []
       },

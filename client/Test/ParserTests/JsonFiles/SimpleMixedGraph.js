@@ -1,13 +1,15 @@
 export let SimpleMixedGraphBeforeParse = 
 {
-    "id": "13325196-57ff-4687-bda4-f16adce0fe1f@0.1.0",
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
-        "data": {},
+        "data": {
+          "code": "outputs[\"Output\"] = {}"
+        },
         "inputs": {},
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 2,
@@ -37,7 +39,7 @@ export let SimpleMixedGraphBeforeParse =
             "connections": [
               {
                 "node": 1,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -46,7 +48,7 @@ export let SimpleMixedGraphBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 3,
@@ -67,14 +69,15 @@ export let SimpleMixedGraphBeforeParse =
       "3": {
         "id": 3,
         "data": {
-          "payloadView": {}
+          "payloadView": {},
+          "code": "outputs[\"output1\"] = payload;"
         },
         "inputs": {
           "input": {
             "connections": [
               {
                 "node": 2,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -122,7 +125,7 @@ export let SimpleMixedGraphBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": []
           }
         },
@@ -136,16 +139,16 @@ export let SimpleMixedGraphBeforeParse =
   }
 export let SimpleMixedGraphExpectedParse = 
 {
-    "id": "13325196-57ff-4687-bda4-f16adce0fe1f@0.1.0",
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
         "data": {
-          "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
         },
         "inputs": [],
         "outputs": {
-          " Output": [
+          "Output": [
             2
           ]
         },
@@ -154,13 +157,13 @@ export let SimpleMixedGraphExpectedParse =
       "2": {
         "id": 2,
         "data": {
-          "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"a\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"2\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"a\")} );\n\n                nodesLists[\"active\"].get(\"2\").decrementAndGet();\n\n                selectedEvents.add(2);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           1
         ],
         "outputs": {
-          " Output": [
+          "Output": [
             3
           ]
         },
@@ -184,13 +187,13 @@ export let SimpleMixedGraphExpectedParse =
       "4": {
         "id": 4,
         "data": {
-          "code": "nodesLists[\"active\"][4] = true;\n\n                bp.sync( {request:bp.Event(\"b\")} );\n\n                nodesLists[\"active\"][4] = false;\nnodesLists[\"selectedEvent\"] = 4;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"4\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"b\")} );\n\n                nodesLists[\"active\"].get(\"4\").decrementAndGet();\n\n                selectedEvents.add(4);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           3
         ],
         "outputs": {
-          " Output": []
+          "Output": []
         },
         "type": "General"
       }

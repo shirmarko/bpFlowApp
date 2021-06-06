@@ -1,28 +1,16 @@
-export let OnlyGeneralGraphBeforeParse = {
-    "id": "8d573636-921a-4e5b-9f58-10a5cf559c45@0.1.0",
+export let OnlyGeneralGraphBeforeParse = 
+{
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
-        "data": {},
+        "data": {
+          "code": "outputs[\"Output\"] = {}"
+        },
         "inputs": {},
         "outputs": {
-          " Output": {
-            "connections": [
-              {
-                "node": 3,
-                "input": "input",
-                "data": {
-                  "pins": []
-                }
-              },
-              {
-                "node": 4,
-                "input": "input",
-                "data": {
-                  "pins": []
-                }
-              }
-            ]
+          "Output": {
+            "connections": []
           }
         },
         "position": [
@@ -38,22 +26,11 @@ export let OnlyGeneralGraphBeforeParse = {
         },
         "inputs": {
           "input": {
-            "connections": [
-              {
-                "node": 1,
-                "output": " Output",
-                "data": {
-                  "pins": []
-                }
-              }
-            ]
+            "connections": []
           }
         },
         "outputs": {
           "output1": {
-            "connections": []
-          },
-          "output2": {
             "connections": []
           }
         },
@@ -70,22 +47,11 @@ export let OnlyGeneralGraphBeforeParse = {
         },
         "inputs": {
           "input": {
-            "connections": [
-              {
-                "node": 1,
-                "output": " Output",
-                "data": {
-                  "pins": []
-                }
-              }
-            ]
+            "connections": []
           }
         },
         "outputs": {
           "output1": {
-            "connections": []
-          },
-          "output2": {
             "connections": []
           }
         },
@@ -97,48 +63,40 @@ export let OnlyGeneralGraphBeforeParse = {
       }
     }
   }
-export let OnlyGeneralExpectedParse = {
-    "id": "8d573636-921a-4e5b-9f58-10a5cf559c45@0.1.0",
+export let OnlyGeneralExpectedParse = 
+{
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
         "data": {
-          "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
         },
         "inputs": [],
         "outputs": {
-          " Output": [
-            3,
-            4
-          ]
+          "Output": []
         },
         "type": "Start"
       },
       "3": {
         "id": 3,
         "data": {
-          "code": "let outputs = {};\noutputs[\"output1\"] = payload;\noutputs[\"output2\"] = payload;\nreturn outputs;"
+          "code": "let outputs = {};\n\nreturn outputs;"
         },
-        "inputs": [
-          1
-        ],
+        "inputs": [],
         "outputs": {
-          "output1": [],
-          "output2": []
+          "output1": []
         },
         "type": "General"
       },
       "4": {
         "id": 4,
         "data": {
-          "code": "let outputs = {};\noutputs[\"output1\"] = payload;\noutputs[\"output2\"] = payload;\nreturn outputs;"
+          "code": "let outputs = {};\n\nreturn outputs;"
         },
-        "inputs": [
-          1
-        ],
+        "inputs": [],
         "outputs": {
-          "output1": [],
-          "output2": []
+          "output1": []
         },
         "type": "General"
       }

@@ -27,7 +27,7 @@ export function selectedEventsHandler(event){
 export function stepEventHandler(event) {
 
     let data = JSON.parse(event.data);
-
+    console.log("STEP!!!! " + JSON.stringify(data));
     if (data.isDone) {
         endDebug();
         return;
@@ -100,8 +100,6 @@ function changeNodeColor(nodeId, color){
 
 export function flowEventHandler(event) {
     let data = JSON.parse(event.data);
-    console.log(event.data);
-    console.log(data);
     if(data.hasOwnProperty("data") && data.data != null){
         console.log(`${data.name}, data = ${data.data}`);
         Index.addLogLine(`${data.name}, data = ${JSON.stringify(data.data)}`);

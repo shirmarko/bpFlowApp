@@ -1,16 +1,16 @@
 
 export let GenericHotColdBeforeParse = 
 {
-    "id": "857263a2-289f-4c1b-ab75-78b5dc0dfcfd@0.1.0",
+    "id": "04471b21-6137-47da-9f3a-9e11a7e8a0ad@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
         "data": {
-          "code": "\nlet outputs = {};\noutputs[\" Output\"] = {i:3};\nreturn outputs;"
+          "code": "outputs[\"Output\"] = {i:3}"
         },
         "inputs": {},
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 3,
@@ -30,8 +30,8 @@ export let GenericHotColdBeforeParse =
           }
         },
         "position": [
-          -76.66666666666666,
-          30
+          -23.456790123456784,
+          251.85185185185185
         ],
         "name": "Start"
       },
@@ -56,7 +56,7 @@ export let GenericHotColdBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 3,
@@ -69,8 +69,8 @@ export let GenericHotColdBeforeParse =
           }
         },
         "position": [
-          582.2222424808069,
-          -61.4934116884784
+          518.5185097343099,
+          120.9876527654507
         ],
         "name": "Bsync"
       },
@@ -78,21 +78,21 @@ export let GenericHotColdBeforeParse =
         "id": 3,
         "data": {
           "payloadView": {},
-          "code": "if(payload[\"i\"] > 0){\n  payload[\"i\"]--;\n}\nelse{\n  return -1;\n}\nlet outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
+          "code": "if(payload[\"i\"] > 0){\n \tpayload[\"i\"]--;\n  \toutputs[\"output1\"] = payload;\n}"
         },
         "inputs": {
           "input": {
             "connections": [
               {
                 "node": 1,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
               },
               {
                 "node": 2,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -114,8 +114,8 @@ export let GenericHotColdBeforeParse =
           }
         },
         "position": [
-          209.66669300712246,
-          -43.88891526210844
+          210.08638882598484,
+          152.69747270114726
         ],
         "name": "General"
       },
@@ -123,21 +123,21 @@ export let GenericHotColdBeforeParse =
         "id": 4,
         "data": {
           "payloadView": {},
-          "code": "if(payload[\"i\"] > 0){\n  payload[\"i\"]--;\n}\nelse{\n  return -1;\n}\nlet outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
+          "code": "if(payload[\"i\"] > 0){\n \tpayload[\"i\"]--;\n  \toutputs[\"output1\"] = payload;\n}"
         },
         "inputs": {
           "input": {
             "connections": [
               {
                 "node": 1,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
               },
               {
                 "node": 5,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -159,8 +159,8 @@ export let GenericHotColdBeforeParse =
           }
         },
         "position": [
-          209.6666722034027,
-          239.44443854732702
+          210.0863840937301,
+          397.4315430321711
         ],
         "name": "General"
       },
@@ -185,7 +185,7 @@ export let GenericHotColdBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 4,
@@ -198,17 +198,19 @@ export let GenericHotColdBeforeParse =
           }
         },
         "position": [
-          641.888913569773,
-          253.8888792537083
+          528.6049213821323,
+          373.6851945238967
         ],
         "name": "Bsync"
       },
       "6": {
         "id": 6,
-        "data": {},
+        "data": {
+          "code": "outputs[\"Output\"] = {}"
+        },
         "inputs": {},
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 7,
@@ -221,8 +223,8 @@ export let GenericHotColdBeforeParse =
           }
         },
         "position": [
-          -106.64152144096087,
-          585.9876467857831
+          -73.0717063859161,
+          696.4713341288485
         ],
         "name": "Start"
       },
@@ -239,14 +241,14 @@ export let GenericHotColdBeforeParse =
             "connections": [
               {
                 "node": 6,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
               },
               {
                 "node": 8,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -255,7 +257,7 @@ export let GenericHotColdBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 8,
@@ -268,8 +270,8 @@ export let GenericHotColdBeforeParse =
           }
         },
         "position": [
-          199.79014611089957,
-          578.5802509076494
+          167.74527219005205,
+          694.947167094002
         ],
         "name": "Bsync"
       },
@@ -286,7 +288,7 @@ export let GenericHotColdBeforeParse =
             "connections": [
               {
                 "node": 7,
-                "output": " Output",
+                "output": "Output",
                 "data": {
                   "pins": []
                 }
@@ -295,7 +297,7 @@ export let GenericHotColdBeforeParse =
           }
         },
         "outputs": {
-          " Output": {
+          "Output": {
             "connections": [
               {
                 "node": 7,
@@ -308,8 +310,8 @@ export let GenericHotColdBeforeParse =
           }
         },
         "position": [
-          669.9634301125905,
-          564.0654125735251
+          565.5504980647179,
+          720.8578540516623
         ],
         "name": "Bsync"
       }
@@ -317,16 +319,16 @@ export let GenericHotColdBeforeParse =
   }
 export let GenericHotColdExpectedParse =
 {
-    "id": "857263a2-289f-4c1b-ab75-78b5dc0dfcfd@0.1.0",
+    "id": "04471b21-6137-47da-9f3a-9e11a7e8a0ad@0.1.0",
     "nodes": {
       "1": {
         "id": 1,
         "data": {
-          "code": "\nlet outputs = {};\noutputs[\" Output\"] = {i:3};\nreturn outputs;"
+          "code": "let outputs = {};\noutputs[\"Output\"] = {i:3}\nreturn outputs;"
         },
         "inputs": [],
         "outputs": {
-          " Output": [
+          "Output": [
             3,
             4
           ]
@@ -336,13 +338,13 @@ export let GenericHotColdExpectedParse =
       "2": {
         "id": 2,
         "data": {
-          "code": "nodesLists[\"active\"][2] = true;\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][2] = false;\nnodesLists[\"selectedEvent\"] = 2;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"2\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].get(\"2\").decrementAndGet();\n\n                selectedEvents.add(2);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           3
         ],
         "outputs": {
-          " Output": [
+          "Output": [
             3
           ]
         },
@@ -351,7 +353,7 @@ export let GenericHotColdExpectedParse =
       "3": {
         "id": 3,
         "data": {
-          "code": "if(payload[\"i\"] > 0){\n  payload[\"i\"]--;\n}\nelse{\n  return -1;\n}\nlet outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
+          "code": "let outputs = {};\nif(payload[\"i\"] > 0){\n \tpayload[\"i\"]--;\n  \toutputs[\"output1\"] = payload;\n}\nreturn outputs;"
         },
         "inputs": [
           1,
@@ -367,7 +369,7 @@ export let GenericHotColdExpectedParse =
       "4": {
         "id": 4,
         "data": {
-          "code": "if(payload[\"i\"] > 0){\n  payload[\"i\"]--;\n}\nelse{\n  return -1;\n}\nlet outputs = {};\noutputs[\"output1\"] = payload;\nreturn outputs;"
+          "code": "let outputs = {};\nif(payload[\"i\"] > 0){\n \tpayload[\"i\"]--;\n  \toutputs[\"output1\"] = payload;\n}\nreturn outputs;"
         },
         "inputs": [
           1,
@@ -383,13 +385,13 @@ export let GenericHotColdExpectedParse =
       "5": {
         "id": 5,
         "data": {
-          "code": "nodesLists[\"active\"][5] = true;\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][5] = false;\nnodesLists[\"selectedEvent\"] = 5;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"5\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].get(\"5\").decrementAndGet();\n\n                selectedEvents.add(5);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           4
         ],
         "outputs": {
-          " Output": [
+          "Output": [
             4
           ]
         },
@@ -398,11 +400,11 @@ export let GenericHotColdExpectedParse =
       "6": {
         "id": 6,
         "data": {
-          "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
         },
         "inputs": [],
         "outputs": {
-          " Output": [
+          "Output": [
             7
           ]
         },
@@ -411,14 +413,14 @@ export let GenericHotColdExpectedParse =
       "7": {
         "id": 7,
         "data": {
-          "code": "nodesLists[\"active\"][7] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"][7] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"7\").incrementAndGet();\n\n                bp.sync( {waitFor:bp.Event(\"Hot\"), block:bp.Event(\"Cold\")} );\n\n                nodesLists[\"active\"].get(\"7\").decrementAndGet();\n\n                selectedEvents.add(7);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           6,
           8
         ],
         "outputs": {
-          " Output": [
+          "Output": [
             8
           ]
         },
@@ -427,13 +429,13 @@ export let GenericHotColdExpectedParse =
       "8": {
         "id": 8,
         "data": {
-          "code": "nodesLists[\"active\"][8] = true;\n\n                bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"][8] = false;\n\nlet outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+          "code": "nodesLists[\"active\"].get(\"8\").incrementAndGet();\n\n                bp.sync( {waitFor:bp.Event(\"Cold\"), block:bp.Event(\"Hot\")} );\n\n                nodesLists[\"active\"].get(\"8\").decrementAndGet();\n\n                selectedEvents.add(8);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
         },
         "inputs": [
           7
         ],
         "outputs": {
-          " Output": [
+          "Output": [
             7
           ]
         },

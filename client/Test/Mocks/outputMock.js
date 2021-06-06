@@ -1,7 +1,7 @@
 export class mockOutput{
 
-    constructor(key, payload = "payload") {
-        this.key = key;
+    constructor(name, payload = "payload") {
+        this.name = name;
         this.payload = payload;
     }
 }
