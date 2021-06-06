@@ -119,6 +119,7 @@ export function init(container, logContent, buttonsVisibility) {
     nevBarbuttonsVisibility = buttonsVisibility;
     eventSource.addEventListener('flowEvent', EventHandlers.flowEventHandler);
     eventSource.addEventListener('step', EventHandlers.stepEventHandler);
+    eventSource.addEventListener('selectedEvents', EventHandlers.selectedEventsHandler);
 
 
     id = createUUID();

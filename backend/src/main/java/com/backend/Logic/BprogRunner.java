@@ -6,23 +6,25 @@ import il.ac.bgu.cs.bp.bpjs.model.BProgramSyncSnapshot;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.eventselection.EventSelectionResult;
 import il.ac.bgu.cs.bp.bpjs.model.eventselection.EventSelectionStrategy;
-
-import java.io.IOException;
-import java.util.*;
-
+import java.util.ArrayList;
 import static java.util.Collections.reverseOrder;
-
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import il.ac.bgu.cs.bp.bpjs.execution.listeners.BProgramRunnerListener;
 import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import il.ac.bgu.cs.bp.bpjs.model.SafetyViolationTag;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DebugRunner{
+/**
+ * Runs a {@link BProgram} to completion. Uses an {@link EventSelectionStrategy}
+ * to select which event to choose at each point.
+ *
+ * @author michael
+ */
+public class BprogRunner implements Runnable {
 
     private static final AtomicInteger INSTANCE_COUNTER = new AtomicInteger(0);
     private final int instanceNum = INSTANCE_COUNTER.incrementAndGet();
@@ -32,71 +34,45 @@ public class DebugRunner{
     private SafetyViolationTag failedAssertion;
     private final AtomicBoolean go = new AtomicBoolean(true);
     private volatile boolean halted;
-    private SseEmitter emitter;
-    private BProgramSyncSnapshot curSnapshot;
-    private Map<String, Boolean> doneData;
 
 
-    public DebugRunner(){
-        this(null, null);
+    public BprogRunner(){
+        this(null);
     }
-    public DebugRunner(BProgram aBProgram, SseEmitter emitter) {
+    public BprogRunner(BProgram aBProgram) {
         bprog = aBProgram;
-        this.emitter = emitter;
-        this.doneData = new HashMap<>();
-        this.doneData.put("isDone", true);
         if ( bprog!=null ) {
             bprog.setAddBThreadCallback( (bp,bt)->listeners.forEach(l->l.bthreadAdded(bp, bt)));
         }
     }
 
-    public void initDebug() {
-        // setup bprogram and runtime parts.
-        execSvc = ExecutorServiceMaker.makeWithName("BProgramRunner-" + instanceNum );
-        failedAssertion = null;
-        listeners.forEach(l -> l.starting(bprog));
-        curSnapshot = bprog.setup();
-        curSnapshot.getBThreadSnapshots().forEach(sn->listeners.forEach( l -> l.bthreadAdded(bprog, sn)) );
-
-        // start it
-        go.set(true);
-        halted = false;
-        listeners.forEach(l -> l.started(bprog));
+    @Override
+    public void run() {
         try {
-            curSnapshot = curSnapshot.start(execSvc, bprog.getStorageModificationStrategy());
-        } catch (InterruptedException itr) {
-            System.err.println("BProgramRunner interrupted: " + itr.getMessage() );
-            execSvc.shutdown();
-        }
+            // setup bprogram and runtime parts.
+            execSvc = ExecutorServiceMaker.makeWithName("BProgramRunner-" + instanceNum );
+            failedAssertion = null;
+            listeners.forEach(l -> l.starting(bprog));
+            BProgramSyncSnapshot cur = bprog.setup();
+            cur.getBThreadSnapshots().forEach(sn->listeners.forEach( l -> l.bthreadAdded(bprog, sn)) );
 
-        if ( ! curSnapshot.isStateValid() ) {
-            failedAssertion = curSnapshot.getViolationTag();
-            listeners.forEach( l->l.assertionFailed(bprog, failedAssertion));
-            go.set(false);
-        }
+            // start it
+            go.set(true);
+            halted = false;
+            listeners.forEach(l -> l.started(bprog));
+            cur = cur.start(execSvc, bprog.getStorageModificationStrategy());
 
-        if ( (!curSnapshot.noBThreadsLeft()) && go.get() ) {
-            Optional<Map> dataToSend = bprog.getFromGlobalScope("nodesLists", Map.class);
-            if (dataToSend.isPresent()) {
-                try {
-                    emitter.send(SseEmitter.event().name("step").data(dataToSend.get()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
+            if ( ! cur.isStateValid() ) {
+                failedAssertion = cur.getViolationTag();
+                listeners.forEach( l->l.assertionFailed(bprog, failedAssertion));
                 go.set(false);
             }
-        }
-    }
 
-    //return if the program is ended
-    public boolean step() throws IOException {
-        try {
             // while snapshot not empty, select an event and get the next snapshot.
-            if ( (!curSnapshot.noBThreadsLeft()) && go.get() ) {
+            while ( (!cur.noBThreadsLeft()) && go.get() ) {
 
                 // see which events are selectable
-                Set<BEvent> possibleEvents = bprog.getEventSelectionStrategy().selectableEvents(curSnapshot);
+                Set<BEvent> possibleEvents = bprog.getEventSelectionStrategy().selectableEvents(cur);
                 if ( possibleEvents.isEmpty() ) {
                     // Superstep done: No events available for selection.
 
@@ -106,20 +82,18 @@ public class DebugRunner{
                         if ( next == null ) {
                             go.set(false); // program no longer waits for external events
                         } else {
-                            curSnapshot.getExternalEvents().add(next);
+                            cur.getExternalEvents().add(next);
                         }
 
                     } else {
                         // Ending the program - no selectable event.
-                        listeners.forEach(l->l.ended(bprog));
+                        listeners.forEach(l->l.superstepDone(bprog));
                         go.set(false);
-                        emitter.send(SseEmitter.event().name("step").data(doneData));
-                        return true;
                     }
 
                 } else {
                     // we can select some events - select one and advance.
-                    Optional<EventSelectionResult> res = bprog.getEventSelectionStrategy().select(curSnapshot, possibleEvents);
+                    Optional<EventSelectionResult> res = bprog.getEventSelectionStrategy().select(cur, possibleEvents);
 
                     if ( res.isPresent() ) {
                         EventSelectionResult esr = res.get();
@@ -127,15 +101,15 @@ public class DebugRunner{
                         bprog.putInGlobalScope("selectedEvent", selectedEvent);
                         if ( ! esr.getIndicesToRemove().isEmpty() ) {
                             // the event selection affected the external event queue.
-                            List<BEvent> updatedExternals = new ArrayList<>(curSnapshot.getExternalEvents());
+                            List<BEvent> updatedExternals = new ArrayList<>(cur.getExternalEvents());
                             esr.getIndicesToRemove().stream().sorted(reverseOrder())
                                     .forEach( idxObj -> updatedExternals.remove(idxObj.intValue()) );
-                            curSnapshot = curSnapshot.copyWith(updatedExternals);
+                            cur = cur.copyWith(updatedExternals);
                         }
 
-                        curSnapshot = curSnapshot.triggerEvent(esr.getEvent(), execSvc, listeners, bprog.getStorageModificationStrategy());
-                        if ( ! curSnapshot.isStateValid() ) {
-                            failedAssertion = curSnapshot.getViolationTag();
+                        cur = cur.triggerEvent(esr.getEvent(), execSvc, listeners, bprog.getStorageModificationStrategy());
+                        if ( ! cur.isStateValid() ) {
+                            failedAssertion = cur.getViolationTag();
                             listeners.forEach( l->l.assertionFailed(bprog, failedAssertion));
                             go.set(false);
                         }
@@ -145,50 +119,19 @@ public class DebugRunner{
                         go.set(false);
                     }
                 }
-
-                Optional<Map> dataToSend = bprog.getFromGlobalScope("nodesLists", Map.class);
-                Optional<List> selectedEvents = bprog.getFromGlobalScope("selectedEvents", List.class);
-                if(dataToSend.isPresent()){
-                    emitter.send(SseEmitter.event().name("step").data(dataToSend.get()));
-                }
-                if(selectedEvents.isPresent()){
-                    emitter.send(SseEmitter.event().name("selectedEvents").data(selectedEvents.get()));
-                    bprog.putInGlobalScope("selectedEvents", new CopyOnWriteArrayList<>());
-                }
-                else{
-                    go.set(false);
-                }
-
-                return false;
             }
-            else if(halted){
+            if ( halted ) {
                 listeners.forEach(l->l.halted(bprog));
-                execSvc.shutdown();
-                emitter.send(SseEmitter.event().name("step").data(doneData));
-                return true;
-            }
-            else{
+            } else {
                 listeners.forEach(l->l.ended(bprog));
-                execSvc.shutdown();
-                emitter.send(SseEmitter.event().name("step").data(doneData));
-                return true;
             }
-
         } catch ( BPjsRuntimeException bre ) {
             listeners.forEach( l -> l.error(bprog, bre));
-            execSvc.shutdown();
-            emitter.send(SseEmitter.event().name("step").data(doneData));
-            return true;
         } catch (InterruptedException itr) {
             System.err.println("BProgramRunner interrupted: " + itr.getMessage() );
+
+        } finally {
             execSvc.shutdown();
-            emitter.send(SseEmitter.event().name("step").data(doneData));
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            emitter.send(SseEmitter.event().name("step").data(doneData));
-            execSvc.shutdown();
-            return true;
         }
     }
 
@@ -244,9 +187,4 @@ public class DebugRunner{
         listeners.remove(aListener);
     }
 
-    public void stop() {
-        halted = true;
-        listeners.forEach(l->l.halted(bprog));
-        execSvc.shutdown();
-    }
 }

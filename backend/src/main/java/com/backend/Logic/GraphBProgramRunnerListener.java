@@ -6,6 +6,8 @@ import il.ac.bgu.cs.bp.bpjs.model.BProgram;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GraphBProgramRunnerListener extends BProgramRunnerListenerAdapter {
 
@@ -18,7 +20,12 @@ public class GraphBProgramRunnerListener extends BProgramRunnerListenerAdapter {
     @Override
     public void eventSelected(BProgram bp, BEvent theEvent){
         try {
-            emitter.send(SseEmitter.event().name("flowEvent").data(theEvent.getName()));
+            Map<String,Object> dateToSend = new HashMap<>();
+            dateToSend.put("name", theEvent.getName());
+            dateToSend.put("data", theEvent.getData());
+
+            //emitter.send(SseEmitter.event().name("flowEvent").data(theEvent.getName()+theEvent.getData().toString()));
+            emitter.send(SseEmitter.event().name("flowEvent").data(dateToSend));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -27,7 +34,9 @@ public class GraphBProgramRunnerListener extends BProgramRunnerListenerAdapter {
     @Override
     public void ended(BProgram bp){
         try {
-            emitter.send(SseEmitter.event().name("flowEvent").data("Program execution ended."));
+            Map<String,Object> dateToSend = new HashMap<>();
+            dateToSend.put("name", "Program execution ended.");
+            emitter.send(SseEmitter.event().name("flowEvent").data(dateToSend));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,7 +45,9 @@ public class GraphBProgramRunnerListener extends BProgramRunnerListenerAdapter {
     @Override
     public void halted(BProgram bp){
         try {
-            emitter.send(SseEmitter.event().name("flowEvent").data("Program execution halted."));
+            Map<String,Object> dateToSend = new HashMap<>();
+            dateToSend.put("name", "Program execution halted.");
+            emitter.send(SseEmitter.event().name("flowEvent").data(dateToSend));
         } catch (IOException e) {
             e.printStackTrace();
         }

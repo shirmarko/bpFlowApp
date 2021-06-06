@@ -1,5 +1,13 @@
+//bp.registerBThread("any", function(){
+//    while(true){
+//        selectedEvent =  bp.sync({waitFor:bp.all});
+//        //nodesLists["payloads"] = {};
+//        bp.log.info("Selected Event " + selectedEvent + "name = " + selectedEvent.name);
+//    }
+//});
+
 function goToFollowers(curNode, ths, bp, payloads) {
-    bp.log.info("curnode = " + curNode.id + " payloads = " + JSON.stringify(payloads));
+    bp.log.info("curnode = {0} payloads = {1}", curNode.id, payloads);
     const outputs = curNode.outputs;
     bp.log.info("outputs = " + outputs);
     if(outputs.size() > 0){
@@ -30,25 +38,27 @@ function goToFollowers(curNode, ths, bp, payloads) {
 }
 
 function runInNewBT(curNode, payload) {
-    bp.log.info("in runInNewBT@@@@@@@@ - " + curNode.id + " :" + JSON.stringify(payload));
-	var context = JSON.parse(JSON.stringify(payload));
-    nodesLists["payloads"][curNode.id] = context;
-
+    bp.log.info("in runInNewBT@@@@@@@@ - {0} :{1}", curNode.id, payload);
+	//var context = JSON.parse(JSON.stringify(payload));
+	var context = Object.assign({}, payload);
+	bp.log.info("context - {0}", context);
 	bp.registerBThread(curNode.id, function() {
 		eval("var f=f" + curNode.id);
         //bp.log.info("curNode.id - " + curNode.id);
-		const payloads = f(context, this, bp, nodesLists);
+		const payloads = f(context, this, bp, nodesLists, selectedEvent);
+		nodesLists["payloads"][curNode.id] = context;
+		bp.log.info("payloads: {0}", payloads);
         goToFollowers(curNode, this, bp, payloads);
 	});
 }
 
 function runInSameBT(curNode, payload, ths, bp) {
-    bp.log.info("in runInSameBT!!!! - " + curNode.id + " :" + JSON.stringify(payload));
-    //need to clone the payload??
-    nodesLists["payloads"][curNode.id] = payload;
+    bp.log.info("in runInSameBT!!!! - {0} : {1}", curNode.id, payload);
+    
 	eval("var f=f" + curNode.id);
 
-	const payloads = f(payload, ths, bp, nodesLists);
+	const payloads = f(payload, ths, bp, nodesLists, selectedEvent);
+	nodesLists["payloads"][curNode.id] = payload;
     goToFollowers(curNode, ths, bp, payloads);
 
 }
@@ -58,12 +68,15 @@ const allNodesArr = model.getNodes().values().toArray();
 const allNodesMap = model.getNodes();
 
 let nodesLists = {};
-nodesLists["active"] = {};
+nodesLists["active"] = activeNodes;
 nodesLists["reqnotblocked"] = {};
 nodesLists["blocked"] = {};
-nodesLists["selectedEvent"] = undefined;
 nodesLists["isDone"] = false;
 nodesLists["payloads"] = {};
+//let selectedEvent;
+
+bp.log.info("activeNodes = {0}", activeNodes);
+bp.log.info("nodesLists[active] = {0}", nodesLists["active"]);
 
 var startNodes = [];
 for(var i in allNodesArr){
@@ -72,5 +85,24 @@ for(var i in allNodesArr){
     }
 }
 for(var i in startNodes){
-    runInNewBT(startNodes[i], {});
+    //runInNewBT(startNodes[i], {});
+    let curNode = startNodes[i];
+    nodesLists["payloads"][curNode.id] = {};
+	bp.registerBThread(curNode.id, function() {
+		eval("var f=f" + curNode.id);
+		let payloads = f({}, this, bp, nodesLists, selectedEvent);
+        let payload = payloads["Output"];
+        if(Array.isArray(payload)){
+            bp.log.info("arr size = " + payload.length);
+            for(let i = 0; i < payload.length; i++){
+                let j = i;
+                bp.registerBThread(`${curNode.id}.${j}`, function() {
+                    goToFollowers(curNode, this, bp, {"Output": payload[j]});
+                });
+            }
+        }
+        else{
+            goToFollowers(curNode, this, bp, payloads);
+        }
+	});
 }
