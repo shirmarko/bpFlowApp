@@ -4,42 +4,33 @@
     "1": {
       "id": 1,
       "data": {
-        "code": "let outputs = {};\noutputs[\" Output\"] = payload;\nreturn outputs;"
+        "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
       },
       "inputs": [],
       "outputs": {
-        " Output": [
-          3,
-          4
-        ]
+        "Output": []
       },
       "type": "Start"
     },
     "3": {
       "id": 3,
       "data": {
-        "code": "let outputs = {};\noutputs[\"output1\"] = payload;\noutputs[\"output2\"] = payload;\nreturn outputs;"
+        "code": "let outputs = {};\n\nreturn outputs;"
       },
-      "inputs": [
-        1
-      ],
+      "inputs": [],
       "outputs": {
-        "output1": [],
-        "output2": []
+        "output1": []
       },
       "type": "General"
     },
     "4": {
       "id": 4,
       "data": {
-        "code": "let outputs = {};\noutputs[\"output1\"] = payload;\noutputs[\"output2\"] = payload;\nreturn outputs;"
+        "code": "let outputs = {};\n\nreturn outputs;"
       },
-      "inputs": [
-        1
-      ],
+      "inputs": [],
       "outputs": {
-        "output1": [],
-        "output2": []
+        "output1": []
       },
       "type": "General"
     }

@@ -1,18 +1,19 @@
 {
   "active": {
-    "2": false,
-    "4": true,
-    "6": false
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 1,
+    "5": 0,
+    "6": 0
   },
   "reqnotblocked": {},
   "blocked": {},
-  "selectedEvent": 2.0,
   "isDone": false,
   "payloads": {
     "1": {},
     "2": {},
     "3": {},
-    "4": {},
     "5": {},
     "6": {}
   }
