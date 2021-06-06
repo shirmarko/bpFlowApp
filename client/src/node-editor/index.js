@@ -10,6 +10,7 @@ import { BsyncComponent } from "./components/BsyncComponent";
 import { StartComponent } from "./components/StartComponent";
 import { GeneralComponent } from "./components/GeneralComponent";
 import { ForComponent } from "./components/ForComponent";
+import { WhileComponent } from "./components/WhileComponent";
 import * as Consts from "./helpers/Consts";
 import * as ButtonsHandlers from "./helpers/ButtonsHandlers"
 import * as EventHandlers from "./EventHandlers/EventHandlers.js"
@@ -125,7 +126,8 @@ export function init(container, logContent, buttonsVisibility) {
     engine = new Rete.Engine(id);
 
     editor = new Rete.NodeEditor(id, container);
-    const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName), new GeneralComponent(), , new ForComponent()];
+    const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName),
+        new GeneralComponent(), , new ForComponent(), new WhileComponent()];
 
     (async () => {
         editor.use(ConnectionPlugin);

@@ -28,7 +28,10 @@ export class StartComponent extends Rete.Component {
     }
 
     builder(node) {
-        //node.data.code = `outputs["${this.outputName}"] = {}`;
+        if(!node.data.hasOwnProperty("code")){
+            node.data.code = `outputs["${this.outputName}"] = {}`;
+        }
+        
         var out = new OutputWithPayload(this.outputName, this.outputName, Socket.general);
         return node
             .addOutput(out)
