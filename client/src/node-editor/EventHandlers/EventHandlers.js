@@ -21,7 +21,6 @@ export function selectedEventsHandler(event){
             prevSelectedNodeId.push(selectedEvents[idx]);
         //}
     }
-
 }
 
 export function stepEventHandler(event) {
