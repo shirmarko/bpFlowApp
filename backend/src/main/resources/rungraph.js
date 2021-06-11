@@ -46,7 +46,12 @@ function runInNewBT(curNode, payload) {
 		eval("var f=f" + curNode.id);
         //bp.log.info("curNode.id - " + curNode.id);
 		const payloads = f(context, this, bp, nodesLists, selectedEvent);
-		nodesLists["payloads"][curNode.id] = context;
+
+		let curPayloadsMap = nodesLists["payloads"];
+		let oldValue = curPayloadsMap.putIfAbsent(curNode.id, context);
+		if(oldValue != null){
+            curPayloadsMap.replace(curNode.id, oldValue, context);
+		}
 		bp.log.info("payloads: {0}", payloads);
         goToFollowers(curNode, this, bp, payloads);
 	});
@@ -58,7 +63,11 @@ function runInSameBT(curNode, payload, ths, bp) {
 	eval("var f=f" + curNode.id);
 
 	const payloads = f(payload, ths, bp, nodesLists, selectedEvent);
-	nodesLists["payloads"][curNode.id] = payload;
+    let curPayloadsMap = nodesLists["payloads"];
+    let oldValue = curPayloadsMap.putIfAbsent(curNode.id, payload);
+    if(oldValue != null){
+        curPayloadsMap.replace(curNode.id, oldValue, payload);
+    }
     goToFollowers(curNode, ths, bp, payloads);
 
 }
@@ -72,7 +81,7 @@ nodesLists["active"] = activeNodes;
 nodesLists["reqnotblocked"] = {};
 nodesLists["blocked"] = {};
 nodesLists["isDone"] = false;
-nodesLists["payloads"] = {};
+nodesLists["payloads"] = payloadsMap;
 //let selectedEvent;
 
 bp.log.info("activeNodes = {0}", activeNodes);
