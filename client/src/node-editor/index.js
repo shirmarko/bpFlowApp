@@ -16,12 +16,19 @@ import * as ButtonsHandlers from "./helpers/ButtonsHandlers"
 import * as EventHandlers from "./EventHandlers/EventHandlers.js"
 
 
-const eventSource = new EventSource('http://localhost:8090/subscribe');
 export let editor;
 let engine;
 let logConsoleContent;
 let nevBarbuttonsVisibility;
 let id;
+
+const eventSource = new EventSource('http://localhost:8090/subscribe');
+eventSource.addEventListener('init', setId);
+function setId(event){
+    let newId = event.data;
+    id = newId;
+}
+
 
 function createUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -112,7 +119,7 @@ export async function ChangeGraphReadOnly() {
 }
 
 
-export function init(container, logContent, buttonsVisibility) {
+export async function init(container, logContent, buttonsVisibility) {
     // //----------------EventListener---------------
     console.log('-----init editor--------');
     logConsoleContent = logContent;
@@ -122,7 +129,10 @@ export function init(container, logContent, buttonsVisibility) {
     eventSource.addEventListener('selectedEvents', EventHandlers.selectedEventsHandler);
 
 
-    id = createUUID();
+    //id = createUUID();
+    while(id === undefined){
+        await new Promise(r => setTimeout(r, 2000));
+    }
     engine = new Rete.Engine(id);
 
     editor = new Rete.NodeEditor(id, container);

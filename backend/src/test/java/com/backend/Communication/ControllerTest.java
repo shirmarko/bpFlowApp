@@ -66,8 +66,7 @@ public class ControllerTest {
 
     @Test
     public void debugEmptyGraph() throws Exception {
-        MvcResult emmiter = debugTest("EmptyGraph/EmptyGraphInputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("Empty", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("EmptyGraph/EmptyGraphInputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(emptyGraphBpEventExpectedResult, bpEvents.toArray());
@@ -95,8 +94,7 @@ public class ControllerTest {
 
     @Test
     public void debugOnlyBsyncGraph() throws Exception {
-        MvcResult emmiter = debugTest("OnlyBsyncGraph/OnlyBsyncGraphInputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("OnlyBsync", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("OnlyBsyncGraph/OnlyBsyncGraphInputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(onlyBsyncGraphBpEventsExpectedResult, bpEvents.toArray());
@@ -135,8 +133,7 @@ public class ControllerTest {
 
     @Test
     public void debugOnlyGeneralGraph() throws Exception {
-        MvcResult emmiter = debugTest("OnlyGeneralGraph/OnlyGeneralGraphInputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("OnlyGeneralGraph", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("OnlyGeneralGraph/OnlyGeneralGraphInputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(onlyGeneralGraphBpEventsExpectedResult, bpEvents.toArray());
@@ -165,8 +162,7 @@ public class ControllerTest {
 
     @Test
     public void debugOnlyStartGraph() throws Exception {
-        MvcResult emmiter = debugTest("OnlyStartGraph/OnlyStartGraphInputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("OnlyStartGraph", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("OnlyStartGraph/OnlyStartGraphInputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(onlyStartGraphBpEventsExpectedResult, bpEvents.toArray());
@@ -195,8 +191,7 @@ public class ControllerTest {
 
     @Test
     public void debugSimpleMixedGraph() throws Exception {
-        MvcResult emmiter = debugTest("SimpleMixedGraph/SimpleMixedGraphInputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("SimpleMixed", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("SimpleMixedGraph/SimpleMixedGraphInputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(simpleMixedGraphBpEventsExpectedResult, bpEvents.toArray());
@@ -230,8 +225,7 @@ public class ControllerTest {
 
     @Test
     public void debugUnconnectedGraph1() throws Exception {
-        MvcResult emmiter = debugTest("UnconnectedGraph1/UnconnectedGraph1InputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("UnconnectedGraph1", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("UnconnectedGraph1/UnconnectedGraph1InputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(unconnectedGraphBpEventsExpectedResult, bpEvents.toArray());
@@ -260,8 +254,7 @@ public class ControllerTest {
 
     @Test
     public void debugUnconnectedGraph2() throws Exception {
-        MvcResult emmiter = debugTest("UnconnectedGraph2/UnconnectedGraph2InputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("UnconnectedGraph2", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("UnconnectedGraph2/UnconnectedGraph2InputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(unconnectedGraphBpEventsExpectedResult, bpEvents.toArray());
@@ -290,8 +283,7 @@ public class ControllerTest {
 
     @Test
     public void debugHelloWorld() throws Exception {
-        MvcResult emmiter = debugTest("HelloWorld/HelloWorldInputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("HelloWorld", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("HelloWorld/HelloWorldInputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(helloWorldBpEventsExpectedResult, bpEvents.toArray());
@@ -325,8 +317,7 @@ public class ControllerTest {
 
     @Test
     public void debugHotCold() throws Exception {
-        MvcResult emmiter = debugTest("HotCold/HotColdInputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("HotCold", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("HotCold/HotColdInputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(hotCold3BpEventsExpectedResult, bpEvents.toArray());
@@ -368,8 +359,7 @@ public class ControllerTest {
 
     @Test
     public void debugGenericHotCold0() throws Exception {
-        MvcResult emmiter = debugTest("GenericHotCold0/GenericHotCold0InputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("GenericHotCold0", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("GenericHotCold0/GenericHotCold0InputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(hotCold0BpEventsExpectedResult, bpEvents.toArray());
@@ -399,8 +389,7 @@ public class ControllerTest {
 
     @Test
     public void debugGenericHotCold3() throws Exception {
-        MvcResult emmiter = debugTest("GenericHotCold3/GenericHotCold3InputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("GenericHotCold3", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("GenericHotCold3/GenericHotCold3InputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(hotCold3BpEventsExpectedResult, bpEvents.toArray());
@@ -445,8 +434,7 @@ public class ControllerTest {
 
     @Test
     public void debugGenericHotCold5() throws Exception {
-        MvcResult emmiter = debugTest("GenericHotCold5/GenericHotCold5InputTest.json");
-        Map<String, ArrayList<String>> events = stepTest("GenericHotCold5", emmiter);
+        Map<String, ArrayList<String>> events = debugTest("GenericHotCold5/GenericHotCold5InputTest.json");
 
         ArrayList<String> bpEvents = events.get("bpEvents");
         Assert.assertArrayEquals(hotCold5BpEventsExpectedResult, bpEvents.toArray());
@@ -490,20 +478,25 @@ public class ControllerTest {
         }
     }
 
-    private MvcResult debugTest(String jsonFileName) throws Exception {
+    private Map<String, ArrayList<String>> debugTest(String jsonFileName) throws Exception {
         String model = new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\" + jsonFileName)));
         MvcResult emmiter = mockMvc.perform(get("/subscribe"))
                 .andExpect(request().asyncStarted())
                 .andDo(MockMvcResultHandlers.log())
                 .andReturn();
 
+        String event = emmiter.getResponse().getContentAsString();
+        final String prefix = "event:init\ndata:";
+        String id = event.substring(prefix.length(), event.length()-2);
+
+        model = model.replace("ReplaceID", id);
+
         mockMvc.perform(post("/debug")
                 .content(model)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
-        return emmiter;
+        return stepTest(id, emmiter);
     }
 
     private Map<String, ArrayList<String>> stepTest(String graphId, MvcResult emmiter) throws Exception {
@@ -544,11 +537,17 @@ public class ControllerTest {
 
     private void runTest(String jsonFileName, String[] expectedEvents) throws Exception {
         String model = new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\" + jsonFileName)));
+
         MvcResult emmiter = mockMvc.perform(get("/subscribe"))
                 .andExpect(request().asyncStarted())
                 .andDo(MockMvcResultHandlers.log())
                 .andReturn();
 
+        String event = emmiter.getResponse().getContentAsString();
+        final String prefix = "event:init\ndata:";
+        String id = event.substring(prefix.length(), event.length()-2);
+
+        model = model.replace("ReplaceID", id);
         mockMvc.perform(post("/run")
                 .content(model)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -556,13 +555,13 @@ public class ControllerTest {
                 .andExpect(status().isOk());
 
 
-        String event = emmiter.getResponse().getContentAsString();
+        event = emmiter.getResponse().getContentAsString();
         String [] events = event.split("data:");
         //first event is init
         assertTrue(events.length > 1);
-        for (int i = 1; i < events.length; i++){
+        for (int i = 2; i < events.length; i++){
             String eventData = events[i].split("\\n")[0];
-            assertEquals(expectedEvents[i-1], eventData);
+            assertEquals(expectedEvents[i-2], eventData);
         }
     }
 
