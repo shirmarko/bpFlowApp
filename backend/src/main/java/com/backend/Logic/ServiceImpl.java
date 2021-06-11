@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -38,8 +39,7 @@ public class ServiceImpl implements IService {
         bprog.putInGlobalScope("selectedEvent", null);
         bprog.putInGlobalScope("selectedEvents", new CopyOnWriteArrayList<>());
         bprog.putInGlobalScope("activeNodes", initActiveNodes(graphModel.getNodes()));
-        HashMap<String, AtomicInteger> test = new HashMap<String, AtomicInteger>();
-        test.keySet();
+        bprog.putInGlobalScope("payloadsMap", new ConcurrentHashMap<String, Object>());
 
 
         bprog.appendSource(functions);
@@ -72,10 +72,9 @@ public class ServiceImpl implements IService {
         bprog.putInGlobalScope("selectedEvent", null);
         bprog.putInGlobalScope("selectedEvents", new ArrayList<>());
         bprog.putInGlobalScope("activeNodes", initActiveNodes(graphModel.getNodes()));
-        AtomicInteger x = new AtomicInteger(0);
+        bprog.putInGlobalScope("payloadsMap", new ConcurrentHashMap<String, Object>());
 
         bprog.appendSource(functions);
-        //bprog.getFromGlobalScope("nodes", Map.class);
         DebugRunner rnr = new DebugRunner(bprog, emitter);
         rnr.addListener(new GraphBProgramRunnerListener(emitter));
         rnr.initDebug();

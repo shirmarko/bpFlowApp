@@ -366,85 +366,129 @@ public class ControllerTest {
         runTest("GenericHotCold0/GenericHotCold0InputTest.json", hotCold0BpEventsExpectedResult);
     }
 
-//    @Test
-//    public void debugGenericHotCold0() throws Exception {
-//        MvcResult emmiter = debugTest("GenericHotCold0/GenericHotCold0InputTest.json");
-//        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("GenericHotCold0", emmiter);
-//
-//        ArrayList<String> bpEvents = events.getLeft();
-//        Assert.assertArrayEquals(hotCold0BpEventsExpectedResult, bpEvents.toArray());
-//
-//        ArrayList<String> stepEvents = events.getRight();
-//        ArrayList<String> expectedStepEventsData = new ArrayList<>();
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold0\\GenericHotCold0DebugStep1.json"))));
-//
-//        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
-//        for(int i = 0; i < expectedStepEventsData.size(); i++){
-//            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
-//        }
-//    }
+    @Test
+    public void debugGenericHotCold0() throws Exception {
+        MvcResult emmiter = debugTest("GenericHotCold0/GenericHotCold0InputTest.json");
+        Map<String, ArrayList<String>> events = stepTest("GenericHotCold0", emmiter);
+
+        ArrayList<String> bpEvents = events.get("bpEvents");
+        Assert.assertArrayEquals(hotCold0BpEventsExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.get("stepEvents");
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold0\\GenericHotCold0DebugStep1.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
+
+        ArrayList<String> selectedEventsEvents = events.get("selectedEventsEvents");
+        ArrayList<String> expectedselectedEventsEventsData = new ArrayList<>();
+
+        Assert.assertEquals(expectedselectedEventsEventsData.size(), selectedEventsEvents.size());
+        for(int i = 0; i < expectedselectedEventsEventsData.size(); i++){
+            AssertSelectedEvents(expectedselectedEventsEventsData.get(i), selectedEventsEvents.get(i));
+        }
+    }
 
     @Test
     public void runGenericHotCold3() throws Exception {
         runTest("GenericHotCold3/GenericHotCold3InputTest.json", hotCold3BpEventsExpectedResult);
     }
 
-//    @Test
-//    public void debugGenericHotCold3() throws Exception {
-//        MvcResult emmiter = debugTest("GenericHotCold3/GenericHotCold3InputTest.json");
-//        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("GenericHotCold3", emmiter);
-//
-//        ArrayList<String> bpEvents = events.getLeft();
-//        Assert.assertArrayEquals(hotCold3BpEventsExpectedResult, bpEvents.toArray());
-//
-//        ArrayList<String> stepEvents = events.getRight();
-//        ArrayList<String> expectedStepEventsData = new ArrayList<>();
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep1.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep2.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep3.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep4.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep5.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep6.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep7.json"))));
-//
-//        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
-//        for(int i = 0; i < expectedStepEventsData.size(); i++){
-//            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
-//        }
-//    }
+    @Test
+    public void debugGenericHotCold3() throws Exception {
+        MvcResult emmiter = debugTest("GenericHotCold3/GenericHotCold3InputTest.json");
+        Map<String, ArrayList<String>> events = stepTest("GenericHotCold3", emmiter);
+
+        ArrayList<String> bpEvents = events.get("bpEvents");
+        Assert.assertArrayEquals(hotCold3BpEventsExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.get("stepEvents");
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep1.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep2.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep3.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep4.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep5.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep6.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep7.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
+
+
+        ArrayList<String> selectedEventsEvents = events.get("selectedEventsEvents");
+        ArrayList<String> expectedselectedEventsEventsData = new ArrayList<>();
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep1expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep2expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep3expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep4expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep5expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold3\\GenericHotCold3DebugStep6expectedselectedEventsEventsData.json"))));
+
+
+        Assert.assertEquals(expectedselectedEventsEventsData.size(), selectedEventsEvents.size());
+        for(int i = 0; i < expectedselectedEventsEventsData.size(); i++){
+            AssertSelectedEvents(expectedselectedEventsEventsData.get(i), selectedEventsEvents.get(i));
+        }
+
+    }
 
     @Test
     public void runGenericHotCold5() throws Exception {
         runTest("GenericHotCold5/GenericHotCold5InputTest.json", hotCold5BpEventsExpectedResult);
     }
 
-//    @Test
-//    public void debugGenericHotCold5() throws Exception {
-//        MvcResult emmiter = debugTest("GenericHotCold5/GenericHotCold5InputTest.json");
-//        Pair<ArrayList<String>, ArrayList<String>> events = stepTest("GenericHotCold5", emmiter);
-//
-//        ArrayList<String> bpEvents = events.getLeft();
-//        Assert.assertArrayEquals(hotCold5BpEventsExpectedResult, bpEvents.toArray());
-//
-//        ArrayList<String> stepEvents = events.getRight();
-//        ArrayList<String> expectedStepEventsData = new ArrayList<>();
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep1.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep2.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep3.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep4.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep5.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep6.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep7.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep8.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep9.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep10.json"))));
-//        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep11.json"))));
-//
-//        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
-//        for(int i = 0; i < expectedStepEventsData.size(); i++){
-//            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
-//        }
-//    }
+    @Test
+    public void debugGenericHotCold5() throws Exception {
+        MvcResult emmiter = debugTest("GenericHotCold5/GenericHotCold5InputTest.json");
+        Map<String, ArrayList<String>> events = stepTest("GenericHotCold5", emmiter);
+
+        ArrayList<String> bpEvents = events.get("bpEvents");
+        Assert.assertArrayEquals(hotCold5BpEventsExpectedResult, bpEvents.toArray());
+
+        ArrayList<String> stepEvents = events.get("stepEvents");
+        ArrayList<String> expectedStepEventsData = new ArrayList<>();
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep1.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep2.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep3.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep4.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep5.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep6.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep7.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep8.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep9.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep10.json"))));
+        expectedStepEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep11.json"))));
+
+        Assert.assertEquals(expectedStepEventsData.size(), stepEvents.size());
+        for(int i = 0; i < expectedStepEventsData.size(); i++){
+            Assert.assertEquals(expectedStepEventsData.get(i).replaceAll("\\s+",""), stepEvents.get(i));
+        }
+
+        ArrayList<String> selectedEventsEvents = events.get("selectedEventsEvents");
+        ArrayList<String> expectedselectedEventsEventsData = new ArrayList<>();
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep1expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep2expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep3expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep4expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep5expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep6expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep7expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep8expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep9expectedselectedEventsEventsData.json"))));
+        expectedselectedEventsEventsData.add(new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\GenericHotCold5\\GenericHotCold5DebugStep10expectedselectedEventsEventsData.json"))));
+
+
+        Assert.assertEquals(expectedselectedEventsEventsData.size(), selectedEventsEvents.size());
+        for(int i = 0; i < expectedselectedEventsEventsData.size(); i++){
+            AssertSelectedEvents(expectedselectedEventsEventsData.get(i), selectedEventsEvents.get(i));
+        }
+    }
 
     private MvcResult debugTest(String jsonFileName) throws Exception {
         String model = new String(Files.readAllBytes(Paths.get("src\\test\\TestResources\\" + jsonFileName)));

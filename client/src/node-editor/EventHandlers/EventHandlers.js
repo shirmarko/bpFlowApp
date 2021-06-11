@@ -46,7 +46,6 @@ export function stepEventHandler(event) {
                 changeNodeColor(nodeId, "DARKGRAY");
             }
         }
-        updatePayloads(data);
         isFirstStep = false;
     }
 
@@ -61,7 +60,7 @@ export function stepEventHandler(event) {
     //     //}
     // }
 
-    
+    updatePayloads(data);
     globalData = data;
     prevActiveNodes = data.active;
 };
@@ -80,7 +79,6 @@ export function colorSecondStep(){
             changeNodeColor(nodeId, "DARKGRAY");
         }
     }
-    updatePayloads(globalData);
 }
 
 function updatePayloads(data){
