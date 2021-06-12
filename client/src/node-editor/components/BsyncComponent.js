@@ -9,6 +9,11 @@ export const statusColor = { BRIGHTGRAY: "node", GREEN: "selectedNode", RED: "bl
 //---------------------------------------Bsync-------------------------------------------------
 var CustomBSyncNode = {
     template: `<div v-bind:class="[ chooseColor(node) ]"> 
+    <!-- Outputs-->
+    <div class="output" v-for="output in outputs()" :key="output.key">
+    <!-- <div class="output-title">{{output.name}}</div> -->
+      <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
+    </div>
     <!-- Inputs-->
     <div class="input" v-for="input in inputs()" :key="input.key">
       <Socket v-socket:input="input" type="input" :socket="input.socket"></Socket>
@@ -16,11 +21,7 @@ var CustomBSyncNode = {
       <div class="input-control" v-show="input.showControl()" v-control="input.control"></div>
     </div>
     <div class="title">&nbsp;&nbsp;{{node.id}}. {{node.name}}</div>
-    <!-- Outputs-->
-    <div class="output" v-for="output in outputs()" :key="output.key">
-    <!-- <div class="output-title">{{output.name}}</div> -->
-      <Socket v-socket:output="output" type="output" :socket="output.socket"></Socket>
-    </div>
+    
     
     <!-- Controls-->
     <div class="control" v-for="control in controls()" v-control="control">
