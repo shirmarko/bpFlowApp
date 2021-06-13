@@ -1,5 +1,5 @@
 export function post(route, dataToSend){
-    fetch(`http://localhost:8090/${route}`, {
+    fetch(`http://132.72.116.73:48401/${route}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: dataToSend

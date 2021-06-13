@@ -22,7 +22,7 @@ let logConsoleContent;
 let nevBarbuttonsVisibility;
 let id;
 
-const eventSource = new EventSource('http://localhost:8090/subscribe');
+const eventSource = new EventSource('http://132.72.116.73:48401/subscribe');
 eventSource.addEventListener('init', setId);
 function setId(event){
     let newId = event.data;
