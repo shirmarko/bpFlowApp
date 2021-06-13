@@ -153,6 +153,21 @@
                   accept=".json"
                 ></b-form-file>
               </b-modal>
+              
+              <b-dropdown-item id="load-from-file-button" v-b-modal.modal-choose-example
+                >Choose Example</b-dropdown-item
+              >
+              <b-modal id="modal-choose-example" title="Choose Example" v-on:ok="OnClickLoad" ok-only>
+                <div class="d-block text-center">
+                    <h4>Choose from the following examples</h4>
+               
+                    <br>
+                    <b-button  @click="OnClickLoadHotCold">Hot Cold</b-button>
+                    <b-button  @click="OnClickLoadGenericHotCold">Generic Hot Cold</b-button>
+                    <b-button  @click="OnClickLoadTicTacToe">Tic Tac Toe</b-button>
+                 </div>
+              </b-modal>
+
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
@@ -186,7 +201,8 @@ import {
   cleanBoard,
   ChangeGraphReadOnly,
   saveEditor,
-  loadEditor
+  loadEditor,
+  loadEditorExample
 } from "../node-editor/index";
 import {
   BModal,
@@ -282,6 +298,15 @@ export default {
       reader.readAsText(this.file);
 
       this.file = null;
+    },
+    OnClickLoadHotCold() {
+        loadEditorExample("HotCold");
+    },
+    OnClickLoadGenericHotCold() {
+        loadEditorExample("GenericHotCold");
+    },
+    OnClickLoadTicTacToe() {
+        loadEditorExample("TicTacToe");
     },
   },
   components: {

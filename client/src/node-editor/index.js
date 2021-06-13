@@ -111,6 +111,15 @@ export async function loadEditor(json_file) {
     AreaPlugin.zoomAt(editor);
 }
 
+export async function loadEditorExample(programName) {
+    cleanBoard();
+    const data = require(`../Resources/${programName}.json`);
+    data.id = id;
+    await editor.fromJSON(data);
+    editor.view.resize();
+    AreaPlugin.zoomAt(editor);
+}
+
 export async function ChangeGraphReadOnly() {
     let readonlyEnabled = editor.trigger('isreadonly');
     await editor.trigger('readonly', !readonlyEnabled);
