@@ -6,7 +6,7 @@
 **For running on localhost:**
 
 - Clone the repository to your computer.
-- run `npm install` from `/client` folder.
+- From `/client` folder, run the command `npm install`. 
     
 - **For running the client:** From `/client` folder, run the command `npm run dev`.
 - **For running the server:** From `/backend/src/main/java/com/backend/Communication` folder,
