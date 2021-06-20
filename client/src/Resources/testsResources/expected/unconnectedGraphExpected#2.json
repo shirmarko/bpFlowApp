@@ -1,0 +1,39 @@
+
+{
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
+    "nodes": {
+      "1": {
+        "id": 1,
+        "data": {
+          "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
+        },
+        "inputs": [],
+        "outputs": {
+          "Output": []
+        },
+        "type": "Start"
+      },
+      "2": {
+        "id": 2,
+        "data": {
+          "code": "nodesLists[\"active\"].get(\"2\").incrementAndGet();\n\n                bp.sync( {} );\n\n                nodesLists[\"active\"].get(\"2\").decrementAndGet();\n\n                selectedEvents.add(2);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
+        },
+        "inputs": [],
+        "outputs": {
+          "Output": []
+        },
+        "type": "General"
+      },
+      "3": {
+        "id": 3,
+        "data": {
+          "code": "let outputs = {};\n\nreturn outputs;"
+        },
+        "inputs": [],
+        "outputs": {
+          "output1": []
+        },
+        "type": "General"
+      }
+    }
+  }
