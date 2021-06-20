@@ -1,0 +1,77 @@
+
+{
+    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
+    "nodes": {
+      "1": {
+        "id": 1,
+        "data": {
+          "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
+        },
+        "inputs": [],
+        "outputs": {
+          "Output": [
+            2
+          ]
+        },
+        "type": "Start"
+      },
+      "2": {
+        "id": 2,
+        "data": {
+          "code": "nodesLists[\"active\"].get(\"2\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"a\")} );\n\n                nodesLists[\"active\"].get(\"2\").decrementAndGet();\n\n                selectedEvents.add(2);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
+        },
+        "inputs": [
+          1
+        ],
+        "outputs": {
+          "Output": [
+            3
+          ]
+        },
+        "type": "General"
+      },
+      "3": {
+        "id": 3,
+        "data": {
+          "code": "nodesLists[\"active\"].get(\"3\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"b\")} );\n\n                nodesLists[\"active\"].get(\"3\").decrementAndGet();\n\n                selectedEvents.add(3);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
+        },
+        "inputs": [
+          2
+        ],
+        "outputs": {
+          "Output": [
+            4
+          ]
+        },
+        "type": "General"
+      },
+      "4": {
+        "id": 4,
+        "data": {
+          "code": "nodesLists[\"active\"].get(\"4\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"c\")} );\n\n                nodesLists[\"active\"].get(\"4\").decrementAndGet();\n\n                selectedEvents.add(4);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
+        },
+        "inputs": [
+          3
+        ],
+        "outputs": {
+          "Output": [
+            5
+          ]
+        },
+        "type": "General"
+      },
+      "5": {
+        "id": 5,
+        "data": {
+          "code": "nodesLists[\"active\"].get(\"5\").incrementAndGet();\n\n                bp.sync( {request:bp.Event(\"d\")} );\n\n                nodesLists[\"active\"].get(\"5\").decrementAndGet();\n\n                selectedEvents.add(5);\n\nlet outputs = {};\noutputs[\"Output\"] = payload;\nreturn outputs;"
+        },
+        "inputs": [
+          4
+        ],
+        "outputs": {
+          "Output": []
+        },
+        "type": "General"
+      }
+    }
+  }

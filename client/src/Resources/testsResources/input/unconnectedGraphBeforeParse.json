@@ -1,4 +1,4 @@
-export let OnlyStartGraphBeforeParse = 
+ 
 {
     "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
     "nodes": {
@@ -18,23 +18,28 @@ export let OnlyStartGraphBeforeParse =
           100
         ],
         "name": "Start"
-      }
-    }
-  }
-export let OnlyStartGraphExpectedParse = 
-{
-    "id": "1a5abcee-a6da-45ad-a1c9-1dd774519a9c@0.1.0",
-    "nodes": {
-      "1": {
-        "id": 1,
+      },
+      "2": {
+        "id": 2,
         "data": {
-          "code": "let outputs = {};\noutputs[\"Output\"] = {}\nreturn outputs;"
+          "payloadView": {},
+          "color": "BRIGHTGRAY"
         },
-        "inputs": [],
+        "inputs": {
+          "input": {
+            "connections": []
+          }
+        },
         "outputs": {
-          "Output": []
+          "Output": {
+            "connections": []
+          }
         },
-        "type": "Start"
+        "position": [
+          400,
+          100
+        ],
+        "name": "Bsync"
       }
     }
   }
