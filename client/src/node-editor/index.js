@@ -16,13 +16,21 @@ import * as ButtonsHandlers from "./helpers/ButtonsHandlers"
 import * as EventHandlers from "./EventHandlers/EventHandlers.js"
 
 
+
 export let editor;
 let engine;
 let logConsoleContent;
 let nevBarbuttonsVisibility;
 let id;
+let eventSource;
 
-const eventSource = new EventSource('http://132.72.116.73:48401/subscribe');
+if (process.env.NODE_ENV === 'production') {
+    eventSource = new EventSource(`http://132.72.116.73:48401/subscribe`);
+}
+else {//NODE_ENV === development
+    eventSource = new EventSource(`http://localhost:8090/subscribe`);
+}
+
 eventSource.addEventListener('init', setId);
 function setId(event){
     let newId = event.data;
@@ -129,8 +137,6 @@ export async function init(container, logContent, buttonsVisibility) {
     eventSource.addEventListener('step', EventHandlers.stepEventHandler);
     eventSource.addEventListener('selectedEvents', EventHandlers.selectedEventsHandler);
 
-
-    //id = createUUID();
     while(id === undefined){
         await new Promise(r => setTimeout(r, 2000));
     }
@@ -138,7 +144,7 @@ export async function init(container, logContent, buttonsVisibility) {
 
     editor = new Rete.NodeEditor(id, container);
     const components = [new StartComponent(Consts.defaultOutputName), new BsyncComponent(Consts.defaultOutputName),
-        new GeneralComponent(), , new ForComponent(), new WhileComponent()];
+        new GeneralComponent(), new ForComponent(), new WhileComponent()];
 
     (async () => {
         editor.use(ConnectionPlugin);
