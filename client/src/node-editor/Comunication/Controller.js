@@ -1,5 +1,13 @@
-export function post(route, dataToSend){
-    fetch(`http://132.72.116.73:48401/${route}`, {
+export function post(route, dataToSend) {
+    let address;
+    if (process.env.NODE_ENV === 'production') {
+        address = `http://132.72.116.73:48401`;
+    }
+    else {//NODE_ENV === development
+        address = `http://localhost:8090`;
+    }
+
+    fetch(`${address}/${route}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: dataToSend
@@ -12,4 +20,4 @@ export function post(route, dataToSend){
             alert("There is a problem, try later.");
         }
     });
-} 
+}
