@@ -37,14 +37,6 @@ function setId(event){
     id = newId;
 }
 
-
-function createUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    }) + "@0.1.0";
-}
-
 export async function OnClickRun() {
     ButtonsHandlers.SendGraphToServer(editor, engine, "run");
 }
@@ -121,7 +113,7 @@ export async function loadEditor(json_file) {
 
 export async function loadEditorExample(programName) {
     cleanBoard();
-    const data = require(`../Resources/${programName}.json`);
+    const data = require(`../Resources/examples/${programName}.json`);
     data.id = id;
     await editor.fromJSON(data);
     editor.view.resize();
@@ -169,7 +161,7 @@ export async function init(container, logContent, buttonsVisibility) {
             engine.register(c);
         });
 
-        const data = require("../Resources/HelloWorld.json");
+        const data = require("../Resources/examples/HelloWorld.json");
         data.id = id;
         await editor.fromJSON(data);
         editor.view.resize();

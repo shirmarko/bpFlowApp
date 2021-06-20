@@ -24,7 +24,6 @@ public class GraphBProgramRunnerListener extends BProgramRunnerListenerAdapter {
             dateToSend.put("name", theEvent.getName());
             dateToSend.put("data", theEvent.getData());
 
-            //emitter.send(SseEmitter.event().name("flowEvent").data(theEvent.getName()+theEvent.getData().toString()));
             emitter.send(SseEmitter.event().name("flowEvent").data(dateToSend));
         } catch (IOException e) {
             e.printStackTrace();
